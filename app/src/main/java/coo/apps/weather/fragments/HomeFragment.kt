@@ -11,19 +11,13 @@ import coo.apps.weather.viemodels.HomeViewModel
 
 class HomeFragment : Fragment() {
 
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            binding?.textHome?.text = it
-        }
+
         return binding!!.root
     }
 
