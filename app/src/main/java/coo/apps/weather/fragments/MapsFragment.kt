@@ -17,7 +17,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import coo.apps.weather.BuildConfig.MAPS_API_KEY
+import coo.apps.weather.BuildConfig
 import coo.apps.weather.R
 import coo.apps.weather.databinding.FragmentMapsBinding
 
@@ -43,9 +43,6 @@ class MapsFragment : Fragment() {
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-        val vic = LatLng(-35.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(vic).title("Marker in Sydney"))
     }
 
     private fun setMapSettings(googleMap: GoogleMap) {
@@ -63,7 +60,7 @@ class MapsFragment : Fragment() {
 
     private fun initPlaces() {
 //        // Initialize the SDK
-        Places.initialize(requireActivity().applicationContext,"$MAPS_API_KEY")
+        Places.initialize(requireActivity().applicationContext,BuildConfig.PLACES_API_KEY)
 //
 //        // Create a new PlacesClient instance
 //        val placesClient = Places.createClient(requireActivity().applicationContext)

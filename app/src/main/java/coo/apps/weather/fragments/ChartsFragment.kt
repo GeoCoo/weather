@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import coo.apps.weather.databinding.FragmentNotificationsBinding
+import coo.apps.weather.databinding.FragmentChartsBinding
 import coo.apps.weather.viemodels.NotificationsViewModel
 
 class NotificationsFragment : Fragment() {
 
-    private var binding: FragmentNotificationsBinding? = null
+    private var binding: FragmentChartsBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val notificationsViewModel = ViewModelProvider(this)[NotificationsViewModel::class.java]
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        binding = FragmentChartsBinding.inflate(inflater, container, false)
 
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             binding?.textNotifications?.text = it
