@@ -14,7 +14,7 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
+3
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 

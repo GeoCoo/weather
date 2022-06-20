@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_chart.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/ic_chart_ative.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/ic_charts_active.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.1575" />
