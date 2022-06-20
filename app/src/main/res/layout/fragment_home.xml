@@ -46,20 +46,20 @@
                 android:id="@+id/wearherSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_rain"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_rain" />
 
         <TextView
                 android:id="@+id/temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_bold"
-                android:text="46"
-                android:textColor="@color/white"
-                android:textSize="32sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="46"
+                tools:textColor="@color/white"
+                tools:textSize="32sp" />
 
         <TextView
                 android:id="@+id/temperatureType"
@@ -67,23 +67,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="19dp"
                 android:fontFamily="@font/spf_pro_bold"
-                android:text="@string/celcius_symbol"
-                android:textColor="@color/white"
-                android:textSize="32sp"
                 app:layout_constraintBottom_toBottomOf="@+id/temperature"
                 app:layout_constraintStart_toEndOf="@id/temperature"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/celcius_symbol"
+                tools:textColor="@color/white"
+                tools:textSize="32sp" />
 
         <TextView
                 android:id="@+id/weatherType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_semibold"
-                android:text="Rainy"
-                android:textColor="@color/white"
-                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/temperature" />
+                app:layout_constraintTop_toBottomOf="@id/temperature"
+                tools:text="Rainy"
+                tools:textColor="@color/white"
+                tools:textSize="20sp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -104,11 +104,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_regular"
-                android:text="Humidity: 7%"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
+                tools:text="Humidity: 7%"
+                tools:textColor="@color/white"
+                tools:textSize="16dp" />
 
 
         <TextView
@@ -116,47 +116,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_regular"
-                android:text="Rain: 5.0mm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
+                tools:text="Rain: 5.0mm"
+                tools:textColor="@color/white"
+                tools:textSize="16dp" />
 
         <TextView
                 android:id="@+id/wind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/spf_pro_regular"
-                android:text="Wind: 5m/s N"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/humidity"
+                android:fontFamily="@font/spf_pro_regular"
                 app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
+                app:layout_constraintTop_toBottomOf="@id/humidity"
+                tools:text="Wind: 5m/s N"
+                tools:textColor="@color/white"
+                tools:textSize="16dp" />
 
         <TextView
                 android:id="@+id/dust"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/spf_pro_regular"
-                android:text="Dust: Moderate"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/spf_pro_regular"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rain"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
+                tools:text="Dust: Moderate"
+                tools:textColor="@color/white"
+                tools:textSize="16dp" />
 
         <TextView
                 android:id="@+id/visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/spf_pro_regular"
-                android:text="Visibility: 10%"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/wind"
+                android:fontFamily="@font/spf_pro_regular"
                 app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
+                app:layout_constraintTop_toBottomOf="@id/wind"
+                tools:text="Visibility: 10%"
+                tools:textColor="@color/white"
+                tools:textSize="16dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

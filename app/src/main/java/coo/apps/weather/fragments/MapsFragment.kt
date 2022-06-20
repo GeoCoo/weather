@@ -1,23 +1,18 @@
 package coo.apps.weather.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import coo.apps.weather.BuildConfig
 import coo.apps.weather.R
 import coo.apps.weather.databinding.FragmentMapsBinding
 
@@ -52,39 +47,35 @@ class MapsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
-
-        initPlaces()
+        clearSearch()
+        handleTextWatcher()
         return binding!!.root
 
     }
 
-    private fun initPlaces() {
-//        // Initialize the SDK
-        Places.initialize(requireActivity().applicationContext,BuildConfig.PLACES_API_KEY)
-//
-//        // Create a new PlacesClient instance
-//        val placesClient = Places.createClient(requireActivity().applicationContext)
-
-
-        // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-//                Log.i(TAG, "Place: ${place.name}, ${place.id}"
-                Toast.makeText(requireActivity(),"Place: ${place.name}, ${place.id}",Toast.LENGTH_LONG).show()
+    private fun handleTextWatcher() {
+        binding?.searchField?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (text?.length == 0) binding?.searchIcon?.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
+                else binding?.searchIcon?.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
             }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
         })
     }
+
+
+    private fun clearSearch() {
+        binding?.clear?.setOnClickListener {
+            binding?.searchField?.text?.clear()
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,4 +87,31 @@ class MapsFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
+
 }
+
+
+//private fun initPlaces() {
+//
+//    // Initialize the AutocompleteSupportFragment.
+//    val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+//
+//    // Specify the types of place data to return.
+//    autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+//
+//    // Set up a PlaceSelectionListener to handle the response.
+//    autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+//        override fun onPlaceSelected(place: Place) {
+//            // TODO: Get info about the selected place.
+////                Log.i(TAG, "Place: ${place.name}, ${place.id}"
+//            Toast.makeText(requireActivity(), "Place: ${place.name}, ${place.id}", Toast.LENGTH_LONG).show()
+//
+//        }
+//
+//        override fun onError(status: Status) {
+//            Toast.makeText(requireActivity(), status.statusMessage, Toast.LENGTH_LONG).show()
+//
+//        }
+//    })
+//}

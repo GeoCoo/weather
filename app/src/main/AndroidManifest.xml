@@ -7,12 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <permission
             android:name="android.permission.MAPS_RECEIVE"
-            android:protectionLevel="signature"/>
-    <uses-permission android:name="android.permission.MAPS_RECEIVE"/>
+            android:protectionLevel="signature" />
+    <uses-permission android:name="android.permission.MAPS_RECEIVE" />
 
     <application
+            android:name=".WeatherApplication"
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
@@ -25,6 +27,10 @@
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
+                android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+                android:name="com.google.android.geo."
                 android:value="${MAPS_API_KEY}" />
 
         <activity
