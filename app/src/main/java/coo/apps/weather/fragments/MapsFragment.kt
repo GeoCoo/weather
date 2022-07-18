@@ -1,12 +1,12 @@
 package coo.apps.weather.fragments
 
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,42 +14,61 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import coo.apps.weather.R
+import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
 
 
-class MapsFragment : Fragment() {
+class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private var binding: FragmentMapsBinding? = null
+    var latLong: Location? = null
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        setMapSettings(googleMap)
-        addMarkers(googleMap)
-    }
+    override fun getLayoutRes(): Int = R.layout.fragment_maps
 
-    private fun addMarkers(googleMap: GoogleMap) {
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
+    override fun initLayout(view: View) {
+        clearSearch()
+        handleTextWatcher()
 
-    private fun setMapSettings(googleMap: GoogleMap) {
-        googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.uiSettings.isScrollGesturesEnabled = true
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
-        clearSearch()
-        handleTextWatcher()
         return binding!!.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        setMapSettings(googleMap)
+
+
+//        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
+//            val sydney = LatLng(location?.latitude!!, location?.longitude!!)
+//            googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//        }
+
+        googleMap.apply {
+            val sydney = LatLng(-33.852, 151.211)
+            addMarker(
+                MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney")
+            )
+            // [START_EXCLUDE silent]
+            moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        }
 
     }
 
@@ -77,41 +96,10 @@ class MapsFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+    private fun setMapSettings(googleMap: GoogleMap) {
+        googleMap.uiSettings.isZoomControlsEnabled = true
+        googleMap.uiSettings.isScrollGesturesEnabled = true
     }
 
 
 }
-
-
-//private fun initPlaces() {
-//
-//    // Initialize the AutocompleteSupportFragment.
-//    val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-//
-//    // Specify the types of place data to return.
-//    autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-//
-//    // Set up a PlaceSelectionListener to handle the response.
-//    autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-//        override fun onPlaceSelected(place: Place) {
-//            // TODO: Get info about the selected place.
-////                Log.i(TAG, "Place: ${place.name}, ${place.id}"
-//            Toast.makeText(requireActivity(), "Place: ${place.name}, ${place.id}", Toast.LENGTH_LONG).show()
-//
-//        }
-//
-//        override fun onError(status: Status) {
-//            Toast.makeText(requireActivity(), status.statusMessage, Toast.LENGTH_LONG).show()
-//
-//        }
-//    })
-//}

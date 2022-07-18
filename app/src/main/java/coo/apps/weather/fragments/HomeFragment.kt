@@ -4,20 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import coo.apps.weather.R
+import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentHomeBinding
-import coo.apps.weather.viemodels.HomeViewModel
+import kotlinx.coroutines.runBlocking
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var binding: FragmentHomeBinding? = null
 
+    override fun getLayoutRes(): Int = R.layout.fragment_home
+
+    override fun initLayout(view: View) {
+        runBlocking {
+            mainViewModel.makeMainRequest()
+        }
+
+    }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-3
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
         return binding!!.root
     }
 
@@ -25,4 +32,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
 }

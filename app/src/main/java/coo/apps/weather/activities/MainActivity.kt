@@ -6,10 +6,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
+import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import coo.apps.weather.viemodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : FragmentActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -18,41 +21,11 @@ class MainActivity : FragmentActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
-
-
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when (destination.label.toString()) {
-                "Home" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_active)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_inactive)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_inactive)
-
-
-                }
-                "Maps" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_inactive)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_active)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_inactive)
-
-
-                }
-                "Charts" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_inactive)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_active)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_inactive)
-
-
-                }
-
-
-            }
-
-        }
-
+        mainViewModel.handleNavigation(navController, navView)
     }
+
+
 }

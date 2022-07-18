@@ -39,6 +39,9 @@ android {
     buildscript {
         dependencies {
             classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+            classpath "com.google.gms:google-services:4.3.13"
+            classpath 'com.android.tools.build:gradle:4.1.1'
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
         }
     }
 }
@@ -46,30 +49,38 @@ android {
 dependencies {
     def koin_version = "3.2.0"
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.libraries.places:places:2.6.0'
     implementation 'com.google.maps.android:places-ktx:2.0.0'
 
-    // Koin Core features
-    implementation "io.insert-koin:koin-core:$koin_version"
-// Koin Test features
-    testImplementation "io.insert-koin:koin-test:$koin_version"
-    // Koin main features for Android
-    implementation "io.insert-koin:koin-android:$koin_version"
-// No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
 
-// Jetpack WorkManager
+    implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-rxjava:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-gson:2.3.1'
+
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+
+    implementation "io.insert-koin:koin-core:$koin_version"
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
-// Navigation Graph
     implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.19'
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
