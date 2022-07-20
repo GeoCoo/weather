@@ -9,10 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
-import coo.apps.weather.network.ApiPath
-import coo.apps.weather.network.NetworkService
 import coo.apps.weather.network.controller.MainController
-import org.koin.java.KoinJavaComponent.inject
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -58,7 +55,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun makeMainRequest() {
-      val response  =  mainController.makeMainRequest(currentLocation)
+        val response = mainController.makeMainRequest(currentLocation)
         response
     }
 

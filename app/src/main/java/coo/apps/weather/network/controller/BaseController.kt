@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 open class BaseController : Service() {
 
-    open suspend fun fetchData() {
+    open fun fetchData() {
         if (disposable.isDisposed)
             disposable = CompositeDisposable()
     }

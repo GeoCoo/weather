@@ -49,6 +49,7 @@ abstract class Service {
                 when {
                     request.queryParameter.isNullOrEmpty() -> Fuel.get(request.baseUrl + request.path, request.defaultUrlParams.toList())
                         .header(request.header ?: request.defaultHeaders)
+                        .authentication().basic("aramco", "aramco-W!")
                         .timeoutRead(timeOutMilisTime)
                         .responseString()
                     else -> Fuel.get(request.baseUrl + request.path, request.queryParameter!!.toList())
@@ -57,8 +58,7 @@ abstract class Service {
                         .timeoutRead(timeOutMilisTime)
                         .responseString()
                 }
-            }
-          else {
+            } else {
                 when (request.body) {
                     null -> Fuel.post(
                         request.baseUrl + request.path,
