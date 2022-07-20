@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.network.controller.MainController
+import coo.apps.weather.network.request.MainRequest
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
