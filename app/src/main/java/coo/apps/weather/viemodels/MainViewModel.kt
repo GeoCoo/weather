@@ -17,7 +17,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var locationCoordinatesLiveData: MutableLiveData<Location> = MutableLiveData()
     var currentLocation: Location? = null
-    private val mainController: MainController by lazy { MainController() }
 
     fun handleNavigation(navController: NavController, navView: BottomNavigationView) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -55,10 +54,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun makeMainRequest() {
-        val response = mainController.makeMainRequest(currentLocation)
-        response
-    }
+
 
 
 }

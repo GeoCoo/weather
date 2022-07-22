@@ -9,7 +9,6 @@ import kotlinx.coroutines.runBlocking
 
 class MainController : Service() {
 
-
     fun makeMainRequest(location: Location?): Any? {
         return runBlocking {
             val request = MainRequest(location)
