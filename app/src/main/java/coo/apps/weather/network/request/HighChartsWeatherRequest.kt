@@ -8,4 +8,6 @@ class HighChartsWeatherRequest(location: Location?) : BaseRequest() {
         set(value) {}
 
     override var path: String = "highcharts_weather_json.php/latlon:${location?.latitude},${location?.longitude}"
+
+
 }

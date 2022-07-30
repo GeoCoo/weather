@@ -8,4 +8,6 @@ class HighChartsOceanRequest(location: Location?) : BaseRequest() {
         set(value) {}
 
     override var path: String = "highcharts_ocean_json.php/latlon:${location?.latitude},${location?.longitude}"
+
+
 }

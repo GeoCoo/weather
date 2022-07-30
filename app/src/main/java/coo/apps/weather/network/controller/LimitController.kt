@@ -12,8 +12,8 @@ class LimitController : Service() {
         return runBlocking {
             val request = LimitRequest(location)
             when (val response = doSuspendRequest<Any>(request)) {
-                is NetworkResponse.Success<*> -> return@runBlocking response.result
-                is NetworkResponse.Error -> return@runBlocking response.error
+//                is NetworkResponse.Success<*> -> return@runBlocking response.result
+//                is NetworkResponse.Error -> return@runBlocking response.error
                 else -> null
             }
         }

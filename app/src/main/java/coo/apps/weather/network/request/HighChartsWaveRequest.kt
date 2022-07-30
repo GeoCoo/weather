@@ -8,4 +8,5 @@ class HighChartsWaveRequest(location: Location?) : BaseRequest() {
         set(value) {}
 
     override var path: String = "highcharts_wave_json.php/latlon:${location?.latitude},${location?.longitude}"
+
 }

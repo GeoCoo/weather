@@ -8,4 +8,5 @@ class LimitRequest(location: Location?) : BaseRequest() {
         set(value) {}
 
     override var path: String = "limits.php/latlon:${location?.latitude},${location?.longitude}"
+
 }

@@ -1,5 +1,7 @@
 package coo.apps.weather.network.request
 
+import com.github.kittinunf.fuel.core.Parameters
+
 
 abstract class BaseRequest {
 
@@ -18,17 +20,16 @@ abstract class BaseRequest {
     // ===========================================================
 
     val defaultHeaders: Map<String, String> = mutableMapOf("Content-Type" to "application/json",
-                                                            "charset" to "utf-8")
+        "charset" to "utf-8")
 
-    val defaultUrlParams: HashMap<String, Any> = hashMapOf()
+    val defaultUrlParams: Parameters? = null
 
     abstract var method: Method
     open var path: String = ""
     open var baseUrl: String = "http://api.wassf.net/"
     open var header: Map<String, String>? = null
     open var body: String? = null
-    open var queryParameter: MutableMap<String, Any>? = null
-
+    open var queryParameter: Parameters? = null
     // ===========================================================
     // Constructors
     // ===========================================================

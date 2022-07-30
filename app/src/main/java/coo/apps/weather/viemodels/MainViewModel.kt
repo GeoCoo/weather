@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
+import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.MainController
-import coo.apps.weather.network.request.MainRequest
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -54,11 +54,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         locationCoordinatesLiveData.postValue(location)
     }
 
-
-    fun makeMainRequest() {
-        val response = mainController.makeMainRequest(currentLocation)
-        response
-    }
+     suspend fun makeMainRequest(): MainResponse? = mainController.makeMainRequest(currentLocation)
 
 
 }
