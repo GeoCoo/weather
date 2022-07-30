@@ -19,7 +19,7 @@
 
     <fragment
             android:id="@+id/navigation_charts"
-            android:name="coo.apps.weather.fragments.NotificationsFragment"
+            android:name="coo.apps.weather.fragments.ChartsFragment"
             android:label="@string/title_charts"
             tools:layout="@layout/fragment_charts" />
 </navigation>
