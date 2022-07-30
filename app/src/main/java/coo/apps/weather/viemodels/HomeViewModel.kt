@@ -9,10 +9,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val mainController: MainController by lazy { MainController() }
 
-    fun makeMainRequest(location: Location?) {
-        val response = mainController.makeMainRequest(location)
-        response
-    }
+//    fun makeMainRequest(location: Location?) {
+//        val response = mainController.makeMainRequest(location)
+//        response
+//    }
 
 
 }
