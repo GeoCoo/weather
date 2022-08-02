@@ -1,6 +1,5 @@
 package coo.apps.weather
 
-import coo.apps.weather.network.NetworkService
 import coo.apps.weather.viemodels.ChartsViewModel
 import coo.apps.weather.viemodels.HomeViewModel
 import coo.apps.weather.viemodels.MainViewModel
@@ -12,7 +11,5 @@ class KoinModule(application: WeatherApplication) {
         viewModel { MainViewModel(application) }
         viewModel { HomeViewModel(application) }
         viewModel { ChartsViewModel(application) }
-        single { NetworkService() }
-
     }
 }

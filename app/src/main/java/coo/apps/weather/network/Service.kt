@@ -42,7 +42,7 @@ abstract class Service {
     private var gSon: Gson = Gson()
 
     //    @Throws(Exception::class)
-    suspend inline fun <reified T> doSuspendRequest(request: BaseRequest): NetworkResponse {
+    suspend inline fun <reified T> doRequest(request: BaseRequest): NetworkResponse {
         return withContext(Dispatchers.IO) {
             var localResponse: ResponseResultOf<String>? = null
             localResponse = if (request.method == BaseRequest.Method.GET) {

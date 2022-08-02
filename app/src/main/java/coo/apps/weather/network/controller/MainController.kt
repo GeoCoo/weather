@@ -10,14 +10,11 @@ import coo.apps.weather.network.request.MainRequest
 class MainController : Service() {
 
 
-   suspend fun makeMainRequest(location: Location?): MainResponse? {
+    suspend fun makeMainRequest(location: Location?): MainResponse? {
         val request = MainRequest(location)
-        return when (val response = doSuspendRequest<MainResponse>(request)) {
+        return when (val response = doRequest<MainResponse>(request)) {
             is NetworkResponse.Success<*> -> response.result as MainResponse?
             is NetworkResponse.Error -> null
-            else -> {
-                null
-            }
         }
     }
 }
