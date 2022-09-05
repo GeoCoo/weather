@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class Current(
     @SerializedName("desc") var desc: String? = null,
-    @SerializedName("bgclass") var bgclass: String? = null,
-    @SerializedName("icon") var icon: String="",
+    @SerializedName("bgclass") var bgclass: String = "",
+    @SerializedName("icon") var icon: String = "",
     @SerializedName("temp") var temp: String? = null,
     @SerializedName("dust") var dust: String? = null,
     @SerializedName("precip") var precip: String? = null,

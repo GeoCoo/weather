@@ -41,9 +41,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="@color/black"
             android:fontFamily="@font/spf_pro_regular"
             android:gravity="center"
+            android:textColor="@color/black"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@id/dateTime"
             app:layout_constraintStart_toStartOf="@id/dateTime"
@@ -99,10 +99,10 @@
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/quantum_grey"
+            app:layout_constraintBottom_toTopOf="@id/windInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/dateTime"
-            app:layout_constraintTop_toBottomOf="@id/dateTime"
-            app:layout_constraintBottom_toTopOf="@id/windInfo" />
+            app:layout_constraintTop_toBottomOf="@id/dateTime" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

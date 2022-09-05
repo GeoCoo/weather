@@ -45,7 +45,8 @@
         <ImageView
                 android:id="@+id/wearherSymbol"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/weatherType"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_rain" />
@@ -78,6 +79,7 @@
                 android:id="@+id/weatherType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/spf_pro_semibold"
                 android:textColor="@color/white"
                 android:textSize="20sp"

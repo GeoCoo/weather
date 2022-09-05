@@ -43,14 +43,15 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
-
-            val weatherIcon =  getIcon(response?.current?.icon!!)
-            wearherSymbol.setImageResource(weatherIcon!!)
+            weatherImage.setImageResource(getBg(response?.current?.bgclass!!))
+            val weatherIcon =  getIcon(response.current?.icon!!)
+            wearherSymbol.setImageResource(weatherIcon)
             placeTxt.text = mainViewModel.getPlaceName()
             temperature.text = response.current?.temp
             weatherType.text = response.current?.desc
             humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)
             rain.text = resources.getString(R.string.rain_tag, response.current?.precip)
+            wind.text =resources.getString(R.string.wind_tag, response.current?.wind10.toString(), response.current?.wind10dir.toString() )
             dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
             visibility.text = resources.getString(R.string.visibility_tag, response.current?.vis)
             setRadioBtn(this.toggle, response)

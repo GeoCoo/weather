@@ -1,6 +1,7 @@
 package coo.apps.weather.models.main
 
 import com.google.gson.annotations.SerializedName
+import coo.apps.weather.R
 
 data class Overview(
     @SerializedName("name") var name: String? = null,
@@ -18,3 +19,6 @@ data class Overview(
     @SerializedName("winddir") var winddir: Int? = null,
     @SerializedName("winddirname") var winddirname: String? = null
 )
+
+
+
