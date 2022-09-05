@@ -13,17 +13,21 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_location_active.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/pick_out_line.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/search_cursor.xml" value="0.16" />
+        <entry key="app/src/main/res/drawable/selected_radio_btn.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/selector_navigation.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.241" />
+        <entry key="app/src/main/res/drawable/toggle_widget_background.xml" value="0.1865" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1828774062816616" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_charts.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.49325337331334335" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_maps2.xml" value="0.21197916666666666" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/layout/main_recycler_item.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>

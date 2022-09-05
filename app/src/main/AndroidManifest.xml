@@ -37,7 +37,7 @@
                 android:value="${MAPS_API_KEY}" />
 
         <activity
-                android:name=".activities.SplashActivity"
+                android:name="coo.apps.weather.activities.SplashActivity"
                 android:exported="true"
                 android:label="@string/title_activity_splash"
                 android:theme="@style/Theme.Weather.NoActionBar">
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.MainActivity"
+                android:name="coo.apps.weather.activities.MainActivity"
                 android:exported="false"
                 android:label="@string/title_activity_main" />
     </application>

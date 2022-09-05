@@ -19,4 +19,6 @@
     <string name="wind_tag">Wind: %1$s %2$s</string>
     <string name="dust_tag">Dust: %1$s</string>
     <string name="visibility_tag">Visibility: %1$s</string>
+    <string name="daily">Daily</string>
+    <string name="today">Today</string>
 </resources>

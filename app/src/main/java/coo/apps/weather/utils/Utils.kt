@@ -6,6 +6,7 @@ import android.location.Geocoder
 import com.github.kittinunf.fuel.core.Response
 import io.reactivex.Notification
 import io.reactivex.subjects.PublishSubject
+import java.text.SimpleDateFormat
 
 val streamErrors: PublishSubject<Notification<Exception>> = PublishSubject.create()
 
@@ -23,6 +24,15 @@ fun getPlaceNameFromLocation(context: Context, lat: Double?, long: Double?): Add
     val geocoder = Geocoder(context)
     val addresses = geocoder.getFromLocation(lat!!, long!!, 1)
     return addresses[0]
+}
+
+fun convertDate(date:String?): String{
+    val formatter = SimpleDateFormat("MM/dd/yyyy")
+    val finalDate = formatter.parse(date.toString())
+    return SimpleDateFormat("EEE d").format(finalDate!!)
+
+
+
 
 
 }

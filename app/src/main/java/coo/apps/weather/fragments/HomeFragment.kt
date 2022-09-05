@@ -1,24 +1,29 @@
 package coo.apps.weather.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.lifecycle.lifecycleScope
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentHomeBinding
+import coo.apps.weather.models.main.DayTable
 import coo.apps.weather.models.main.MainResponse
+import coo.apps.weather.models.main.Overview
+import coo.apps.weather.utils.DailyRecyclerAdapter
+import coo.apps.weather.utils.TodayRecyclerAdapter
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : BaseFragment() {
 
     private var binding: FragmentHomeBinding? = null
     private lateinit var response: MainResponse
+    private lateinit var dailyAdapter: DailyRecyclerAdapter
+    private lateinit var todayAdapter: TodayRecyclerAdapter
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
@@ -26,6 +31,7 @@ class HomeFragment : BaseFragment() {
         lifecycleScope.launch {
             response = mainViewModel.makeMainRequest()!!
             setUpCurrent(response)
+            initDailyRecycler(response.overview)
         }
 
     }
@@ -39,13 +45,6 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
-//            val uri: Uri = Uri.parse("http://api.wassf.net/" + response?.current?.icon)
-//
-//            GlideToVectorYou
-//                .init()
-//                .with(activity)
-//
-//                .load(uri, wearherSymbol);
             placeTxt.text = mainViewModel.getPlaceName()
             temperature.text = response?.current?.temp
             weatherType.text = response?.current?.desc
@@ -54,14 +53,42 @@ class HomeFragment : BaseFragment() {
             wind.text = resources.getString(R.string.wind_tag, response?.current?.wind10, response?.current?.wind10dir)
             dust.text = resources.getString(R.string.dust_tag, response?.current?.dust)
             visibility.text = resources.getString(R.string.visibility_tag, response?.current?.vis)
-
-
+            setRadioBtn(this.toggle, response)
         }
 
 
     }
 
+    private fun setRadioBtn(toggle: RadioGroup, response: MainResponse?) {
+        toggle.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { arg0, id ->
+            when (id) {
+                R.id.daily -> {
 
+                    initDailyRecycler(response?.overview)
+                }
+                R.id.today -> {
+                    initTodayRecycler(response?.dayTable)
+
+                }
+            }
+        })
+    }
+
+    private fun initTodayRecycler(list: List<DayTable>?) {
+        binding.apply {
+            todayAdapter = TodayRecyclerAdapter(list)
+            this?.recycler?.adapter = todayAdapter
+            this?.recycler?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun initDailyRecycler(list: List<Overview>?) {
+        binding.apply {
+            dailyAdapter = DailyRecyclerAdapter(list)
+            this?.recycler?.adapter = dailyAdapter
+            this?.recycler?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

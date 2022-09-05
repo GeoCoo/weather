@@ -23,12 +23,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
             android:fontFamily="@font/spf_pro_medium"
-            tools:text="Dhahran, Ash Sharqiyah"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Dhahran, Ash Sharqiyah" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/wearherSymbols"
@@ -55,11 +55,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_bold"
+                android:textColor="@color/white"
+                android:textSize="32sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="46"
-                android:textColor="@color/white"
-                android:textSize="32sp" />
+                tools:text="46" />
 
         <TextView
                 android:id="@+id/temperatureType"
@@ -67,29 +67,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="19dp"
                 android:fontFamily="@font/spf_pro_bold"
-                app:layout_constraintBottom_toBottomOf="@+id/temperature"
-                app:layout_constraintStart_toEndOf="@id/temperature"
-                app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/celcius_symbol"
                 android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="@+id/temperature"
+                app:layout_constraintStart_toEndOf="@id/temperature"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
                 android:id="@+id/weatherType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_semibold"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/temperature"
-                tools:text="Rainy"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                tools:text="Rainy" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/baseDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
@@ -104,11 +105,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_regular"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Humidity: 7%"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                tools:text="Humidity: 7%" />
 
 
         <TextView
@@ -116,11 +117,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spf_pro_regular"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Rain: 5.0mm"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                tools:text="Rain: 5.0mm" />
 
         <TextView
                 android:id="@+id/wind"
@@ -128,11 +129,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/spf_pro_regular"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/humidity"
-                tools:text="Wind: 5m/s N"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                tools:text="Wind: 5m/s N" />
 
         <TextView
                 android:id="@+id/dust"
@@ -140,11 +141,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/spf_pro_regular"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rain"
-                tools:text="Dust: Moderate"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                tools:text="Dust: Moderate" />
 
         <TextView
                 android:id="@+id/visibility"
@@ -152,13 +153,88 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/spf_pro_regular"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/wind"
-                tools:text="Visibility: 10%"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                tools:text="Visibility: 10%" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="-4dp"
+            android:background="@color/white"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/baseDetails">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <RadioGroup
+                    android:id="@+id/toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="17pt"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginRight="50dp"
+                    android:background="@drawable/pink_out_line"
+                    android:checkedButton="@+id/daily"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <RadioButton
+                        android:id="@+id/today"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:fontFamily="@font/spf_pro_medium"
+                        android:gravity="center"
+                        android:text="@string/today"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                <RadioButton
+                        android:id="@+id/daily"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:fontFamily="@font/spf_pro_medium"
+                        android:gravity="center"
+                        android:text="@string/daily"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+            </RadioGroup>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toggle"
+                    app:layout_constraintVertical_bias="1.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

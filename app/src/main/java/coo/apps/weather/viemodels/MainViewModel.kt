@@ -60,7 +60,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPlaceName(): String {
 //        return getPlaceNameFromLocation(getApplication<Application>().applicationContext,currentLocation?.latitude, currentLocation?.longitude)
-        val place =  getPlaceNameFromLocation(getApplication<Application>().applicationContext,33.8932174,35.4803467)
+        val place =  getPlaceNameFromLocation(getApplication(),33.8932174,35.4803467)
         return place?.locality + "," + place?.countryName
 
     }

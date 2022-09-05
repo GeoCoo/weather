@@ -12,6 +12,6 @@
     <color name="azure">#22a8de</color>
     <color name="very_light_pink">#f1f1f1</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="trans">#00000000</color>
+    <color name="transparent">#00000000</color>
     <color name="cursor_blue">#1c7ece</color>
 </resources>

@@ -7,11 +7,9 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.location.LocationCallback
 import coo.apps.weather.activities.SplashActivity
 import coo.apps.weather.viemodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

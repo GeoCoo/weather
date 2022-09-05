@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="128dp"
+        android:layout_height="match_parent">
+
+
+    <TextView
+            android:id="@+id/dateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/spf_pro_regular"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/divider2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mon 9" />
+
+
+    <TextView
+            android:id="@+id/highest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/spf_pro_semibold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/dateTime"
+            app:layout_constraintStart_toStartOf="@id/dateTime"
+            app:layout_constraintTop_toBottomOf="@id/dateTime"
+            tools:text="46" />
+
+    <TextView
+            android:id="@+id/lowest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/spf_pro_regular"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/dateTime"
+            app:layout_constraintStart_toStartOf="@id/dateTime"
+            app:layout_constraintTop_toBottomOf="@id/highest"
+            tools:text="46" />
+
+    <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@id/dateTime"
+            app:layout_constraintStart_toStartOf="@id/dateTime"
+            app:layout_constraintTop_toBottomOf="@id/lowest"
+            app:srcCompat="@drawable/quantum_ic_cloud_off_vd_theme_24" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/windInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/dateTime"
+            app:layout_constraintStart_toStartOf="@id/dateTime"
+            app:layout_constraintTop_toBottomOf="@id/icon">
+
+        <ImageView
+                android:id="@+id/windIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/windDirection"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+
+        <TextView
+                android:id="@+id/windDirection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/windIndicator"
+                app:layout_constraintTop_toTopOf="parent"
+
+                tools:text="5 m/s" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+            android:id="@+id/divider2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/quantum_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dateTime"
+            app:layout_constraintTop_toBottomOf="@id/dateTime"
+            app:layout_constraintBottom_toTopOf="@id/windInfo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
