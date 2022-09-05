@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Overview(
     @SerializedName("name") var name: String? = null,
     @SerializedName("date") var date: String? = null,
-    @SerializedName("icon") var icon: String? = null,
+    @SerializedName("icon") var icon: String = "",
     @SerializedName("desc") var desc: String? = null,
     @SerializedName("tempmax") var tempmax: String? = null,
     @SerializedName("tempmin") var tempmin: String? = null,

@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentHomeBinding
-import coo.apps.weather.models.main.DayTable
-import coo.apps.weather.models.main.MainResponse
-import coo.apps.weather.models.main.Overview
+import coo.apps.weather.models.main.*
 import coo.apps.weather.utils.DailyRecyclerAdapter
 import coo.apps.weather.utils.TodayRecyclerAdapter
 import kotlinx.coroutines.launch
@@ -45,36 +43,38 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
+
+            val weatherIcon =  getIcon(response?.current?.icon!!)
+            wearherSymbol.setImageResource(weatherIcon!!)
             placeTxt.text = mainViewModel.getPlaceName()
-            temperature.text = response?.current?.temp
-            weatherType.text = response?.current?.desc
-            humidity.text = resources.getString(R.string.humidity_tag, response?.current?.relhum)
-            rain.text = resources.getString(R.string.rain_tag, response?.current?.precip)
-            wind.text = resources.getString(R.string.wind_tag, response?.current?.wind10, response?.current?.wind10dir)
-            dust.text = resources.getString(R.string.dust_tag, response?.current?.dust)
-            visibility.text = resources.getString(R.string.visibility_tag, response?.current?.vis)
+            temperature.text = response.current?.temp
+            weatherType.text = response.current?.desc
+            humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)
+            rain.text = resources.getString(R.string.rain_tag, response.current?.precip)
+            dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
+            visibility.text = resources.getString(R.string.visibility_tag, response.current?.vis)
             setRadioBtn(this.toggle, response)
         }
 
 
     }
 
-    private fun setRadioBtn(toggle: RadioGroup, response: MainResponse?) {
-        toggle.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { arg0, id ->
+    private fun setRadioBtn(toggle: RadioGroup, response: MainResponse) {
+        toggle.setOnCheckedChangeListener { _, id ->
             when (id) {
                 R.id.daily -> {
 
-                    initDailyRecycler(response?.overview)
+                    initDailyRecycler(response.overview)
                 }
                 R.id.today -> {
-                    initTodayRecycler(response?.dayTable)
+                    initTodayRecycler(response.dayTable)
 
                 }
             }
-        })
+        }
     }
 
-    private fun initTodayRecycler(list: List<DayTable>?) {
+    private fun initTodayRecycler(list: ArrayList<DayTable>) {
         binding.apply {
             todayAdapter = TodayRecyclerAdapter(list)
             this?.recycler?.adapter = todayAdapter
@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initDailyRecycler(list: List<Overview>?) {
+    private fun initDailyRecycler(list: ArrayList<Overview>) {
         binding.apply {
             dailyAdapter = DailyRecyclerAdapter(list)
             this?.recycler?.adapter = dailyAdapter

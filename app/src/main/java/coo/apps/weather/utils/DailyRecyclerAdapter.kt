@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coo.apps.weather.R
 import coo.apps.weather.databinding.MainRecyclerItemBinding
 import coo.apps.weather.models.main.Overview
+import coo.apps.weather.models.main.getIcon
 import coo.apps.weather.network.convertDate
 
 
-class DailyRecyclerAdapter(private val list: List<Overview>?) : RecyclerView.Adapter<DailyRecyclerAdapter.TodayViewHolder>() {
+class DailyRecyclerAdapter(private val list: List<Overview>) : RecyclerView.Adapter<DailyRecyclerAdapter.TodayViewHolder>() {
 
 
     private lateinit var binding: MainRecyclerItemBinding
@@ -21,7 +22,7 @@ class DailyRecyclerAdapter(private val list: List<Overview>?) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: TodayViewHolder, position: Int) {
-        val question = list?.get(position)
+        val question = list[position]
         holder.bind(question, position)
     }
 
@@ -29,17 +30,18 @@ class DailyRecyclerAdapter(private val list: List<Overview>?) : RecyclerView.Ada
 
     override fun getItemId(position: Int) = position.toLong()
 
-    override fun getItemCount(): Int = list?.size!!
+    override fun getItemCount(): Int = list.size
 
     inner class TodayViewHolder(private var binding: MainRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Overview?, position: Int) {
+        fun bind(item: Overview, position: Int) {
             binding.apply {
-                this.dateTime.text = if (position != 0) convertDate(item?.date) else this@TodayViewHolder.itemView.context.getString(R.string.today)
-                this.highest.text = item?.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
-                this.lowest.text = item?.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
-                this.windDirection.text = item?.windspeed.toString() + item?.winddirname
+                this.dateTime.text = if (position != 0) convertDate(item.date) else this@TodayViewHolder.itemView.context.getString(R.string.today)
+                this.highest.text = item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.lowest.text = item.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.icon.setImageResource(getIcon(item.icon))
+                this.windDirection.text = item.windspeed.toString() + item.winddirname
             }
         }
     }

@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coo.apps.weather.R
 import coo.apps.weather.databinding.MainRecyclerItemBinding
 import coo.apps.weather.models.main.DayTable
+import coo.apps.weather.models.main.getIcon
 
 
-class TodayRecyclerAdapter(
-    private val list: List<DayTable>?,
-) :
-    RecyclerView.Adapter<TodayRecyclerAdapter.DailyViewHolder>() {
+class TodayRecyclerAdapter(private val list: List<DayTable>) : RecyclerView.Adapter<TodayRecyclerAdapter.DailyViewHolder>() {
 
 
     private lateinit var binding: MainRecyclerItemBinding
@@ -23,7 +21,7 @@ class TodayRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: DailyViewHolder, position: Int) {
-        val question = list?.get(position)
+        val question = list[position]
         holder.bind(question)
     }
 
@@ -31,16 +29,17 @@ class TodayRecyclerAdapter(
 
     override fun getItemId(position: Int) = position.toLong()
 
-    override fun getItemCount(): Int = list?.size!!
+    override fun getItemCount(): Int = list.size
 
     inner class DailyViewHolder(private var binding: MainRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DayTable?) {
+        fun bind(item: DayTable) {
             binding.apply {
-                this.dateTime.text = item?.time
-                this.highest.text = item?.temp + this@DailyViewHolder.itemView.context.getString(R.string.celcius_symbol)
-                this.windDirection.text = item?.wind + item?.dirname
+                this.dateTime.text = item.time
+                this.highest.text = item.temp + this@DailyViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.icon.setImageResource(getIcon(item.icon))
+                this.windDirection.text = item.wind + item.dirname
             }
         }
     }

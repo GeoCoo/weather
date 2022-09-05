@@ -3,17 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_chart.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_chart_ative.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/ic_charts_active.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/ic_hail_icon.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_home_active.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/ic_icnclose.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_location_active.xml" value="0.1715" />
+        <entry key="app/src/main/res/drawable/ic_mooncloud.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/ic_sunny.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/pick_out_line.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/pink_out_line.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/search_cursor.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/selected_radio_btn.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/selector_navigation.xml" value="0.1575" />
