@@ -11,11 +11,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.MainController
+import coo.apps.weather.network.getPlaceNameFromLocation
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    var locationCoordinatesLiveData: MutableLiveData<Location> = MutableLiveData()
+    var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
 
@@ -50,11 +51,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun postCoordinates(location: Location?) {
+
         currentLocation = location
         locationCoordinatesLiveData.postValue(location)
     }
 
      suspend fun makeMainRequest(): MainResponse? = mainController.makeMainRequest(currentLocation)
+
+    fun getPlaceName(): String {
+//        return getPlaceNameFromLocation(getApplication<Application>().applicationContext,currentLocation?.latitude, currentLocation?.longitude)
+        val place =  getPlaceNameFromLocation(getApplication<Application>().applicationContext,33.8932174,35.4803467)
+        return place?.locality + "," + place?.countryName
+
+    }
 
 
 }

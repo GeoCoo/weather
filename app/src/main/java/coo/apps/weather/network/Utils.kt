@@ -1,5 +1,8 @@
 package coo.apps.weather.network
 
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import com.github.kittinunf.fuel.core.Response
 import io.reactivex.Notification
 import io.reactivex.subjects.PublishSubject
@@ -14,3 +17,12 @@ data class ServerException(val code: Int, val url: String?, val reason: String?)
 
 
 data class WassfException(val code: Int, override val message: String?, val method: String? = null, override val cause: Throwable? = null, val description: String? = null) : Exception(message, cause)
+
+
+fun getPlaceNameFromLocation(context: Context, lat: Double?, long: Double?): Address? {
+    val geocoder = Geocoder(context)
+    val addresses = geocoder.getFromLocation(lat!!, long!!, 1)
+    return addresses[0]
+
+
+}

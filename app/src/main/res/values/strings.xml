@@ -14,4 +14,9 @@
     <string name="title_maps">Maps</string>
     <string name="title_charts">Charts</string>
     <string name="celcius_symbol">"\u2103"</string>
+    <string name="humidity_tag">Humidity: %1$s</string>
+    <string name="rain_tag">Rain: %1$s</string>
+    <string name="wind_tag">Wind: %1$s %2$s</string>
+    <string name="dust_tag">Dust: %1$s</string>
+    <string name="visibility_tag">Visibility: %1$s</string>
 </resources>

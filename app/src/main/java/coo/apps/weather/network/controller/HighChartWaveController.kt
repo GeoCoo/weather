@@ -12,9 +12,9 @@ class HighChartWaveController : Service() {
     fun makeWaveRequest(location: Location?): Any? {
         return runBlocking {
             val request = HighChartsWaveRequest(location)
-            when (val response = doSuspendRequest<Any>(request)) {
-//                is NetworkResponse.Success<*> -> return@runBlocking response.result
-//                is NetworkResponse.Error -> return@runBlocking response.error
+            when (val response = doRequest<Any>(request)) {
+                is NetworkResponse.Success<*> -> return@runBlocking response.result
+                is NetworkResponse.Error -> return@runBlocking response.error
                 else -> null
             }
         }

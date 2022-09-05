@@ -11,7 +11,7 @@ class HighChartsWeatherController : Service() {
     fun makeWeatherRequest(location: Location?): Any? {
         return runBlocking {
             val request = HighChartsWeatherRequest(location)
-            when (val response = doSuspendRequest<Any>(request)) {
+            when (val response = doRequest<Any>(request)) {
 //                is NetworkResponse.Success<*> -> return@runBlocking response.result
 //                is NetworkResponse.Error -> return@runBlocking response.error
                 else -> null
