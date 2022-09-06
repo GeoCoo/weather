@@ -23,10 +23,16 @@ enum class Icon(var type: String) {
     moonCloud("weather-icon-moon-cloud.svg"),
     dust("weather-icon-dust.svg"),
     fog("weather-icon-fog.svg"),
-    nightClouds("night-clouds"),
     cloudy("cloudy"),
-    dusty("dust")
-
+    dusty("dust"),
+    foggy("fog"),
+    heavyClouds("heavy-clouds"),
+    heavyRain("heavy-rain"),
+    nighhtClear("night-clear"),
+    nightClouds("night-clouds"),
+    rainy("rain"),
+    snowy("snow"),
+    sunny("sunny")
 }
 
 fun getIcon(icon: String): Int {
@@ -66,9 +72,16 @@ fun getSmallIcons(icon: String): Int {
 
 fun getBg(icon: String): Int {
     return when (icon) {
-        Icon.nightClouds.type -> R.drawable.ic_night_bg_cloud
         Icon.cloudy.type -> R.drawable.ic_cloudy_bg
         Icon.dusty.type -> R.drawable.ic_dusty_bg
+        Icon.foggy.type -> R.drawable.ic_fog_bg
+        Icon.heavyClouds.type -> R.drawable.ic_heavy_clouds_bg
+        Icon.heavyRain.type -> R.drawable.ic_heavy_rain_bg
+        Icon.nighhtClear.type -> R.drawable.ic_night_clear
+        Icon.nightClouds.type -> R.drawable.ic_night_bg_cloud
+        Icon.rainy.type -> R.drawable.ic_rainy_bg
+        Icon.snowy.type -> R.drawable.ic_snow_bg
+        Icon.sunny.type -> R.drawable.ic_sunny_bg
         else -> {
             R.drawable.ic_night_bg_cloud
         }

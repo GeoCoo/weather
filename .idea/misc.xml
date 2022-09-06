@@ -10,6 +10,8 @@
         <entry key="app/src/main/res/drawable/ic_cloudy_bg.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_hail_icon.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/ic_heavy_clouds.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/ic_heavy_rain.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_home_active.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1575" />
@@ -18,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_location_active.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/ic_mooncloud.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/ic_snow.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/ic_sunny.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/pick_out_line.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/pink_out_line.xml" value="0.1865" />
