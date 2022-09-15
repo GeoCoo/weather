@@ -7,12 +7,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.LatLngBounds
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
@@ -51,6 +52,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         setMapSettings(googleMap)
+        createBox(googleMap)
 
 
 //        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
@@ -59,17 +61,37 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 //            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 //        }
 
-        googleMap.apply {
-            val sydney = LatLng(-33.852, 151.211)
-            addMarker(
-                MarkerOptions()
-                    .position(sydney)
-                    .title("Marker in Sydney")
-            )
-            // [START_EXCLUDE silent]
-            moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        }
+//        googleMap.apply {
+//            val sydney = LatLng(-33.852, 151.211)
+//            addMarker(
+//                MarkerOptions()
+//                    .position(sydney)
+//                    .title("Marker in Sydney")
+//            )
+//            // [START_EXCLUDE silent]
+//            moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//        }
 
+    }
+
+    private fun createBox(gooleMap: GoogleMap) {
+        mainViewModel.observeBounds(requireActivity(), Observer {
+            val builder = LatLngBounds.builder()
+            builder.include(LatLng(it?.xmin!!, it.xmax!!))
+            builder.include(LatLng(it.ymin!!, it.ymax))
+            val bounds = builder.build()
+
+            val width = resources.displayMetrics.widthPixels
+            val height = resources.displayMetrics.heightPixels
+            val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
+
+
+            val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+            gooleMap.apply {
+                this.animateCamera(cu)
+            }
+
+        })
     }
 
     private fun handleTextWatcher() {

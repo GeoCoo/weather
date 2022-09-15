@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun startMainActivity(){
+    private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

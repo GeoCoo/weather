@@ -64,7 +64,6 @@ class HomeFragment : BaseFragment() {
         toggle.setOnCheckedChangeListener { _, id ->
             when (id) {
                 R.id.daily -> {
-
                     initDailyRecycler(response.overview)
                 }
                 R.id.today -> {

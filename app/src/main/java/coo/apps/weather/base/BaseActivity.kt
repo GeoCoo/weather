@@ -10,8 +10,10 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import coo.apps.weather.activities.SplashActivity
 import coo.apps.weather.viemodels.MainViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class BaseActivity : FragmentActivity(), LocationListener {
@@ -24,6 +26,9 @@ open class BaseActivity : FragmentActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            mainViewModel.getLimits()
+        }
         handleLocation()
     }
 

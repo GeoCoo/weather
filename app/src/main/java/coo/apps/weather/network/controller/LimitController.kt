@@ -1,21 +1,23 @@
 package coo.apps.weather.network.controller
 
-import android.location.Location
+import coo.apps.weather.models.Limits
 import coo.apps.weather.network.NetworkResponse
 import coo.apps.weather.network.Service
 import coo.apps.weather.network.request.LimitRequest
-import kotlinx.coroutines.runBlocking
 
 class LimitController : Service() {
 
-    fun makeLimitRequest(location: Location?): Any? {
-        return runBlocking {
-            val request = LimitRequest(location)
-            when (val response = doRequest<Any>(request)) {
-                is NetworkResponse.Success<*> -> return@runBlocking response.result
-                is NetworkResponse.Error -> return@runBlocking response.error
-                else -> null
-            }
+    suspend fun makeLimitRequest(): Limits? {
+        val request = LimitRequest()
+//            when (val response = doRequest<Limits>(request)) {
+//                is NetworkResponse.Success<*> -> response.result as Limits
+//                is NetworkResponse.Error -> null
+
+        return when (val response = doRequest<Limits>(request)) {
+            is NetworkResponse.Success<*> -> response.result as Limits
+            is NetworkResponse.Error -> null
         }
+
+
     }
 }
