@@ -14,6 +14,7 @@ import coo.apps.weather.models.main.*
 import coo.apps.weather.utils.DailyRecyclerAdapter
 import coo.apps.weather.utils.TodayRecyclerAdapter
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class HomeFragment : BaseFragment() {
@@ -26,12 +27,21 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
-        lifecycleScope.launch {
-            response = mainViewModel.makeMainRequest()!!
+        lifecycleScope.launch{
+            handleRequestView(mainViewModel.makeMainRequest())
+        }
+    }
+
+    private fun handleRequestView(response: MainResponse?) {
+        if (response == null) {
+            binding?.mainView?.visibility = View.GONE
+            binding?.errorView?.visibility = View.VISIBLE
+        } else {
+            binding?.mainView?.visibility = View.VISIBLE
+            binding?.errorView?.visibility = View.GONE
             setUpCurrent(response)
             initDailyRecycler(response.overview)
         }
-
     }
 
 

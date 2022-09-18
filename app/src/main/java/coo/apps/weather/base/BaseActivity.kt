@@ -29,7 +29,14 @@ open class BaseActivity : FragmentActivity(), LocationListener {
         lifecycleScope.launch {
             mainViewModel.getLimits()
         }
-        handleLocation()
+        if (this !is SplashActivity) {
+            val locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (locationPermission == PackageManager.PERMISSION_GRANTED) {
+                updateUserLocation()
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
+            }
+        }
     }
 
 
@@ -40,12 +47,14 @@ open class BaseActivity : FragmentActivity(), LocationListener {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == locationPermissionCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                handleLocation()
             } else {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
+
 
     private fun handleLocation() {
         if (this !is SplashActivity) {

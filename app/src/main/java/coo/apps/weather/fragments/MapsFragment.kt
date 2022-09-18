@@ -14,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
@@ -55,18 +56,19 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         createBox(googleMap)
 
 
-//        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
-//            val sydney = LatLng(location?.latitude!!, location?.longitude!!)
-//            googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-//        }
+        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
+//            val lebanon = LatLng(location?.latitude!!, location?.longitude!!)
+            val lebanon = LatLng(29.3117, 47.4818)
+
+            googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon"))
+        }
 
 //        googleMap.apply {
-//            val sydney = LatLng(-33.852, 151.211)
+//            val sydney = LatLng(29.3117, 47.4818)
 //            addMarker(
 //                MarkerOptions()
 //                    .position(sydney)
-//                    .title("Marker in Sydney")
+//                    .title("Marker in Lebanon")
 //            )
 //            // [START_EXCLUDE silent]
 //            moveCamera(CameraUpdateFactory.newLatLng(sydney))

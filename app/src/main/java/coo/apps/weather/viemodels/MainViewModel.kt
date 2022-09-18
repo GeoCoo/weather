@@ -18,12 +18,16 @@ import coo.apps.weather.network.getPlaceNameFromLocation
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-
-    var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
+    private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
-    var currentLocation: Location? = null
+
+    private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
+
+    //TODO:TEST ONLY
+//    private var currentLocation: Location? = Location("33.8932174,35.4803467")
+
 
     fun handleNavigation(navController: NavController, navView: BottomNavigationView) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -64,19 +68,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPlaceName(): String {
 //        return getPlaceNameFromLocation(getApplication<Application>().applicationContext,currentLocation?.latitude, currentLocation?.longitude)
-        val place = getPlaceNameFromLocation(getApplication(), 33.8932174, 35.4803467)
+//        val place = getPlaceNameFromLocation(getApplication(), location?.latitude, location?.longitude)
+        val place = getPlaceNameFromLocation(getApplication(), 29.3117, 47.4818)
         return place?.locality + "," + place?.countryName
 
     }
 
 
-   suspend fun getLimits() {
-       boundsMutable.postValue(limitController.makeLimitRequest())
+    suspend fun getLimits() {
+        boundsMutable.postValue(limitController.makeLimitRequest())
     }
 
-    fun observeBounds(lifecycleOwner: LifecycleOwner,observer: Observer<Limits>){
-        boundsMutable.observe(lifecycleOwner,observer)
-
+    fun observeBounds(lifecycleOwner: LifecycleOwner, observer: Observer<Limits>) {
+        boundsMutable.observe(lifecycleOwner, observer)
     }
 
 

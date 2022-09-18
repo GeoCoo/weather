@@ -10,6 +10,7 @@ import kotlin.concurrent.schedule
 class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
+    private val locationPermissionCode = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +19,16 @@ class SplashActivity : BaseActivity() {
         setContentView(binding.root)
 
 
-        Timer().schedule(5000) {
+        Timer().schedule(2000) {
             startMainActivity()
         }
+
+
     }
 
+
     private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         startActivity(intent)
     }
 }
