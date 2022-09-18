@@ -10,7 +10,7 @@ class HighChartsWeatherController : Service() {
 
     suspend fun makeWeatherRequest(location: Location?): WeatherResponse? {
         val request = HighChartsWeatherRequest(location)
-        return when (val response = doRequest<WeatherResponse>(request)) {
+        return when (val response = doRequest<WeatherResponse?>(request)) {
             is NetworkResponse.Success<*> -> response.result as WeatherResponse?
             is NetworkResponse.Error -> null
         }

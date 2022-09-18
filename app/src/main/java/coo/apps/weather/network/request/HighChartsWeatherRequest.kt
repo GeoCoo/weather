@@ -7,7 +7,7 @@ class HighChartsWeatherRequest(location: Location?) : BaseRequest() {
         get() = Method.GET
         set(value) {}
 
-    override var path: String = "highcharts_weather_json.php/latlon:${location?.latitude},${location?.longitude}"
+    override var path: String = "highcharts_weather_json.php?latlon:${location?.latitude},${location?.longitude}"
 
 
 }

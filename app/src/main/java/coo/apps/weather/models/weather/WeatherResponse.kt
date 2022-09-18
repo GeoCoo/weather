@@ -1,14 +1,14 @@
 package coo.apps.weather.models.weather
 
 data class WeatherResponse(
-    var hours: Int? = null,
-    var temp: ArrayList<ArrayList<Int>> = arrayListOf(),
-    var apcp: ArrayList<ArrayList<Int>> = arrayListOf(),
-    var wind: ArrayList<Wind> = arrayListOf(),
-    var relhum: ArrayList<ArrayList<Int>> = arrayListOf(),
-    var slp: ArrayList<ArrayList<Int>> = arrayListOf(),
-    var dust: ArrayList<ArrayList<Int>> = arrayListOf(),
-    var visib: ArrayList<ArrayList<Int>> = arrayListOf()
+    val apcp: List<List<Long>>,
+    val dust: List<List<Double>>,
+    val hours: Int,
+    val relhum: List<List<Double>>,
+    val slp: List<List<Double>>,
+    val temp: List<List<Double>>,
+    val visib: List<List<Double>>,
+    val wind: List<Wind>
 
 )
 
