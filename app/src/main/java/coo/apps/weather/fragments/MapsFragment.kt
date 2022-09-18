@@ -75,9 +75,11 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun initMarker(googleMap: GoogleMap) {
         mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
+            if (location != null) {
 //            val lebanon = LatLng(location?.latitude!!, location?.longitude!!)
-            val lebanon = LatLng(29.3117, 47.4818)
-            googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon").draggable(true))
+                val lebanon = LatLng(location.latitude, location.longitude)
+                googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon").draggable(true))
+            }
         }
     }
 

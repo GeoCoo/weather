@@ -1,12 +1,14 @@
 package coo.apps.weather.activities
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
@@ -22,7 +24,17 @@ class MainActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
         mainViewModel.handleNavigation(navController, navView)
-    }
 
+
+        mainViewModel.observeCoordinates(this@MainActivity) {
+            lifecycleScope.launch {
+                val response = mainViewModel.makeMainRequest(it)
+                mainViewModel.postMainResponse(response)
+            }
+
+        }
+
+
+    }
 
 }

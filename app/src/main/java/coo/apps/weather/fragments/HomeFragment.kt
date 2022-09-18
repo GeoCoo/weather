@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
@@ -13,22 +12,19 @@ import coo.apps.weather.databinding.FragmentHomeBinding
 import coo.apps.weather.models.main.*
 import coo.apps.weather.utils.DailyRecyclerAdapter
 import coo.apps.weather.utils.TodayRecyclerAdapter
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 class HomeFragment : BaseFragment() {
 
     private var binding: FragmentHomeBinding? = null
-    private lateinit var response: MainResponse
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
-        lifecycleScope.launch{
-            handleRequestView(mainViewModel.makeMainRequest())
+        mainViewModel.observeMainResponse(viewLifecycleOwner) {
+            handleRequestView(it)
         }
     }
 
@@ -56,7 +52,8 @@ class HomeFragment : BaseFragment() {
             weatherImage.setImageResource(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
             wearherSymbol.setImageResource(weatherIcon)
-            placeTxt.text = mainViewModel.getPlaceName()
+            val (locality, placeName) = mainViewModel.getPlaceName()
+            placeTxt.text = if (locality == null) placeName else "$locality, $placeName"
             temperature.text = response.current?.temp
             weatherType.text = response.current?.desc
             humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)

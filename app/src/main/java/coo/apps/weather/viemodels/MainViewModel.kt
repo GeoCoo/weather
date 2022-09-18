@@ -20,10 +20,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
+    private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
+
 
     //TODO:TEST ONLY
 //    private var currentLocation: Location? = Location("33.8932174,35.4803467")
@@ -64,13 +66,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         locationCoordinatesLiveData.postValue(location)
     }
 
-    suspend fun makeMainRequest(): MainResponse? = mainController.makeMainRequest(currentLocation)
+    suspend fun makeMainRequest(location: Location?): MainResponse? = mainController.makeMainRequest(location)
 
-    fun getPlaceName(): String {
+    fun postMainResponse(response: MainResponse?) {
+        responseMutable.postValue(response)
+    }
+
+    fun observeMainResponse(viewLifecycleOwner: LifecycleOwner,observer:Observer<MainResponse?>){
+        responseMutable.observe(viewLifecycleOwner,observer)
+    }
+
+    fun getPlaceName(): Pair<String?, String?> {
 //        return getPlaceNameFromLocation(getApplication<Application>().applicationContext,currentLocation?.latitude, currentLocation?.longitude)
-//        val place = getPlaceNameFromLocation(getApplication(), location?.latitude, location?.longitude)
-        val place = getPlaceNameFromLocation(getApplication(), 29.3117, 47.4818)
-        return place?.locality + "," + place?.countryName
+        val place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
+//        val place = getPlaceNameFromLocation(getApplication(), 29.3117, 47.4818)
+        return Pair(place?.locality, place?.countryName)
 
     }
 
