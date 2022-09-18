@@ -54,26 +54,31 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         setMapSettings(googleMap)
         createBox(googleMap)
+        initMarker(googleMap)
+        addNewMarkerOnclick(googleMap)
 
+    }
 
+    private fun addNewMarkerOnclick(googleMap: GoogleMap) {
+        googleMap.setOnMapLongClickListener {
+            googleMap.addMarker(MarkerOptions()
+                .position(it)
+                .title("Your marker title")
+                .snippet("Your marker snippet"));
+
+            val location = Location("")
+            location.latitude = it.latitude
+            location.longitude = it.longitude
+            mainViewModel.postCoordinates(location)
+        }
+    }
+
+    private fun initMarker(googleMap: GoogleMap) {
         mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
 //            val lebanon = LatLng(location?.latitude!!, location?.longitude!!)
             val lebanon = LatLng(29.3117, 47.4818)
-
-            googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon"))
+            googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon").draggable(true))
         }
-
-//        googleMap.apply {
-//            val sydney = LatLng(29.3117, 47.4818)
-//            addMarker(
-//                MarkerOptions()
-//                    .position(sydney)
-//                    .title("Marker in Lebanon")
-//            )
-//            // [START_EXCLUDE silent]
-//            moveCamera(CameraUpdateFactory.newLatLng(sydney))
-//        }
-
     }
 
     private fun createBox(gooleMap: GoogleMap) {

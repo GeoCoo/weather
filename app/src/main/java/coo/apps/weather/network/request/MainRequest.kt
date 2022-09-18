@@ -11,8 +11,8 @@ class MainRequest(location: Location?) : BaseRequest() {
 
     override var path: String = "frontpage_v3.php"
 //    override var queryParameter: Parameters? = listOf(Pair("latlon", "${location?.latitude},${location?.longitude}"))
-override var queryParameter: Parameters? = listOf(Pair("latlon", "29.3117, 47.4818"))
-//    override var queryParameter: Parameters? = listOf(Pair("latlon","${location?.latitude},${location?.longitude}"))
+//override var queryParameter: Parameters? = listOf(Pair("latlon", "29.3117, 47.4818"))
+    override var queryParameter: Parameters? = listOf(Pair("latlon","${location?.latitude},${location?.longitude}"))
 
 
 

@@ -9,7 +9,6 @@ import coo.apps.weather.network.request.MainRequest
 
 class MainController : Service() {
 
-
     suspend fun makeMainRequest(location: Location?): MainResponse? {
         val request = MainRequest(location)
         return when (val response = doRequest<MainResponse>(request)) {
