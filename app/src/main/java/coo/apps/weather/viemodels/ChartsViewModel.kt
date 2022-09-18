@@ -14,19 +14,10 @@ class ChartsViewModel(application: Application) : AndroidViewModel(application) 
     private val highChartWaveController: HighChartWaveController by lazy { HighChartWaveController() }
 
 
-    fun makeOceanRequest(location: Location?) {
-        val response = highChartOceanController.makeOceanRequest(location)
-        response
-    }
+    suspend fun makeOceanRequest(location: Location?) = highChartOceanController.makeOceanRequest(location)
 
-    fun makeWeatherRequest(location: Location?) {
-        val response = highChartsWeatherController.makeWeatherRequest(location)
-        response
-    }
+    suspend fun makeWeatherRequest(location: Location?) = highChartsWeatherController.makeWeatherRequest(location)
 
-    fun makeWaveRequest(location: Location?) {
-        val response = highChartWaveController.makeWaveRequest(location)
-        response
-    }
+    suspend fun makeWaveRequest(location: Location?) = highChartWaveController.makeWaveRequest(location)
 
 }

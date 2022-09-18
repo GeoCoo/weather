@@ -4,18 +4,14 @@ import android.location.Location
 import coo.apps.weather.network.NetworkResponse
 import coo.apps.weather.network.Service
 import coo.apps.weather.network.request.HighChartsOceanRequest
-import kotlinx.coroutines.runBlocking
 
 class HighChartOceanController : Service() {
 
-    fun makeOceanRequest(location: Location?): Any? {
-        return runBlocking {
-            val request = HighChartsOceanRequest(location)
-            when (val response = doRequest<Any>(request)) {
-                is NetworkResponse.Success<*> -> return@runBlocking response.result
-                is NetworkResponse.Error -> return@runBlocking response.error
-                else -> null
-            }
+    suspend fun makeOceanRequest(location: Location?): Any? {
+        val request = HighChartsOceanRequest(location)
+        return when (val response = doRequest<Any>(request)) {
+            is NetworkResponse.Success<*> -> return response.result
+            is NetworkResponse.Error -> null
         }
     }
 }

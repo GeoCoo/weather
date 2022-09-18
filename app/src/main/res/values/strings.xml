@@ -21,4 +21,5 @@
     <string name="visibility_tag">Visibility: %1$s</string>
     <string name="daily">Daily</string>
     <string name="today">Today</string>
+    <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
 </resources>

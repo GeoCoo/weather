@@ -21,7 +21,7 @@ import coo.apps.weather.databinding.FragmentMapsBinding
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
-    private var binding: FragmentMapsBinding? = null
+    private lateinit var binding: FragmentMapsBinding
     var latLong: Location? = null
 
     override fun getLayoutRes(): Int = R.layout.fragment_maps
@@ -35,7 +35,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
-        return binding!!.root
+        return binding.root
 
     }
 
@@ -47,7 +47,6 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
     }
 
 
@@ -104,13 +103,13 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun handleTextWatcher() {
-        binding?.searchField?.addTextChangedListener(object : TextWatcher {
+        binding.searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (text?.length == 0) binding?.searchIcon?.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
-                else binding?.searchIcon?.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
+                if (text?.length == 0) binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
+                else binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
             }
 
             override fun afterTextChanged(p0: Editable?) {

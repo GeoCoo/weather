@@ -10,7 +10,6 @@ data class WeatherResponse(
     var dust: ArrayList<ArrayList<Int>> = arrayListOf(),
     var visib: ArrayList<ArrayList<Int>> = arrayListOf()
 
-
 )
 
 

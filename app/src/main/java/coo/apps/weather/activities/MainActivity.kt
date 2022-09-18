@@ -8,12 +8,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import coo.apps.weather.viemodels.ChartsViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val chartsViewModel: ChartsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,10 @@ class MainActivity : BaseActivity() {
             lifecycleScope.launch {
                 val response = mainViewModel.makeMainRequest(it)
                 mainViewModel.postMainResponse(response)
+
+//                chartsViewModel.makeOceanRequest(it)
+//                chartsViewModel.makeWaveRequest(it)
+//                chartsViewModel.makeWeatherRequest(it)
             }
 
         }

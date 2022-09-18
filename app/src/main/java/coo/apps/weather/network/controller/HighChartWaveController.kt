@@ -4,19 +4,15 @@ import android.location.Location
 import coo.apps.weather.network.NetworkResponse
 import coo.apps.weather.network.Service
 import coo.apps.weather.network.request.HighChartsWaveRequest
-import kotlinx.coroutines.runBlocking
 
 
 class HighChartWaveController : Service() {
 
-    fun makeWaveRequest(location: Location?): Any? {
-        return runBlocking {
-            val request = HighChartsWaveRequest(location)
-            when (val response = doRequest<Any>(request)) {
-                is NetworkResponse.Success<*> -> return@runBlocking response.result
-                is NetworkResponse.Error -> return@runBlocking response.error
-                else -> null
-            }
+    suspend fun makeWaveRequest(location: Location?): Any? {
+        val request = HighChartsWaveRequest(location)
+        return when (val response = doRequest<Any>(request)) {
+            is NetworkResponse.Success<*> -> response.result
+            is NetworkResponse.Error -> response.error
         }
     }
 }
