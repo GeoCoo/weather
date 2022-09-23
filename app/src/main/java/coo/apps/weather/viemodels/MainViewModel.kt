@@ -28,11 +28,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
-
-    //TODO:TEST ONLY
-//    private var currentLocation: Location? = Location("33.8932174,35.4803467")
-
-
     fun handleNavigation(navController: NavController, navView: BottomNavigationView) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.label.toString()) {

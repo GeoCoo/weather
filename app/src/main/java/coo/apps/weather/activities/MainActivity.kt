@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import coo.apps.weather.utils.handleBoundBox
 import coo.apps.weather.viemodels.ChartsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
