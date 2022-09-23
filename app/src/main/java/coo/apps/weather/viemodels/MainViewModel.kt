@@ -1,6 +1,7 @@
 package coo.apps.weather.viemodels
 
 import android.app.Application
+import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
@@ -13,7 +14,8 @@ import coo.apps.weather.models.Limits
 import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.LimitController
 import coo.apps.weather.network.controller.MainController
-import coo.apps.weather.network.getPlaceNameFromLocation
+import coo.apps.weather.utils.getPlaceNameFromLocation
+import coo.apps.weather.utils.handleBoundBox
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -72,16 +74,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         responseMutable.postValue(response)
     }
 
-    fun observeMainResponse(viewLifecycleOwner: LifecycleOwner,observer:Observer<MainResponse?>){
-        responseMutable.observe(viewLifecycleOwner,observer)
+    fun observeMainResponse(viewLifecycleOwner: LifecycleOwner, observer: Observer<MainResponse?>) {
+        responseMutable.observe(viewLifecycleOwner, observer)
     }
 
-    fun getPlaceName(): Pair<String?, String?> {
-//        return getPlaceNameFromLocation(getApplication<Application>().applicationContext,currentLocation?.latitude, currentLocation?.longitude)
-        val place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
+    fun getPlaceName(): Pair<String?, String?>? {
+        var place: Address? = null
+        if (currentLocation?.handleBoundBox(boundsMutable.value!!) == true) {
+            place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
 //        val place = getPlaceNameFromLocation(getApplication(), 29.3117, 47.4818)
-        return Pair(place?.locality, place?.countryName)
 
+        }
+        return Pair(place?.locality, place?.countryName)
     }
 
 

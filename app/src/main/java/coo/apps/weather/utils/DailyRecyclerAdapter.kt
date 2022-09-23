@@ -8,7 +8,6 @@ import coo.apps.weather.R
 import coo.apps.weather.databinding.MainRecyclerItemBinding
 import coo.apps.weather.models.main.Overview
 import coo.apps.weather.models.main.getSmallIcons
-import coo.apps.weather.network.convertDate
 
 
 class DailyRecyclerAdapter(private val list: List<Overview>) : RecyclerView.Adapter<DailyRecyclerAdapter.TodayViewHolder>() {

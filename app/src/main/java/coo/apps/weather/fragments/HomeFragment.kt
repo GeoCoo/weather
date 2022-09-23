@@ -19,25 +19,23 @@ class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
+    private var hasResponse: Boolean = false
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
+        binding?.mainView?.visibility = View.GONE
+        binding?.errorView?.visibility = View.VISIBLE
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            handleRequestView(it)
+            if (it != null) handleRequestView(it)
         }
     }
 
-    private fun handleRequestView(response: MainResponse?) {
-        if (response == null) {
-            binding?.mainView?.visibility = View.GONE
-            binding?.errorView?.visibility = View.VISIBLE
-        } else {
-            binding?.mainView?.visibility = View.VISIBLE
-            binding?.errorView?.visibility = View.GONE
-            setUpCurrent(response)
-            initDailyRecycler(response.overview)
-        }
+    private fun handleRequestView(response: MainResponse) {
+        binding?.mainView?.visibility = View.VISIBLE
+        binding?.errorView?.visibility = View.GONE
+        setUpCurrent(response)
+        initDailyRecycler(response.overview)
     }
 
 
@@ -49,11 +47,13 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
+            var placeName: Pair<String?, String?>? = null
+
             weatherImage.setImageResource(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
             wearherSymbol.setImageResource(weatherIcon)
-            val (locality, placeName) = mainViewModel.getPlaceName()
-            placeTxt.text = if (locality == null) placeName else "$locality, $placeName"
+            placeName = mainViewModel.getPlaceName()
+            placeTxt.text = if (placeName?.first == null) placeName?.second else "${placeName.first}, ${placeName.second}"
             temperature.text = response.current?.temp
             weatherType.text = response.current?.desc
             humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)

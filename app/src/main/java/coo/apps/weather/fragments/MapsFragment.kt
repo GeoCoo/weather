@@ -13,11 +13,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
+import coo.apps.weather.utils.createBoundBox
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
@@ -29,8 +29,6 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     override fun initLayout(view: View) {
         clearSearch()
         handleTextWatcher()
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,29 +51,37 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         setMapSettings(googleMap)
         createBox(googleMap)
-        initMarker(googleMap)
         addNewMarkerOnclick(googleMap)
+        initMarker(googleMap)
 
     }
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap) {
         googleMap.setOnMapLongClickListener {
-            googleMap.addMarker(MarkerOptions()
-                .position(it)
-                .title("Your marker title")
-                .snippet("Your marker snippet"));
+            googleMap.clear()
+            handleNewLocation(it)
+            val positionName = handlePositionName()
 
-            val location = Location("")
-            location.latitude = it.latitude
-            location.longitude = it.longitude
-            mainViewModel.postCoordinates(location)
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(it)
+                    .title(positionName)
+            );
+
+
         }
+    }
+
+    private fun handlePositionName(): String? {
+        var placeName: Pair<String?, String?>? = null
+        placeName = mainViewModel.getPlaceName()
+        return if (placeName?.first == null) placeName?.second else "${placeName.first}, ${placeName.second}"
+
     }
 
     private fun initMarker(googleMap: GoogleMap) {
         mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
             if (location != null) {
-//            val lebanon = LatLng(location?.latitude!!, location?.longitude!!)
                 val lebanon = LatLng(location.latitude, location.longitude)
                 googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon").draggable(true))
             }
@@ -83,16 +89,12 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun createBox(gooleMap: GoogleMap) {
-        mainViewModel.observeBounds(requireActivity(), Observer {
-            val builder = LatLngBounds.builder()
-            builder.include(LatLng(it?.xmin!!, it.xmax!!))
-            builder.include(LatLng(it.ymin!!, it.ymax))
-            val bounds = builder.build()
+        mainViewModel.observeBounds(requireActivity(), Observer { limits ->
+            val bounds = limits.createBoundBox()
 
             val width = resources.displayMetrics.widthPixels
             val height = resources.displayMetrics.heightPixels
             val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
-
 
             val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
             gooleMap.apply {
@@ -120,8 +122,8 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun clearSearch() {
-        binding?.clear?.setOnClickListener {
-            binding?.searchField?.text?.clear()
+        binding.clear.setOnClickListener {
+            binding.searchField.text?.clear()
         }
     }
 
@@ -129,6 +131,14 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private fun setMapSettings(googleMap: GoogleMap) {
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.uiSettings.isScrollGesturesEnabled = true
+    }
+
+
+    private fun handleNewLocation(newLocation: LatLng) {
+        val location = Location("")
+        location.latitude = newLocation.latitude
+        location.longitude = newLocation.longitude
+        mainViewModel.postCoordinates(location)
     }
 
 
