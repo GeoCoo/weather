@@ -78,14 +78,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         responseMutable.observe(viewLifecycleOwner, observer)
     }
 
-    fun getPlaceName(): Pair<String?, String?>? {
+    fun getPlaceName(): String? {
         var place: Address? = null
-        if (currentLocation?.handleBoundBox(boundsMutable.value!!) == true) {
+        return if (currentLocation?.handleBoundBox(boundsMutable.value!!) == true) {
             place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
-//        val place = getPlaceNameFromLocation(getApplication(), 29.3117, 47.4818)
-
-        }
-        return Pair(place?.locality, place?.countryName)
+            if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
+        } else
+            "The selection is outside of the supported area"
     }
 
 

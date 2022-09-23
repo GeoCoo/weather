@@ -47,13 +47,10 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
-            var placeName: Pair<String?, String?>? = null
-
             weatherImage.setImageResource(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
             wearherSymbol.setImageResource(weatherIcon)
-            placeName = mainViewModel.getPlaceName()
-            placeTxt.text = if (placeName?.first == null) placeName?.second else "${placeName.first}, ${placeName.second}"
+            placeTxt.text = mainViewModel.getPlaceName()
             temperature.text = response.current?.temp
             weatherType.text = response.current?.desc
             humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)

@@ -60,23 +60,14 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         googleMap.setOnMapLongClickListener {
             googleMap.clear()
             handleNewLocation(it)
-            val positionName = handlePositionName()
+            val positionName = mainViewModel.getPlaceName()
 
             googleMap.addMarker(
                 MarkerOptions()
                     .position(it)
                     .title(positionName)
-            );
-
-
+            )
         }
-    }
-
-    private fun handlePositionName(): String? {
-        var placeName: Pair<String?, String?>? = null
-        placeName = mainViewModel.getPlaceName()
-        return if (placeName?.first == null) placeName?.second else "${placeName.first}, ${placeName.second}"
-
     }
 
     private fun initMarker(googleMap: GoogleMap) {
