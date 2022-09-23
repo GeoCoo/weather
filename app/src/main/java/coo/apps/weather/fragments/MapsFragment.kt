@@ -80,7 +80,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun createBox(gooleMap: GoogleMap) {
-        mainViewModel.observeBounds(requireActivity(), Observer { limits ->
+        mainViewModel.observeBounds(requireActivity()) { limits ->
             val bounds = limits.createBoundBox()
 
             val width = resources.displayMetrics.widthPixels
@@ -92,7 +92,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
                 this.animateCamera(cu)
             }
 
-        })
+        }
     }
 
     private fun handleTextWatcher() {

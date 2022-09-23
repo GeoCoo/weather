@@ -15,7 +15,7 @@ import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.LimitController
 import coo.apps.weather.network.controller.MainController
 import coo.apps.weather.utils.getPlaceNameFromLocation
-import coo.apps.weather.utils.handleBoundBox
+import coo.apps.weather.utils.isInBoundBox
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -75,7 +75,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPlaceName(): String? {
         var place: Address? = null
-        return if (currentLocation?.handleBoundBox(boundsMutable.value!!) == true) {
+        return if (currentLocation?.isInBoundBox(boundsMutable.value!!) == true) {
             place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
             if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
         } else

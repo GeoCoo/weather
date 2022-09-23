@@ -9,10 +9,6 @@ class LimitController : Service() {
 
     suspend fun makeLimitRequest(): Limits? {
         val request = LimitRequest()
-//            when (val response = doRequest<Limits>(request)) {
-//                is NetworkResponse.Success<*> -> response.result as Limits
-//                is NetworkResponse.Error -> null
-
         return when (val response = doRequest<Limits>(request)) {
             is NetworkResponse.Success<*> -> response.result as Limits
             is NetworkResponse.Error -> null

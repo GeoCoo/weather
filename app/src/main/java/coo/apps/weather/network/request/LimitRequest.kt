@@ -5,6 +5,6 @@ class LimitRequest : BaseRequest() {
         get() = Method.GET
         set(value) {}
 
-    override var path: String = "limits.php/latlon"
+    override var path: String = "limits.php"
 
 }
