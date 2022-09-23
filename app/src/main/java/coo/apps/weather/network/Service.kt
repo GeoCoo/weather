@@ -95,9 +95,9 @@ abstract class Service {
                 return@withContext NetworkResponse.Error(ServiceException.TimeOutException())
             }
             try {
-                val modelDesiriazed = Gson().fromJson(payload, T::class.java)
-                if (modelDesiriazed != null) {
-                    return@withContext NetworkResponse.Success(modelDesiriazed)
+                val modelDeserialized = Gson().fromJson(payload, T::class.java)
+                if (modelDeserialized != null) {
+                    return@withContext NetworkResponse.Success(modelDeserialized)
                 } else {
                     val exception = JsonDesiriazion("Deserialzed error at ${T::class.java.name}")
                     return@withContext NetworkResponse.Error(exception)

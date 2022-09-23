@@ -1,5 +1,6 @@
 package coo.apps.weather.base
 
+import android.content.Context
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +13,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 abstract class BaseFragment : Fragment(){
 
-    private var fragmentInitialized = false
-    var isInForeground = false
-
     protected val mainViewModel: MainViewModel by sharedViewModel()
     abstract fun getLayoutRes(): Int
     abstract fun initLayout(view: View)
@@ -24,22 +22,21 @@ abstract class BaseFragment : Fragment(){
         return inflater.inflate(getLayoutRes(), container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentInitialized = true
-        isInForeground = true
         initLayout(view)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        fragmentInitialized = false
     }
 
     override fun onPause() {
         super.onPause()
-        isInForeground = false
     }
 
 
