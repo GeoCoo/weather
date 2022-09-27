@@ -25,8 +25,8 @@ class ChartsFragment : BaseFragment() {
     override fun initLayout(view: View) {
 
 
-        chartsViewModel.observeWeatherResponse(viewLifecycleOwner) {
-            val list = it?.convertToList()
+        chartsViewModel.observeWeatherResponse(requireActivity()) {response->
+            val list = response?.convertToList()
             initRecycler(list)
         }
     }

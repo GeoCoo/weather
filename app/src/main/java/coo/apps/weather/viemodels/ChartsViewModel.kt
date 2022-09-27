@@ -2,14 +2,12 @@ package coo.apps.weather.viemodels
 
 import android.app.Application
 import android.location.Location
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import coo.apps.weather.models.weather.WeatherResponse
 import coo.apps.weather.network.controller.HighChartOceanController
 import coo.apps.weather.network.controller.HighChartWaveController
 import coo.apps.weather.network.controller.HighChartsWeatherController
+import kotlinx.coroutines.launch
 
 class ChartsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,12 +24,19 @@ class ChartsViewModel(application: Application) : AndroidViewModel(application) 
     suspend fun makeWaveRequest(location: Location?) = highChartWaveController.makeWaveRequest(location)
 
 
-     fun postWeatherResponse(weatherResponse: WeatherResponse?) {
+    private fun postWeatherResponse(weatherResponse: WeatherResponse?) {
         weatherMutable.postValue(weatherResponse)
     }
 
-     fun observeWeatherResponse(lifecycleOwner: LifecycleOwner, observer: Observer<WeatherResponse?>) {
+    fun observeWeatherResponse(lifecycleOwner: LifecycleOwner, observer: Observer<WeatherResponse?>) {
         weatherMutable.observe(lifecycleOwner, observer)
+    }
+
+    fun handleWeather(location: Location?) {
+        viewModelScope.launch {
+            val response = makeWeatherRequest(location)
+            postWeatherResponse(response)
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import coo.apps.weather.utils.isInBoundBox
 import coo.apps.weather.viemodels.ChartsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,14 +31,17 @@ class MainActivity : BaseActivity() {
         mainViewModel.handleNavigation(navController, navView)
 
 
-        mainViewModel.observeCoordinates(this@MainActivity) {
+        mainViewModel.observeCoordinates(this@MainActivity) { locatioon ->
             lifecycleScope.launch {
-                val response = mainViewModel.makeMainRequest(it)
-                mainViewModel.postMainResponse(response)
+                if (locatioon?.isInBoundBox(mainViewModel.boundsMutable.value!!) == true) {
+                    val response = mainViewModel.makeMainRequest(locatioon)
+                    mainViewModel.postMainResponse(response)
 
-                chartsViewModel.makeOceanRequest(it)
-                chartsViewModel.makeWaveRequest(it)
-                chartsViewModel.postWeatherResponse(chartsViewModel.makeWeatherRequest(it))
+                    chartsViewModel.makeOceanRequest(locatioon)
+                    chartsViewModel.makeWaveRequest(locatioon)
+                    chartsViewModel.handleWeather(locatioon)
+                }
+
             }
 
         }

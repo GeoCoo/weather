@@ -9,6 +9,8 @@ import coo.apps.weather.binders.abstraction.BaseItemViewBinder
 import coo.apps.weather.binders.abstraction.ItemBinder
 import coo.apps.weather.binders.abstraction.ItemClass
 import coo.apps.weather.models.Limits
+import coo.apps.weather.models.weather.AcppModel
+import coo.apps.weather.models.weather.RehlumModel
 import coo.apps.weather.models.weather.WeatherResponse
 
 fun Location.isInBoundBox(limits: Limits): Boolean {
@@ -48,6 +50,11 @@ fun getAdapterBinder(vararg binders: BaseItemViewBinder<out Any, *>): AdapterBin
 }
 
 
-fun WeatherResponse.convertToList(): List<WeatherResponse> {
-    return listOf(this)
+fun WeatherResponse.convertToList(): List<Any> {
+    val list = mutableListOf<Any>()
+    val rehlumModel = RehlumModel(this.relhum)
+    val acppModel = AcppModel(this.apcp)
+    list.add(rehlumModel)
+    list.add(acppModel)
+    return list
 }

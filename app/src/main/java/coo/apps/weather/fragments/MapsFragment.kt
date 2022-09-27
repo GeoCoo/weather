@@ -74,7 +74,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
             if (location != null) {
                 val lebanon = LatLng(location.latitude, location.longitude)
-                googleMap.addMarker(MarkerOptions().position(lebanon).title("Marker in lebanon").draggable(true))
+                googleMap.addMarker(MarkerOptions().position(lebanon).title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true))
             }
         }
     }
