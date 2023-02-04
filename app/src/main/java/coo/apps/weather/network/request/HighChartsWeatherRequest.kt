@@ -10,7 +10,8 @@ class HighChartsWeatherRequest(location: Location?) : BaseRequest() {
 
     override var path: String = "highcharts_weather_json.php"
 
-    override var queryParameter: Parameters? = listOf(Pair("latlon", "${location?.latitude},${location?.longitude}"))
+    override var queryParameter: Parameters? =
+        listOf(Pair("latlon", "${location?.latitude},${location?.longitude}"))
 
 
 }

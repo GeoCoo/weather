@@ -1,4 +1,4 @@
-package coo.apps.weather.utils
+package coo.apps.weather.adapters
 
 
 import android.view.LayoutInflater
@@ -8,15 +8,18 @@ import coo.apps.weather.R
 import coo.apps.weather.databinding.MainRecyclerItemBinding
 import coo.apps.weather.models.main.Overview
 import coo.apps.weather.models.main.getSmallIcons
+import coo.apps.weather.utils.convertDate
 
 
-class DailyRecyclerAdapter(private val list: List<Overview>) : RecyclerView.Adapter<DailyRecyclerAdapter.TodayViewHolder>() {
+class DailyRecyclerAdapter(private val list: List<Overview>) :
+    RecyclerView.Adapter<DailyRecyclerAdapter.TodayViewHolder>() {
 
 
     private lateinit var binding: MainRecyclerItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayViewHolder {
-        binding = MainRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding =
+            MainRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TodayViewHolder(binding)
     }
 
@@ -36,9 +39,14 @@ class DailyRecyclerAdapter(private val list: List<Overview>) : RecyclerView.Adap
 
         fun bind(item: Overview, position: Int) {
             binding.apply {
-                this.dateTime.text = if (position != 0) convertDate(item.date) else this@TodayViewHolder.itemView.context.getString(R.string.today)
-                this.highest.text = item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
-                this.lowest.text = item.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.dateTime.text =
+                    if (position != 0) convertDate(item.date) else this@TodayViewHolder.itemView.context.getString(
+                        R.string.today
+                    )
+                this.highest.text =
+                    item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.lowest.text =
+                    item.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
                 this.icon.setImageResource(getSmallIcons(item.icon))
                 this.windDirection.text = item.windspeed.toString() + item.winddirname
             }

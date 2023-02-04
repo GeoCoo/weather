@@ -19,8 +19,10 @@ abstract class BaseRequest {
     // Fields
     // ===========================================================
 
-    val defaultHeaders: Map<String, String> = mutableMapOf("Content-Type" to "application/json",
-        "charset" to "utf-8")
+    val defaultHeaders: Map<String, String> = mutableMapOf(
+        "Content-Type" to "application/json",
+        "charset" to "utf-8"
+    )
 
     val defaultUrlParams: Parameters? = null
 

@@ -39,7 +39,8 @@ class ConnectionManager {
         fun onConnectionLost()
     }
 
-    inner class ConnectivityReceiver internal constructor(private val mConnectivityListener: ConnectivityListener?) : BroadcastReceiver() {
+    inner class ConnectivityReceiver internal constructor(private val mConnectivityListener: ConnectivityListener?) :
+        BroadcastReceiver() {
 
         init {
             if (mConnectivityListener == null) throw NullPointerException()

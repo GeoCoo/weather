@@ -47,12 +47,18 @@ abstract class Service {
             var localResponse: ResponseResultOf<String>? = null
             localResponse = if (request.method == BaseRequest.Method.GET) {
                 when {
-                    request.queryParameter.isNullOrEmpty() -> Fuel.get(request.baseUrl + request.path, request.defaultUrlParams?.toList())
+                    request.queryParameter.isNullOrEmpty() -> Fuel.get(
+                        request.baseUrl + request.path,
+                        request.defaultUrlParams?.toList()
+                    )
                         .header(request.header ?: request.defaultHeaders)
                         .authentication().basic("aramco", "aramco-W!")
                         .timeoutRead(timeOutMilisTime)
                         .responseString()
-                    else -> Fuel.get(request.baseUrl + request.path, request.queryParameter!!.toList())
+                    else -> Fuel.get(
+                        request.baseUrl + request.path,
+                        request.queryParameter!!.toList()
+                    )
                         .authentication().basic("aramco", "aramco-W!")
                         .header(request.header ?: request.defaultHeaders)
                         .timeoutRead(timeOutMilisTime)

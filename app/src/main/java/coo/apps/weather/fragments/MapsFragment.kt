@@ -7,22 +7,23 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
 import coo.apps.weather.utils.createBoundBox
+import coo.apps.weather.utils.createRect
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapsBinding
-    var latLong: Location? = null
 
     override fun getLayoutRes(): Int = R.layout.fragment_maps
 
@@ -31,10 +32,11 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         handleTextWatcher()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,15 +60,15 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap) {
         googleMap.setOnMapLongClickListener {
-            googleMap.clear()
-            handleNewLocation(it)
-            val positionName = mainViewModel.getPlaceName()
+            if (mainViewModel.checkIfIsInBox(it)) {
+                handleNewLocation(it)
+                val positionName = mainViewModel.getPlaceName()
 
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(it)
-                    .title(positionName)
-            )
+                googleMap.addMarker(
+                    MarkerOptions().position(it).title(positionName)
+                )
+            } else
+                Toast.makeText(activity, "out of box", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -74,24 +76,27 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
             if (location != null) {
                 val lebanon = LatLng(location.latitude, location.longitude)
-                googleMap.addMarker(MarkerOptions().position(lebanon).title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true))
+                googleMap.addMarker(
+                    MarkerOptions().position(lebanon)
+                        .title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true)
+                )
             }
         }
     }
 
-    private fun createBox(gooleMap: GoogleMap) {
+    private fun createBox(googleMap: GoogleMap) {
         mainViewModel.observeBounds(requireActivity()) { limits ->
             val bounds = limits.createBoundBox()
-
             val width = resources.displayMetrics.widthPixels
             val height = resources.displayMetrics.heightPixels
-            val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
+            val padding = (width * 0.2).toInt() // offset from edges of the map 20% of screen
 
             val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
-            gooleMap.apply {
+            googleMap.apply {
                 this.animateCamera(cu)
             }
 
+            drawBounds(bounds, R.color.black, googleMap)
         }
     }
 
@@ -132,5 +137,10 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         mainViewModel.postCoordinates(location)
     }
 
+    private fun drawBounds(bounds: LatLngBounds, color: Int, googleMap: GoogleMap) {
+        val polygonOptions = bounds.createRect(color)
+        googleMap.addPolygon(polygonOptions)
+
+    }
 
 }

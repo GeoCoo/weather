@@ -3,12 +3,14 @@ package coo.apps.weather.viemodels
 import android.app.Application
 import android.location.Address
 import android.location.Location
+import android.location.LocationManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.model.LatLng
 import coo.apps.weather.R
 import coo.apps.weather.models.Limits
 import coo.apps.weather.models.main.MainResponse
@@ -22,34 +24,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
-    private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
+    var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
-    fun handleNavigation(navController: NavController, navView: BottomNavigationView) {
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when (destination.label.toString()) {
-                "Home" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_active)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_inactive)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_inactive)
-
-
-                }
-                "Maps" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_inactive)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_active)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_inactive)
-
-
-                }
-                "Charts" -> {
-                    navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.ic_home_inactive)
-                    navView.menu.findItem(R.id.navigation_charts).setIcon(R.drawable.ic_charts_active)
-                    navView.menu.findItem(R.id.navigation_maps).setIcon(R.drawable.ic_location_inactive)
-                }
+    fun handleNavigation(
+        navView: NavHostFragment?,
+        destination: Int,
+    ) {
+        when (destination) {
+            R.id.navigation_home -> {
+                navView?.findNavController()?.navigate(R.id.navigation_home)
+            }
+            R.id.navigation_maps -> {
+                navView?.findNavController()?.navigate(R.id.navigation_maps)
             }
         }
     }
@@ -63,7 +53,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         locationCoordinatesLiveData.postValue(location)
     }
 
-    suspend fun makeMainRequest(location: Location?): MainResponse? = mainController.makeMainRequest(location)
+    suspend fun makeMainRequest(location: Location?): MainResponse? =
+        mainController.makeMainRequest(location)
 
     fun postMainResponse(response: MainResponse?) {
         responseMutable.postValue(response)
@@ -75,13 +66,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPlaceName(): String? {
         var place: Address? = null
-        return if (currentLocation?.isInBoundBox(boundsMutable.value!!) == true) {
-            place = getPlaceNameFromLocation(getApplication(), currentLocation?.latitude, currentLocation?.longitude)
-            if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
-        } else
-            "The selection is outside of the supported area"
+        place = getPlaceNameFromLocation(
+            getApplication(),
+            currentLocation?.latitude,
+            currentLocation?.longitude
+        )
+        return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
     }
 
+    fun checkIfIsInBox(latLng: LatLng): Boolean {
+        val location = Location(LocationManager.GPS_PROVIDER)
+        location.latitude = latLng.latitude
+        location.longitude = latLng.longitude
+        return location.isInBoundBox(boundsMutable.value!!)
+    }
 
     suspend fun getLimits() {
         boundsMutable.postValue(limitController.makeLimitRequest())

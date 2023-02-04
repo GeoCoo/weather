@@ -13,7 +13,5 @@ class LimitController : Service() {
             is NetworkResponse.Success<*> -> response.result as Limits
             is NetworkResponse.Error -> null
         }
-
-
     }
 }

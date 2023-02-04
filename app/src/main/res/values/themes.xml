@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Weather" parent="Theme.MaterialComponents.Light.DarkActionBar">
 
@@ -30,4 +30,10 @@
         <item name="android:textCursorDrawable">@drawable/search_cursor</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.Weather</item>
+    </style>
+
 </resources>

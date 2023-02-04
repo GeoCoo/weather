@@ -1,24 +1,26 @@
 package coo.apps.weather.base
 
 import android.content.Context
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import coo.apps.weather.viemodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-abstract class BaseFragment : Fragment(){
+abstract class BaseFragment : Fragment() {
 
     protected val mainViewModel: MainViewModel by sharedViewModel()
     abstract fun getLayoutRes(): Int
     abstract fun initLayout(view: View)
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(getLayoutRes(), container, false)
     }
 
@@ -38,7 +40,6 @@ abstract class BaseFragment : Fragment(){
     override fun onPause() {
         super.onPause()
     }
-
 
 
 }

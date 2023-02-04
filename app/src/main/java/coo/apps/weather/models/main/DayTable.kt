@@ -1,7 +1,6 @@
 package coo.apps.weather.models.main
 
 import com.google.gson.annotations.SerializedName
-import coo.apps.weather.R
 
 data class DayTable(
     @SerializedName("time") var time: String? = null,

@@ -12,7 +12,6 @@ data class MainResponse(
 )
 
 
-
 fun getIcon(icon: String): Int {
     return when (icon) {
         Icon.clouds.type -> R.drawable.ic_heavy_clouds

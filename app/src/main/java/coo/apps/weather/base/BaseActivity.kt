@@ -11,7 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import coo.apps.weather.activities.SplashActivity
+import coo.apps.weather.activities.MainActivity
 import coo.apps.weather.viemodels.MainViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,12 +29,17 @@ open class BaseActivity : FragmentActivity(), LocationListener {
         lifecycleScope.launch {
             mainViewModel.getLimits()
         }
-        if (this !is SplashActivity) {
-            val locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (this is MainActivity) {
+            val locationPermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             if (locationPermission == PackageManager.PERMISSION_GRANTED) {
                 updateUserLocation()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    locationRequestCode
+                )
             }
         }
     }
@@ -44,7 +49,12 @@ open class BaseActivity : FragmentActivity(), LocationListener {
         mainViewModel.postCoordinates(location)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == locationPermissionCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 handleLocation()
@@ -57,12 +67,17 @@ open class BaseActivity : FragmentActivity(), LocationListener {
 
 
     private fun handleLocation() {
-        if (this !is SplashActivity) {
-            val locationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (this is MainActivity) {
+            val locationPermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             if (locationPermission == PackageManager.PERMISSION_GRANTED) {
                 updateUserLocation()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    locationRequestCode
+                )
             }
         }
     }
