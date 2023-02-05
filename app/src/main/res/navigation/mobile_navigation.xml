@@ -19,6 +19,8 @@
         android:id="@+id/navigation_maps"
         android:name="coo.apps.weather.fragments.MapsFragment"
         android:label="@string/title_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+
+    </fragment>
 
 </navigation>

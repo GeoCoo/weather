@@ -34,7 +34,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -51,10 +51,13 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        setMapSettings(googleMap)
-        createBox(googleMap)
-        addNewMarkerOnclick(googleMap)
-        initMarker(googleMap)
+        googleMap.apply {
+            setMapSettings(this)
+            createBox(this)
+            addNewMarkerOnclick(this)
+        }
+
+//        initMarker(googleMap)
 
     }
 
@@ -140,7 +143,6 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private fun drawBounds(bounds: LatLngBounds, color: Int, googleMap: GoogleMap) {
         val polygonOptions = bounds.createRect(color)
         googleMap.addPolygon(polygonOptions)
-
     }
 
 }

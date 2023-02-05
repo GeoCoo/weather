@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse?) {
         binding?.apply {
-            weatherImage.setImageResource(getBg(response?.current?.bgclass!!))
+            forecastView.background = resources.getDrawable(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
             wearherSymbol.setImageResource(weatherIcon)
             placeTxt.text = mainViewModel.getPlaceName()
