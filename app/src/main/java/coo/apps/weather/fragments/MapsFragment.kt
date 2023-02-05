@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -19,13 +19,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
+import coo.apps.weather.models.NavigationDest
 import coo.apps.weather.utils.createBoundBox
 import coo.apps.weather.utils.createRect
 
 
-class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
+class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapsBinding
     private lateinit var map: GoogleMap
+    private lateinit var bounds: LatLngBounds
 
     override fun getLayoutRes(): Int = R.layout.fragment_maps
 
@@ -56,18 +58,13 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
         googleMap.apply {
             map = this
             setMapSettings(map)
+            createBox(map)
+            drawBounds(bounds, R.color.black, map)
             addNewMarkerOnclick(map)
         }
 
-//        initMarker(googleMap)
 
     }
-
-    override fun onMapLoaded() {
-        createBox(map)
-
-    }
-
 
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap) {
@@ -75,12 +72,9 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
             if (mainViewModel.checkIfIsInBox(it)) {
                 handleNewLocation(it)
                 val positionName = mainViewModel.getPlaceName()
-
-                googleMap.addMarker(
-                    MarkerOptions().position(it).title(positionName)
-                )
-            } else
-                Toast.makeText(activity, "out of box", Toast.LENGTH_SHORT).show()
+                navigateToActions(navView)
+                googleMap.addMarker(MarkerOptions().position(it).title(positionName))
+            }
         }
     }
 
@@ -98,17 +92,17 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
 
     private fun createBox(googleMap: GoogleMap) {
         mainViewModel.observeBounds(requireActivity()) { limits ->
-            val bounds = limits.createBoundBox()
+            bounds = limits.createBoundBox()
             val width = resources.displayMetrics.widthPixels
             val height = resources.displayMetrics.heightPixels
-            val padding = (width * 0.2).toInt() // offset from edges of the map 20% of screen
+            val padding = (width * 0.3).toInt() // offset from edges of the map 30% of screen
 
             val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
             googleMap.apply {
                 this.animateCamera(cu)
             }
 
-            drawBounds(bounds, R.color.black, googleMap)
+
         }
     }
 
@@ -154,6 +148,14 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
         googleMap.addPolygon(polygonOptions)
     }
 
+
+    private fun navigateToActions(navHostFragment: NavHostFragment?){
+//            mainViewModel.handleNavigation(navHostFragment, NavigationDest.ACTIONS)
+//        activity?.supportFragmentManager?.let { ActionsFragment.newInstance().show(it, ActionsFragment.TAG) }
+        ActionsFragment().apply {
+            activity?.supportFragmentManager?.let { show(it, ActionsFragment.TAG) }
+        }
+    }
 
 
 }

@@ -21,6 +21,21 @@
         android:label="@string/title_maps"
         tools:layout="@layout/fragment_maps" >
 
+        <action
+            android:id="@+id/action_navigation_maps_to_navigation_actions"
+            app:destination="@id/navigation_actions" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_actions"
+        android:name="coo.apps.weather.fragments.ActionsFragment"
+        android:label="@string/title_locations"
+        tools:layout="@layout/fragment_actions" >
+
+
+        <action
+            android:id="@+id/action_navigation_actions_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
 </navigation>

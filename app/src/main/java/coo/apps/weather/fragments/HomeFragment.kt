@@ -12,6 +12,7 @@ import coo.apps.weather.adapters.DailyRecyclerAdapter
 import coo.apps.weather.adapters.TodayRecyclerAdapter
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentHomeBinding
+import coo.apps.weather.models.NavigationDest
 import coo.apps.weather.models.main.*
 
 
@@ -20,19 +21,16 @@ class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
-    private var navView: NavHostFragment? = null
 
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
-        navView =
-            activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         setErrorView()
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
             if (it != null) handleRequestView(it)
         }
-        clickOnLocation(navView)
+        navigateToMaps(navView)
     }
 
     private fun handleRequestView(response: MainResponse) {
@@ -117,9 +115,9 @@ class HomeFragment : BaseFragment() {
     }
 
 
-    private fun clickOnLocation(navHostFragment: NavHostFragment?) {
+    private fun navigateToMaps(navHostFragment: NavHostFragment?) {
         binding?.locationView?.setOnClickListener {
-            mainViewModel.handleNavigation(navHostFragment, R.id.navigation_maps)
+            mainViewModel.handleNavigation(navHostFragment, NavigationDest.MAPS)
         }
     }
 

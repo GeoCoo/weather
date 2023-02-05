@@ -41,7 +41,7 @@ class DailyRecyclerAdapter(private val list: List<Overview>) :
             binding.apply {
                 this.dateTime.text =
                     if (position != 0) convertDate(item.date) else this@TodayViewHolder.itemView.context.getString(
-                        R.string.today
+                        R.string.hourly
                     )
                 this.highest.text =
                     item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)

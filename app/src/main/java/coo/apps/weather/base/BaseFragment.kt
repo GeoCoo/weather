@@ -6,12 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import coo.apps.weather.R
 import coo.apps.weather.viemodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 abstract class BaseFragment : Fragment() {
 
     protected val mainViewModel: MainViewModel by sharedViewModel()
+    var navView: NavHostFragment? = null
+
     abstract fun getLayoutRes(): Int
     abstract fun initLayout(view: View)
 
@@ -26,6 +30,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navView = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         initLayout(view)
     }
 

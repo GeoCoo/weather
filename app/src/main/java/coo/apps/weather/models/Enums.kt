@@ -23,3 +23,7 @@ enum class Icon(var type: String) {
     snowy("snow"),
     sunny("sunny")
 }
+
+enum class NavigationDest{
+    HOME,MAPS,ACTIONS,SETTINGS,LOCATIONS
+}

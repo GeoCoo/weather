@@ -4,17 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import coo.apps.weather.R
-import coo.apps.weather.base.BaseFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import coo.apps.weather.databinding.FragmentActionsBinding
 
 
-class ActionsFragment : BaseFragment() {
+class ActionsFragment : BottomSheetDialogFragment() {
+
+    companion object {
+            val TAG = "ActionsFragment"
+    }
+
     private lateinit var binding: FragmentActionsBinding
 
-
-    override fun getLayoutRes() = R.layout.fragment_actions
-
+    //creating the Dialog Fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -22,8 +24,21 @@ class ActionsFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun initLayout(view: View) {
+    //tasks that need to be done after the creation of Dialog
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupClickListeners()
     }
 
+    private fun setupClickListeners() {
+
+
+        binding.save.setOnClickListener {
+            dismiss()
+        }
+        binding.view.setOnClickListener {
+            dismiss()
+        }
+    }
 }
 

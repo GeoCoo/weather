@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
 import coo.apps.weather.R
 import coo.apps.weather.models.Limits
+import coo.apps.weather.models.NavigationDest
 import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.LimitController
 import coo.apps.weather.network.controller.MainController
@@ -30,13 +31,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
-    fun handleNavigation(navView: NavHostFragment?, destination: Int) {
+    fun handleNavigation(navView: NavHostFragment?, destination: NavigationDest) {
         when (destination) {
-            R.id.navigation_home -> {
+             NavigationDest.HOME-> {
                 navView?.findNavController()?.navigate(R.id.navigation_home)
             }
-            R.id.navigation_maps -> {
+            NavigationDest.MAPS -> {
                 navView?.findNavController()?.navigate(R.id.navigation_maps)
+            }
+            NavigationDest.ACTIONS->{
+                navView?.findNavController()?.navigate(R.id.navigation_actions)
             }
         }
     }
