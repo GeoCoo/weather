@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -22,8 +23,9 @@ import coo.apps.weather.utils.createBoundBox
 import coo.apps.weather.utils.createRect
 
 
-class MapsFragment : BaseFragment(), OnMapReadyCallback {
+class MapsFragment : BaseFragment(), OnMapReadyCallback,OnMapLoadedCallback {
     private lateinit var binding: FragmentMapsBinding
+    private lateinit var map: GoogleMap
 
     override fun getLayoutRes(): Int = R.layout.fragment_maps
 
@@ -52,14 +54,21 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
-            setMapSettings(this)
-            createBox(this)
-            addNewMarkerOnclick(this)
+            map = this
+            setMapSettings(map)
+            addNewMarkerOnclick(map)
         }
 
 //        initMarker(googleMap)
 
     }
+
+    override fun onMapLoaded() {
+        createBox(map)
+
+    }
+
+
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap) {
         googleMap.setOnMapLongClickListener {
@@ -144,5 +153,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         val polygonOptions = bounds.createRect(color)
         googleMap.addPolygon(polygonOptions)
     }
+
+
 
 }

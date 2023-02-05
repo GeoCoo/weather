@@ -26,17 +26,20 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
-        navView = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        navView =
+            activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         setErrorView()
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            if (it != null)   handleRequestView(it)
+            if (it != null) handleRequestView(it)
         }
         clickOnLocation(navView)
     }
 
     private fun handleRequestView(response: MainResponse) {
-        binding?.mainView?.visibility = View.VISIBLE
-        binding?.errorView?.visibility = View.GONE
+        binding?.apply {
+            this.mainView.main.visibility = View.VISIBLE
+            this.errorView.error.visibility = View.GONE
+        }
         setUpCurrent(response)
         initDailyRecycler(response.overview)
     }
@@ -56,20 +59,23 @@ class HomeFragment : BaseFragment() {
         binding?.apply {
             forecastView.background = resources.getDrawable(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
-            wearherSymbol.setImageResource(weatherIcon)
-            placeTxt.text = mainViewModel.getPlaceName()
-            temperature.text = response.current?.temp
-            weatherType.text = response.current?.desc
-            humidity.text = resources.getString(R.string.humidity_tag, response.current?.relhum)
-            rain.text = resources.getString(R.string.rain_tag, response.current?.precip)
-            wind.text = resources.getString(
+            mainView.wearherSymbol.setImageResource(weatherIcon)
+            mainView.placeTxt.text = mainViewModel.getPlaceName()
+            mainView.temperature.text = response.current?.temp
+            mainView.weatherType.text = response.current?.desc
+            mainView.humidity.text =
+                resources.getString(R.string.humidity_tag, response.current?.relhum)
+            mainView.rain.text = resources.getString(R.string.rain_tag, response.current?.precip)
+            mainView.wind.text = resources.getString(
                 R.string.wind_tag,
                 response.current?.wind10.toString(),
                 response.current?.wind10dir.toString()
             )
-            dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
-            visibility.text = resources.getString(R.string.visibility_tag, response.current?.vis)
-            setRadioBtn(this.toggle, response)
+            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
+            mainView.visibility.text =
+                resources.getString(R.string.visibility_tag, response.current?.vis)
+            setRecycler()
+            setRadioBtn(this.mainView.toggle, response)
         }
 
 
@@ -91,19 +97,17 @@ class HomeFragment : BaseFragment() {
 
     private fun initTodayRecycler(list: ArrayList<DayTable>) {
         binding.apply {
+            this?.mainView?.recycler?.setHasFixedSize(true);
             todayAdapter = TodayRecyclerAdapter(list)
-            this?.recycler?.adapter = todayAdapter
-            this?.recycler?.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            this?.mainView?.recycler?.adapter = todayAdapter
         }
     }
 
     private fun initDailyRecycler(list: ArrayList<Overview>) {
         binding.apply {
+            this?.mainView?.recycler?.setHasFixedSize(true);
             dailyAdapter = DailyRecyclerAdapter(list)
-            this?.recycler?.adapter = dailyAdapter
-            this?.recycler?.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            this?.mainView?.recycler?.adapter = dailyAdapter
         }
     }
 
@@ -121,8 +125,21 @@ class HomeFragment : BaseFragment() {
 
 
     private fun setErrorView() {
-        binding?.errorView?.visibility = View.VISIBLE
-        binding?.forecastView?.background = resources.getDrawable(R.drawable.splash_bg)
+        binding.apply {
+            this?.errorView?.error?.visibility = View.VISIBLE
+            this?.forecastView?.background = resources.getDrawable(R.drawable.splash_bg)
+        }
+
     }
+
+    private fun setRecycler() {
+        binding.apply {
+            this?.mainView?.recycler?.setHasFixedSize(true);
+            this?.mainView?.recycler?.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+        }
+
+    }
+
 
 }

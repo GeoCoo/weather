@@ -30,10 +30,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
-    fun handleNavigation(
-        navView: NavHostFragment?,
-        destination: Int,
-    ) {
+    fun handleNavigation(navView: NavHostFragment?, destination: Int) {
         when (destination) {
             R.id.navigation_home -> {
                 navView?.findNavController()?.navigate(R.id.navigation_home)
