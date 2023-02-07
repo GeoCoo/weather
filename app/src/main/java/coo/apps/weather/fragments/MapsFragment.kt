@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -15,17 +16,17 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
+import coo.apps.weather.models.NavigationDest
 import coo.apps.weather.utils.createBoundBox
 import coo.apps.weather.utils.createRect
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapsBinding
-    private lateinit var map: GoogleMap
+    private var map: GoogleMap? = null
     private lateinit var bounds: LatLngBounds
     private var marker: Marker? = null
 
@@ -49,6 +50,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
     }
 
     override fun onDestroyView() {
@@ -63,18 +65,19 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             createBox(map)
             drawBounds(bounds, R.color.black, map)
             addNewMarkerOnclick(map)
+
         }
     }
 
 
-    private fun addNewMarkerOnclick(googleMap: GoogleMap) {
+    private fun addNewMarkerOnclick(googleMap: GoogleMap?) {
         marker?.remove()
-        googleMap.apply {
+        googleMap?.apply {
             setOnMapLongClickListener {
                 if (mainViewModel.checkIfIsInBox(it)) {
                     handleNewLocation(it)
                     val positionName = mainViewModel.getPlaceName()
-                    openActions(it, positionName)
+                    navigateToActions(navView)
                     marker = this.addMarker(MarkerOptions().position(it).title(positionName))
                 }
             }
@@ -82,19 +85,19 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
 
-    private fun initMarker(googleMap: GoogleMap) {
-        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
-            if (location != null) {
-                val lebanon = LatLng(location.latitude, location.longitude)
-                googleMap.addMarker(
-                    MarkerOptions().position(lebanon)
-                        .title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true)
-                )
-            }
-        }
-    }
+//    private fun initMarker(googleMap: GoogleMap) {
+//        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
+//            if (location != null) {
+//                val lebanon = LatLng(location.latitude, location.longitude)
+//                googleMap.addMarker(
+//                    MarkerOptions().position(lebanon)
+//                        .title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true)
+//                )
+//            }
+//        }
+//    }
 
-    private fun createBox(googleMap: GoogleMap) {
+    private fun createBox(googleMap: GoogleMap?) {
         mainViewModel.observeBounds(requireActivity()) { limits ->
             bounds = limits.createBoundBox()
             val width = resources.displayMetrics.widthPixels
@@ -103,7 +106,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
             val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
             googleMap.apply {
-                this.animateCamera(cu)
+                this?.animateCamera(cu)
             }
 
 
@@ -134,9 +137,12 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
 
-    private fun setMapSettings(googleMap: GoogleMap) {
-        googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.uiSettings.isScrollGesturesEnabled = true
+    private fun setMapSettings(googleMap: GoogleMap?) {
+        googleMap?.apply {
+            this.uiSettings.isZoomControlsEnabled = true
+            this.uiSettings.isScrollGesturesEnabled = true
+        }
+
     }
 
 
@@ -147,19 +153,14 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
         mainViewModel.postCoordinates(location)
     }
 
-    private fun drawBounds(bounds: LatLngBounds, color: Int, googleMap: GoogleMap) {
+    private fun drawBounds(bounds: LatLngBounds, color: Int, googleMap: GoogleMap?) {
         val polygonOptions = bounds.createRect(color)
-        googleMap.addPolygon(polygonOptions)
+        googleMap?.addPolygon(polygonOptions)
     }
 
 
-    private fun openActions(latLng: LatLng, positionName: String?) {
-        val dialog = activity?.let { BottomSheetDialog(it) }
-
-        val view = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
-        dialog?.setContentView(view)
-        dialog?.show()
+    private fun navigateToActions(navHostFragment: NavHostFragment?) {
+        mainViewModel.handleNavigation(navHostFragment, NavigationDest.ACTIONS)
     }
-
 
 }

@@ -21,7 +21,6 @@ open class BaseActivity : FragmentActivity(), LocationListener {
     private val locationPermissionCode = 2
     private val locationRequestCode = 0x123
 
-
     val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

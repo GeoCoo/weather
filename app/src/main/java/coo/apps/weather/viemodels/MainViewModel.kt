@@ -42,6 +42,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             NavigationDest.ACTIONS->{
                 navView?.findNavController()?.navigate(R.id.navigation_actions)
             }
+            NavigationDest.LOCATIONS->{
+                navView?.findNavController()?.navigate(R.id.navigation_locations)
+            }
+            NavigationDest.SETTINGS->{
+                navView?.findNavController()?.navigate(R.id.navigation_settings)
+            }
         }
     }
 

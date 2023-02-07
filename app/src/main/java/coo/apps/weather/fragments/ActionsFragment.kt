@@ -4,40 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import coo.apps.weather.databinding.FragmentActionsBinding
+import coo.apps.weather.R
+import coo.apps.weather.databinding.BottomsheetDialogBinding
+import coo.apps.weather.models.NavigationDest
+import coo.apps.weather.viemodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ActionsFragment : BottomSheetDialogFragment() {
 
-    companion object {
-            val TAG = "ActionsFragment"
-    }
+    private lateinit var binding: BottomsheetDialogBinding
+    private val mainViewModel: MainViewModel by viewModel()
+    var navView: NavHostFragment? = null
 
-    private lateinit var binding: FragmentActionsBinding
-
-    //creating the Dialog Fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentActionsBinding.inflate(inflater, container, false)
+        binding = BottomsheetDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     //tasks that need to be done after the creation of Dialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupClickListeners()
+        navView = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        setUpNavigation()
     }
 
-    private fun setupClickListeners() {
-
-
+    private fun setUpNavigation() {
         binding.save.setOnClickListener {
-            dismiss()
+            mainViewModel.handleNavigation(navView, NavigationDest.HOME)
         }
         binding.view.setOnClickListener {
-            dismiss()
+            mainViewModel.handleNavigation(navView, NavigationDest.HOME)
         }
     }
 }
