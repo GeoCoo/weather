@@ -35,7 +35,7 @@ class ActionsFragment : BottomSheetDialogFragment() {
 
     private fun setUpNavigation() {
         binding.save.setOnClickListener {
-            mainViewModel.handleNavigation(navView, NavigationDest.HOME)
+            mainViewModel.handleNavigation(navView, NavigationDest.LOCATIONS)
         }
         binding.view.setOnClickListener {
             mainViewModel.handleNavigation(navView, NavigationDest.HOME)
