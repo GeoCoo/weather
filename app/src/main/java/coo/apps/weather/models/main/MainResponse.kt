@@ -5,9 +5,9 @@ import coo.apps.weather.R
 import coo.apps.weather.models.Icon
 
 data class MainResponse(
-    @SerializedName("current") var current: Current? = Current(),
-    @SerializedName("overview") var overview: ArrayList<Overview> = arrayListOf(),
-    @SerializedName("day_table") var dayTable: ArrayList<DayTable> = arrayListOf()
+    @SerializedName("current") var current: Current,
+    @SerializedName("overview") var overview: List<Overview>,
+    @SerializedName("day_table") var dayTable: List<DayTable>
 
 )
 

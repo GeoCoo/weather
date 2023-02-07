@@ -13,13 +13,14 @@ fun Location.isInBoundBox(limits: Limits): Boolean {
 
 fun Limits.createBoundBox(): LatLngBounds {
     val builder = LatLngBounds.builder()
-    builder.include(LatLng(this.xmin, this.xmax))
-    builder.include(LatLng(this.ymin, this.ymax))
+    builder.include(LatLng(this.latmin, this.lonmin))
+    builder.include(LatLng(this.latmax, this.lonmax))
     return builder.build()
 }
 
 fun LatLngBounds.createRect(color: Int): PolygonOptions {
-    return PolygonOptions().add(LatLng(this.northeast.latitude, this.northeast.longitude))
+    return PolygonOptions()
+        .add(LatLng(this.northeast.latitude, this.northeast.longitude))
         .add(LatLng(this.southwest.latitude, this.northeast.longitude))
         .add(LatLng(this.southwest.latitude, this.southwest.longitude))
         .add(LatLng(this.northeast.latitude, this.southwest.longitude)).strokeColor(color)

@@ -69,9 +69,9 @@ class HomeFragment : BaseFragment() {
                 response.current?.wind10.toString(),
                 response.current?.wind10dir.toString()
             )
-            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
-            mainView.visibility.text =
-                resources.getString(R.string.visibility_tag, response.current?.vis)
+//            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
+//            mainView.visibility.text =
+//                resources.getString(R.string.visibility_tag, response.current?.vis)
             setRecycler()
             setRadioBtn(this.mainView.toggle, response)
         }
@@ -93,7 +93,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initTodayRecycler(list: ArrayList<DayTable>) {
+    private fun initTodayRecycler(list: List<DayTable>) {
         binding.apply {
             this?.mainView?.recycler?.setHasFixedSize(true);
             todayAdapter = TodayRecyclerAdapter(list)
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initDailyRecycler(list: ArrayList<Overview>) {
+    private fun initDailyRecycler(list: List<Overview>) {
         binding.apply {
             this?.mainView?.recycler?.setHasFixedSize(true);
             dailyAdapter = DailyRecyclerAdapter(list)

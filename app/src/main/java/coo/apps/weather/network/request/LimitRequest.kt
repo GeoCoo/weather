@@ -6,5 +6,4 @@ class LimitRequest : BaseRequest() {
         set(value) {}
 
     override var path: String = "limits.php"
-
 }

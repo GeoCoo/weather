@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "coo.apps.weather"
+        applicationId "com.coo.meteoray"
         minSdk 21
         targetSdk 33
         versionCode 1

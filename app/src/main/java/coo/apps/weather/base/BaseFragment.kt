@@ -19,7 +19,6 @@ abstract class BaseFragment : Fragment() {
     abstract fun getLayoutRes(): Int
     abstract fun initLayout(view: View)
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -2,7 +2,7 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">http://api.wassf.net</domain>
+        <domain includeSubdomains="true">http://api.meteoray.com/</domain>
     </domain-config>
     <debug-overrides>
         <trust-anchors>

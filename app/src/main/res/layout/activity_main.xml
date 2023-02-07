@@ -25,6 +25,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/fragment_actions" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

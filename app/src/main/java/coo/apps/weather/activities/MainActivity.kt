@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,32 +29,11 @@ class MainActivity : BaseActivity() {
 
         mainViewModel.observeCoordinates(this@MainActivity) { locatioon ->
             lifecycleScope.launch {
-                if (locatioon?.isInBoundBox(mainViewModel.boundsMutable.value!!) == true) {
+                if (mainViewModel.boundsMutable.value?.let { locatioon?.isInBoundBox(it) } == true) {
                     val response = mainViewModel.makeMainRequest(locatioon)
                     mainViewModel.postMainResponse(response)
                 }
             }
         }
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // handle onSlide
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(this@MainActivity, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(this@MainActivity, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(this@MainActivity, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(this@MainActivity, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(this@MainActivity, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-                    else -> Toast.makeText(this@MainActivity, "OTHER_STATE", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-
-
     }
 }
