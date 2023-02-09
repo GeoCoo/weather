@@ -71,10 +71,10 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap?) {
-        marker?.remove()
         googleMap?.apply {
             setOnMapLongClickListener {
                 if (mainViewModel.checkIfIsInBox(it)) {
+                    marker?.remove()
                     handleNewLocation(it)
                     val positionName = mainViewModel.getPlaceName()
                     navigateToActions(navView)
@@ -160,7 +160,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun navigateToActions(navHostFragment: NavHostFragment?) {
-        mainViewModel.handleNavigation(navHostFragment, NavigationDest.ACTIONS)
+        navigation.handleNavigation(navHostFragment, NavigationDest.ACTIONS)
     }
 
 }

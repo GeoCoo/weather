@@ -12,7 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import coo.apps.weather.activities.MainActivity
+import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
+import coo.apps.weather.viemodels.NavigationViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +24,8 @@ open class BaseActivity : FragmentActivity(), LocationListener {
     private val locationRequestCode = 0x123
 
     val mainViewModel: MainViewModel by viewModel()
+    val locationViewModel: LocationsViewModel by viewModel()
+    val navigation: NavigationViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

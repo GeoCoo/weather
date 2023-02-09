@@ -25,31 +25,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
-    var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
+    private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
-    fun handleNavigation(navView: NavHostFragment?, destination: NavigationDest) {
-        when (destination) {
-             NavigationDest.HOME-> {
-                navView?.findNavController()?.navigate(R.id.navigation_home)
-            }
-            NavigationDest.MAPS -> {
-                navView?.findNavController()?.navigate(R.id.navigation_maps)
-            }
-            NavigationDest.ACTIONS->{
-                navView?.findNavController()?.navigate(R.id.navigation_actions)
-            }
-            NavigationDest.LOCATIONS->{
-                navView?.findNavController()?.navigate(R.id.navigation_locations)
-            }
-            NavigationDest.SETTINGS->{
-                navView?.findNavController()?.navigate(R.id.navigation_settings)
-            }
-        }
-    }
+
 
     fun observeCoordinates(owner: LifecycleOwner, observer: Observer<Location?>) {
         locationCoordinatesLiveData.observe(owner, observer)

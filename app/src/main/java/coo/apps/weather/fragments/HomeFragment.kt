@@ -117,7 +117,7 @@ class HomeFragment : BaseFragment() {
 
     private fun navigateToMaps(navHostFragment: NavHostFragment?) {
         binding?.locationView?.setOnClickListener {
-            mainViewModel.handleNavigation(navHostFragment, NavigationDest.MAPS)
+            navigation.handleNavigation(navHostFragment, NavigationDest.MAPS)
         }
     }
 

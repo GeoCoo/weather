@@ -1,16 +1,13 @@
 package coo.apps.weather.activities
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import coo.apps.weather.R
+import androidx.room.Room
 import coo.apps.weather.base.BaseActivity
 import coo.apps.weather.databinding.ActivityMainBinding
+import coo.apps.weather.models.LocationsDb.AppDatabase
+import coo.apps.weather.models.LocationsDb.LocationDao
 import coo.apps.weather.utils.isInBoundBox
 import kotlinx.coroutines.launch
 
@@ -18,6 +15,7 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var locationDao: LocationDao? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -34,5 +32,23 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
+
+
+        setUpDao()
     }
+
+    private fun setUpDb() = Room.databaseBuilder(this, AppDatabase::class.java, "Locations").build()
+
+    private fun setUpDao(){
+      locationDao = setUpDb().locationDao()
+    }
+
+    fun getAllLocations(dao:LocationDao){
+        locationViewModel.observeLocations(this@MainActivity){
+
+        }
+    }
+
+
+
 }
