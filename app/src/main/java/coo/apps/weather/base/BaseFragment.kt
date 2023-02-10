@@ -8,17 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import coo.apps.weather.R
+import coo.apps.weather.models.locationsDb.LocationDao
 import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseFragment : Fragment() {
 
     protected val mainViewModel: MainViewModel by sharedViewModel()
     protected val locationViewModel: LocationsViewModel by sharedViewModel()
-    val navigation: NavigationViewModel by sharedViewModel()
+    protected val navigation: NavigationViewModel by sharedViewModel()
+    protected var locationDao: LocationDao? = null
 
     var navView: NavHostFragment? = null
 

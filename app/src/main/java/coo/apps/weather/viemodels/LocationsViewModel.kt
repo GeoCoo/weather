@@ -5,13 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import coo.apps.weather.models.LocationsDb.LocationRoom
+import coo.apps.weather.models.locationsDb.LocationRoom
 
 class LocationsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val locationsMutable :MutableLiveData<List<LocationRoom?>> = MutableLiveData()
 
-    private fun postLocations(locations:List<LocationRoom?>){
+    fun postLocations(locations:List<LocationRoom?>){
         locationsMutable.postValue(locations)
     }
 

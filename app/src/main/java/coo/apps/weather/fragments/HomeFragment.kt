@@ -18,7 +18,7 @@ import coo.apps.weather.models.main.*
 
 class HomeFragment : BaseFragment() {
 
-    private var binding: FragmentHomeBinding? = null
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
 
@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun handleRequestView(response: MainResponse) {
-        binding?.apply {
+        binding.apply {
             this.mainView.main.visibility = View.VISIBLE
             this.errorView.error.visibility = View.GONE
         }
@@ -49,12 +49,12 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding!!.root
+        return binding.root
     }
 
 
     private fun setUpCurrent(response: MainResponse?) {
-        binding?.apply {
+        binding.apply {
             forecastView.background = resources.getDrawable(getBg(response?.current?.bgclass!!))
             val weatherIcon = getIcon(response.current?.icon!!)
             mainView.wearherSymbol.setImageResource(weatherIcon)
@@ -66,12 +66,12 @@ class HomeFragment : BaseFragment() {
             mainView.rain.text = resources.getString(R.string.rain_tag, response.current?.precip)
             mainView.wind.text = resources.getString(
                 R.string.wind_tag,
-                response.current?.wind10.toString(),
-                response.current?.wind10dir.toString()
+                response.current.wind10.toString(),
+                response.current.wind10dir.toString()
             )
-//            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
-//            mainView.visibility.text =
-//                resources.getString(R.string.visibility_tag, response.current?.vis)
+    //            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
+    //            mainView.visibility.text =
+    //                resources.getString(R.string.visibility_tag, response.current?.vis)
             setRecycler()
             setRadioBtn(this.mainView.toggle, response)
         }
@@ -95,7 +95,6 @@ class HomeFragment : BaseFragment() {
 
     private fun initTodayRecycler(list: List<DayTable>) {
         binding.apply {
-            this?.mainView?.recycler?.setHasFixedSize(true);
             todayAdapter = TodayRecyclerAdapter(list)
             this?.mainView?.recycler?.adapter = todayAdapter
         }
@@ -103,20 +102,19 @@ class HomeFragment : BaseFragment() {
 
     private fun initDailyRecycler(list: List<Overview>) {
         binding.apply {
-            this?.mainView?.recycler?.setHasFixedSize(true);
             dailyAdapter = DailyRecyclerAdapter(list)
-            this?.mainView?.recycler?.adapter = dailyAdapter
+            this.mainView.recycler.adapter = dailyAdapter
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
+//        binding = null
     }
 
 
     private fun navigateToMaps(navHostFragment: NavHostFragment?) {
-        binding?.locationView?.setOnClickListener {
+        binding.locationView.setOnClickListener {
             navigation.handleNavigation(navHostFragment, NavigationDest.MAPS)
         }
     }
@@ -124,8 +122,8 @@ class HomeFragment : BaseFragment() {
 
     private fun setErrorView() {
         binding.apply {
-            this?.errorView?.error?.visibility = View.VISIBLE
-            this?.forecastView?.background = resources.getDrawable(R.drawable.splash_bg)
+            this.errorView.error.visibility = View.VISIBLE
+            this.forecastView.background = resources.getDrawable(R.drawable.splash_bg)
         }
 
     }

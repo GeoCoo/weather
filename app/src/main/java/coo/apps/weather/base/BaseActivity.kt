@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import coo.apps.weather.activities.MainActivity
+import coo.apps.weather.models.locationsDb.LocationDao
 import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
@@ -22,6 +23,8 @@ open class BaseActivity : FragmentActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
     private val locationRequestCode = 0x123
+    protected var locationDao: LocationDao? = null
+
 
     val mainViewModel: MainViewModel by viewModel()
     val locationViewModel: LocationsViewModel by viewModel()
