@@ -54,8 +54,6 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
-
-
     private fun setListeners(){
         binding.bottomSheetView.view.setOnClickListener(this)
         binding.bottomSheetView.save.setOnClickListener(this)
@@ -82,6 +80,4 @@ class MainActivity : BaseActivity(), OnClickListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
 }

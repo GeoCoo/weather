@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.weather.R
@@ -53,7 +55,6 @@ class LocationsFragment : BaseFragment() {
     }
 
 
-
     private fun getSingleLocation() {
         locationViewModel.observeSingleLocation(this) { location ->
             handleAddNewLocation(location)
@@ -91,14 +92,26 @@ class LocationsFragment : BaseFragment() {
     private fun handleAddNewLocation(location: Location) {
         binding.apply {
             addNew.setOnClickListener {
-                locationRepository.insertUser(
-                    LocationRoom(
-                        locationName = location.locationName,
-                        locationLon = location.locationLon,
-                        locationLat = location.locationLat,
-                        uid = 0
-                    )
-                )
+                val inputEditTextField = EditText(requireActivity())
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setTitle("Title")
+                    .setMessage("Message")
+                    .setView(inputEditTextField)
+                    .setPositiveButton("OK") { _, _ ->
+                        val editTextInput = inputEditTextField .text.toString()
+                        locationRepository.insertUser(
+                            LocationRoom(
+                                locationName = editTextInput,
+                                locationLon = location.locationLon,
+                                locationLat = location.locationLat,
+                                uid = 0
+                            )
+                        )
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .create()
+                dialog.show()
+
             }
         }
     }
