@@ -1,17 +1,21 @@
 package coo.apps.weather.fragments
 
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.weather.R
 import coo.apps.weather.adapters.LocationsAdapter
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentLocationsBinding
-import coo.apps.weather.databinding.FragmentMapsBinding
-import coo.apps.weather.models.locationsDb.LocationRoom
+import coo.apps.weather.locationsDb.Location
+import coo.apps.weather.locationsDb.LocationRoom
+import coo.apps.weather.models.NavigationDest
 
 
 class LocationsFragment : BaseFragment() {
@@ -19,11 +23,41 @@ class LocationsFragment : BaseFragment() {
     private lateinit var binding: FragmentLocationsBinding
     private lateinit var locationsAdapter: LocationsAdapter
 
-    override fun getLayoutRes() = R.layout.fragment_locations
+    override fun getLayoutRes() = coo.apps.weather.R.layout.fragment_locations
+
+    override fun onResume() {
+        super.onResume()
+        getAllLocations()
+    }
 
     override fun initLayout(view: View) {
-//        setRecycler()
-        getAllLocations()
+        setUpToolbar()
+        getSingleLocation()
+
+    }
+
+    private fun setUpToolbar() {
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar.apply {
+            this?.show()
+            this?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
+
+            this?.title = "Locations"
+            this?.setHomeButtonEnabled(true)
+            this?.setDisplayHomeAsUpEnabled(true)
+            val backArrow = resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+            backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
+            this?.setHomeAsUpIndicator(backArrow)
+        }
+
+    }
+
+
+
+    private fun getSingleLocation() {
+        locationViewModel.observeSingleLocation(this) { location ->
+            handleAddNewLocation(location)
+        }
     }
 
     override fun onCreateView(
@@ -36,31 +70,36 @@ class LocationsFragment : BaseFragment() {
     }
 
     private fun getAllLocations() {
-        locationViewModel.observeLocations(viewLifecycleOwner) { locations ->
-            setupRecyclerAdapter(locations)
-        }
+        val locations =
+            locationRepository.getAllLocations()
+        setupRecyclerAdapter(locations)
+
+
     }
 
     private fun setupRecyclerAdapter(list: List<LocationRoom?>) {
         binding.apply {
-            val layoutManager = LinearLayoutManager(activity)
-            this.recycler.layoutManager = layoutManager
             this.recycler.setHasFixedSize(true);
+            this.recycler.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
             locationsAdapter = LocationsAdapter(list)
             this.recycler.adapter = locationsAdapter
-
-//            locationsAdapter.onItemClick = {
-//                Toast.makeText(activity,it?.locationName.toString(),Toast.LENGTH_SHORT).show()
-//            }
 
         }
     }
 
-    private fun setRecycler() {
+    private fun handleAddNewLocation(location: Location) {
         binding.apply {
-            this?.recycler?.setHasFixedSize(true);
-            this?.recycler?.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+            addNew.setOnClickListener {
+                locationRepository.insertUser(
+                    LocationRoom(
+                        locationName = location.locationName,
+                        locationLon = location.locationLon,
+                        locationLat = location.locationLat,
+                        uid = 0
+                    )
+                )
+            }
         }
     }
 }

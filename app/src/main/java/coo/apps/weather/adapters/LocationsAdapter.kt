@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coo.apps.weather.databinding.LocationRecyclerItemBinding
-import coo.apps.weather.models.locationsDb.LocationRoom
+import coo.apps.weather.locationsDb.LocationRoom
 
 
 class LocationsAdapter(private val list: List<LocationRoom?>) :
@@ -35,7 +35,6 @@ class LocationsAdapter(private val list: List<LocationRoom?>) :
         fun bind(item: LocationRoom?) {
             binding.apply {
                 this.locationName.text = item?.locationName
-
             }
         }
     }

@@ -8,12 +8,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
-import coo.apps.weather.R
 import coo.apps.weather.models.Limits
-import coo.apps.weather.models.NavigationDest
 import coo.apps.weather.models.main.MainResponse
 import coo.apps.weather.network.controller.LimitController
 import coo.apps.weather.network.controller.MainController
@@ -26,11 +22,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
+    private var bottomSheetStateMutable: MutableLiveData<Int> = MutableLiveData()
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
 
+
+    fun observeBottomSheetState(owner: LifecycleOwner, observer: Observer<Int>) {
+        bottomSheetStateMutable.observe(owner, observer)
+    }
+
+    fun postBottomSheetState(state: Int) {
+        bottomSheetStateMutable.postValue(state)
+    }
 
 
     fun observeCoordinates(owner: LifecycleOwner, observer: Observer<Location?>) {
@@ -54,13 +59,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getPlaceName(): String? {
-        var place: Address? = null
-        place = getPlaceNameFromLocation(
+        val place: Address? = getPlaceNameFromLocation(
             getApplication(),
             currentLocation?.latitude,
             currentLocation?.longitude
         )
-        return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
+        return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}" ?:""
     }
 
     fun checkIfIsInBox(latLng: LatLng): Boolean {

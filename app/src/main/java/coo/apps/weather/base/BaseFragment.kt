@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import coo.apps.weather.R
-import coo.apps.weather.models.locationsDb.LocationDao
+import coo.apps.weather.locationsDb.AppDatabase
+import coo.apps.weather.locationsDb.LocationDao
+import coo.apps.weather.locationsDb.LocationsRepository
 import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 abstract class BaseFragment : Fragment() {
@@ -19,7 +23,8 @@ abstract class BaseFragment : Fragment() {
     protected val mainViewModel: MainViewModel by sharedViewModel()
     protected val locationViewModel: LocationsViewModel by sharedViewModel()
     protected val navigation: NavigationViewModel by sharedViewModel()
-    protected var locationDao: LocationDao? = null
+    protected val locationRepository: LocationsRepository by inject()
+
 
     var navView: NavHostFragment? = null
 
@@ -36,8 +41,8 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navView =
-            activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        navView = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
         initLayout(view)
     }
 
@@ -52,6 +57,9 @@ abstract class BaseFragment : Fragment() {
     override fun onPause() {
         super.onPause()
     }
+
+    fun getLocationsDao() = activity?.applicationContext?.let { AppDatabase.getInstance(it)?.locationDao() }
+
 
 
 }

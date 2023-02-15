@@ -38,6 +38,7 @@ class HomeFragment : BaseFragment() {
             this.mainView.main.visibility = View.VISIBLE
             this.errorView.error.visibility = View.GONE
         }
+        setRecycler()
         setUpCurrent(response)
         initDailyRecycler(response.overview)
     }
@@ -72,7 +73,6 @@ class HomeFragment : BaseFragment() {
     //            mainView.dust.text = resources.getString(R.string.dust_tag, response.current?.dust)
     //            mainView.visibility.text =
     //                resources.getString(R.string.visibility_tag, response.current?.vis)
-            setRecycler()
             setRadioBtn(this.mainView.toggle, response)
         }
 
@@ -96,7 +96,7 @@ class HomeFragment : BaseFragment() {
     private fun initTodayRecycler(list: List<DayTable>) {
         binding.apply {
             todayAdapter = TodayRecyclerAdapter(list)
-            this?.mainView?.recycler?.adapter = todayAdapter
+            this.mainView.recycler.adapter = todayAdapter
         }
     }
 
@@ -130,8 +130,8 @@ class HomeFragment : BaseFragment() {
 
     private fun setRecycler() {
         binding.apply {
-            this?.mainView?.recycler?.setHasFixedSize(true);
-            this?.mainView?.recycler?.layoutManager =
+            this.mainView.recycler.setHasFixedSize(true);
+            this.mainView.recycler.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
         }
 

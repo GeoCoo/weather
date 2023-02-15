@@ -16,10 +16,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
 import coo.apps.weather.models.NavigationDest
+import coo.apps.weather.locationsDb.LocationRoom
 import coo.apps.weather.utils.createBoundBox
 import coo.apps.weather.utils.createRect
 
@@ -77,9 +79,20 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
                     marker?.remove()
                     handleNewLocation(it)
                     val positionName = mainViewModel.getPlaceName()
-                    navigateToActions(navView)
+                    locationViewModel.postSingleLocation(
+                        coo.apps.weather.locationsDb.Location(
+                            locationName = positionName,
+                            locationLat = it.latitude,
+                            locationLon = it.longitude
+                        )
+                    )
+                    mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
                     marker = this.addMarker(MarkerOptions().position(it).title(positionName))
+                }else{
+                    mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
                 }
+
+
             }
         }
     }
@@ -145,7 +158,6 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     }
 
-
     private fun handleNewLocation(newLocation: LatLng) {
         val location = Location("")
         location.latitude = newLocation.latitude
@@ -156,11 +168,6 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private fun drawBounds(bounds: LatLngBounds, color: Int, googleMap: GoogleMap?) {
         val polygonOptions = bounds.createRect(color)
         googleMap?.addPolygon(polygonOptions)
-    }
-
-
-    private fun navigateToActions(navHostFragment: NavHostFragment?) {
-        navigation.handleNavigation(navHostFragment, NavigationDest.ACTIONS)
     }
 
 }

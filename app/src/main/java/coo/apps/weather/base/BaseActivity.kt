@@ -6,24 +6,29 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.View
+import android.view.View.OnClickListener
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import coo.apps.weather.R
 import coo.apps.weather.activities.MainActivity
-import coo.apps.weather.models.locationsDb.LocationDao
+import coo.apps.weather.locationsDb.AppDatabase
+import coo.apps.weather.locationsDb.LocationDao
 import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-open class BaseActivity : FragmentActivity(), LocationListener {
+open class BaseActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
     private val locationRequestCode = 0x123
-    protected var locationDao: LocationDao? = null
 
 
     val mainViewModel: MainViewModel by viewModel()
@@ -32,6 +37,7 @@ open class BaseActivity : FragmentActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.supportActionBar?.hide()
         lifecycleScope.launch {
             mainViewModel.getLimits()
         }
@@ -47,8 +53,11 @@ open class BaseActivity : FragmentActivity(), LocationListener {
                     locationRequestCode
                 )
             }
+
+
         }
     }
+
 
 
     override fun onLocationChanged(location: Location) {
@@ -93,6 +102,11 @@ open class BaseActivity : FragmentActivity(), LocationListener {
         val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         mainViewModel.postCoordinates(location)
     }
+
+
+
+
+
 
 
 }

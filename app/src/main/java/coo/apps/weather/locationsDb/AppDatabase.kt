@@ -1,4 +1,4 @@
-package coo.apps.weather.models.locationsDb
+package coo.apps.weather.locationsDb
 
 import android.content.Context
 import androidx.room.Database

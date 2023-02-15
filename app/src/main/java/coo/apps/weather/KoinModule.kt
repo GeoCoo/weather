@@ -1,5 +1,6 @@
 package coo.apps.weather
 
+import coo.apps.weather.locationsDb.LocationsRepository
 import coo.apps.weather.viemodels.LocationsViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
@@ -11,5 +12,6 @@ class KoinModule(application: MeteoRayApplication) {
         viewModel { MainViewModel(application) }
         viewModel { LocationsViewModel(application) }
         viewModel { NavigationViewModel(application) }
+        single { LocationsRepository(application) }
     }
 }
