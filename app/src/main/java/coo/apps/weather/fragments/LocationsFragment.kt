@@ -3,8 +3,8 @@ package coo.apps.weather.fragments
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -17,7 +17,6 @@ import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentLocationsBinding
 import coo.apps.weather.locationsDb.Location
 import coo.apps.weather.locationsDb.LocationRoom
-import coo.apps.weather.models.NavigationDest
 
 
 class LocationsFragment : BaseFragment() {
@@ -25,15 +24,11 @@ class LocationsFragment : BaseFragment() {
     private lateinit var binding: FragmentLocationsBinding
     private lateinit var locationsAdapter: LocationsAdapter
 
-    override fun getLayoutRes() = coo.apps.weather.R.layout.fragment_locations
-
-    override fun onResume() {
-        super.onResume()
-        getAllLocations()
-    }
+    override fun getLayoutRes() = R.layout.fragment_locations
 
     override fun initLayout(view: View) {
         setUpToolbar()
+        getAllLocations()
         getSingleLocation()
 
     }
@@ -47,7 +42,8 @@ class LocationsFragment : BaseFragment() {
             this?.title = "Locations"
             this?.setHomeButtonEnabled(true)
             this?.setDisplayHomeAsUpEnabled(true)
-            val backArrow = resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+            val backArrow =
+                resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
             backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
             this?.setHomeAsUpIndicator(backArrow)
         }
@@ -62,17 +58,14 @@ class LocationsFragment : BaseFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLocationsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     private fun getAllLocations() {
-        val locations =
-            locationRepository.getAllLocations()
+        val locations = locationRepository.getAllLocations()
         setupRecyclerAdapter(locations)
 
 
@@ -86,6 +79,7 @@ class LocationsFragment : BaseFragment() {
             locationsAdapter = LocationsAdapter(list)
             this.recycler.adapter = locationsAdapter
 
+
         }
     }
 
@@ -93,26 +87,24 @@ class LocationsFragment : BaseFragment() {
         binding.apply {
             addNew.setOnClickListener {
                 val inputEditTextField = EditText(requireActivity())
-                val dialog = AlertDialog.Builder(requireContext())
-                    .setTitle("Title")
-                    .setMessage("Message")
-                    .setView(inputEditTextField)
-                    .setPositiveButton("OK") { _, _ ->
-                        val editTextInput = inputEditTextField .text.toString()
-                        locationRepository.insertUser(
-                            LocationRoom(
-                                locationName = editTextInput,
-                                locationLon = location.locationLon,
-                                locationLat = location.locationLat,
-                                uid = 0
+                val dialog =
+                    AlertDialog.Builder(requireContext()).setTitle("Title").setMessage("Message")
+                        .setView(inputEditTextField).setPositiveButton("OK") { _, _ ->
+                            val editTextInput = inputEditTextField.text.toString()
+                            locationRepository.insertUser(
+                                LocationRoom(
+                                    locationName = editTextInput,
+                                    locationLon = location.locationLon,
+                                    locationLat = location.locationLat,
+                                    uid = 0
+                                )
                             )
-                        )
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .create()
+                        }.setNegativeButton("Cancel", null).create()
                 dialog.show()
 
             }
         }
     }
+
+
 }

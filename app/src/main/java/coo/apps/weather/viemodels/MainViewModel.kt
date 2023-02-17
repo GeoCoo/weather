@@ -17,7 +17,7 @@ import coo.apps.weather.utils.getPlaceNameFromLocation
 import coo.apps.weather.utils.isInBoundBox
 
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(private var application: Application) : AndroidViewModel(application) {
 
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()

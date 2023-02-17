@@ -34,7 +34,6 @@ class LocationsAdapter(private val list: List<LocationRoom?>) :
 
         fun bind(item: LocationRoom?) {
             binding.apply {
-                this.locationName.text = item?.locationName
             }
         }
     }

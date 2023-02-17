@@ -50,6 +50,7 @@ android {
             classpath "com.google.gms:google-services:4.3.15"
             classpath 'com.android.tools.build:gradle:4.1.1'
             classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+
         }
     }
 }
@@ -63,7 +64,7 @@ dependencies {
     def room_version = "2.5.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
@@ -109,5 +110,6 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+
 
 }
