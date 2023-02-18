@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coo.apps.weather.databinding.LocationRecyclerItemBinding
-import coo.apps.weather.locationsDb.LocationRoom
+import coo.apps.weather.locationsDb.LocationEntity
+import coo.apps.weather.models.DbAction
 
 
-class LocationsAdapter(private val list: List<LocationRoom?>) :
+class LocationsAdapter(private val list: List<LocationEntity?>, val dbAction: (Pair<DbAction,LocationEntity>) -> Unit) :
     RecyclerView.Adapter<LocationsAdapter.LocationsViewHolder>() {
 
     private lateinit var binding: LocationRecyclerItemBinding
@@ -20,7 +21,7 @@ class LocationsAdapter(private val list: List<LocationRoom?>) :
 
     override fun onBindViewHolder(holder: LocationsViewHolder, position: Int) {
         val location = list[position]
-        holder.bind(location)
+        location?.let { holder.bind(it) }
     }
 
     override fun getItemViewType(position: Int) = position
@@ -32,8 +33,16 @@ class LocationsAdapter(private val list: List<LocationRoom?>) :
     inner class LocationsViewHolder(private var binding: LocationRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: LocationRoom?) {
+        fun bind(item: LocationEntity) {
             binding.apply {
+                this.locationName.text = item.locationName
+
+                this.editBtn.setOnClickListener {
+                    dbAction.invoke(Pair(DbAction.EDIT,item))
+                }
+                this.deleteBtn.setOnClickListener {
+                    dbAction.invoke(Pair(DbAction.DELETE,item))
+                }
             }
         }
     }

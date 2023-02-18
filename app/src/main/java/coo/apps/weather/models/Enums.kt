@@ -27,3 +27,7 @@ enum class Icon(var type: String) {
 enum class NavigationDest{
     HOME,MAPS,ACTIONS,SETTINGS,LOCATIONS
 }
+
+enum class DbAction{
+    EDIT,DELETE,SAVE
+}

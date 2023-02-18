@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,8 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
-import coo.apps.weather.models.NavigationDest
-import coo.apps.weather.locationsDb.LocationRoom
+import coo.apps.weather.locationsDb.LocationEntity
 import coo.apps.weather.utils.createBoundBox
 import coo.apps.weather.utils.createRect
 
@@ -79,16 +77,17 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
                     marker?.remove()
                     handleNewLocation(it)
                     val positionName = mainViewModel.getPlaceName()
-                    locationViewModel.postSingleLocation(
-                        coo.apps.weather.locationsDb.Location(
+                    dataBaseViewModel.postSingleLocation(
+                        LocationEntity(
                             locationName = positionName,
                             locationLat = it.latitude,
-                            locationLon = it.longitude
+                            locationLon = it.longitude,
+                            uid = 0
                         )
                     )
                     mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
                     marker = this.addMarker(MarkerOptions().position(it).title(positionName))
-                }else{
+                } else {
                     mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
                 }
 

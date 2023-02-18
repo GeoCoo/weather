@@ -1,7 +1,6 @@
 package coo.apps.weather.locationsDb
 
 import android.app.Application
-import android.content.Context
 import android.os.AsyncTask
 
 class LocationsRepository(application: Application) {
@@ -9,32 +8,39 @@ class LocationsRepository(application: Application) {
 
     private var db: LocationDao = AppDatabase.getInstance(application)?.locationDao()!!
 
-
-    //Fetch All the Users
-    fun getAllLocations(): List<LocationRoom?> {
+    fun getAllLocations(): List<LocationEntity?> {
         return db.getAll()
     }
 
-    // Insert new user
-    fun insertUser(location: LocationRoom) {
-        insertAsyncTask(db).execute(location)
+    fun getSingleLocation(id:Int):LocationEntity{
+        return db.getSingleLocation(id)
     }
 
-    // update user
-    fun updateUser(location: LocationRoom) {
-        db.updateLocation(location)
+    fun insertNewLocation(location: LocationEntity?) {
+        InsertAsyncTask(db).execute(location)
     }
 
-    // Delete user
-    fun deleteUser(location: LocationRoom) {
+    fun updateLocation(location: LocationEntity?) {
+        UpdateAsyncTask(db).execute(location)
+    }
+
+    fun deleteLocation(location: LocationEntity) {
         db.deleteLocation(location)
     }
 
-    private class insertAsyncTask internal constructor(private val locationDao: LocationDao) :
-        AsyncTask<LocationRoom, Void, Void>() {
+    private class UpdateAsyncTask(private val locationDao: LocationDao) :
+        AsyncTask<LocationEntity, Void, Void>() {
 
+        override fun doInBackground(vararg params: LocationEntity): Void? {
+            locationDao.updateLocation(params[0])
+            return null
+        }
+    }
 
-        override fun doInBackground(vararg params: LocationRoom): Void? {
+    private class InsertAsyncTask(private val locationDao: LocationDao) :
+        AsyncTask<LocationEntity, Void, Void>() {
+
+        override fun doInBackground(vararg params: LocationEntity): Void? {
             locationDao.insertNewLocation(params[0])
             return null
         }

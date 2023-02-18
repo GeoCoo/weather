@@ -4,21 +4,18 @@ import androidx.room.*
 
 @Dao
 interface LocationDao {
-    @Query("Select * From LocationRoom")
-    fun getAll(): List<LocationRoom?>
-//            = listOf(
-//        LocationRoom(1, "Serres", 41.05, 23.32),
-//        LocationRoom(2, "Thess", 40.62, 22.94),
-//        LocationRoom(1, "Serres", 41.05, 23.32),
-//        LocationRoom(2, "Thess", 40.62, 22.94)
-//    )
+    @Query("Select * From LocationEntity")
+    fun getAll(): List<LocationEntity?>
+
+    @Query("SELECT * FROM LocationEntity where location_id = :id")
+    fun getSingleLocation(id: Int): LocationEntity
 
     @Insert
-    fun insertNewLocation(location: LocationRoom)
+    fun insertNewLocation(location: LocationEntity)
 
-    @Update
-    fun updateLocation(locationRoom: LocationRoom)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateLocation(locationEntity: LocationEntity)
 
     @Delete
-    fun deleteLocation(location: LocationRoom)
+    fun deleteLocation(location: LocationEntity)
 }

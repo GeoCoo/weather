@@ -10,9 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import coo.apps.weather.R
 import coo.apps.weather.locationsDb.AppDatabase
-import coo.apps.weather.locationsDb.LocationDao
 import coo.apps.weather.locationsDb.LocationsRepository
-import coo.apps.weather.viemodels.LocationsViewModel
+import coo.apps.weather.viemodels.DatabaseViewModel
 import coo.apps.weather.viemodels.MainViewModel
 import coo.apps.weather.viemodels.NavigationViewModel
 import org.koin.android.ext.android.inject
@@ -21,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 abstract class BaseFragment : Fragment() {
 
     protected val mainViewModel: MainViewModel by sharedViewModel()
-    protected val locationViewModel: LocationsViewModel by sharedViewModel()
+    protected val dataBaseViewModel: DatabaseViewModel by sharedViewModel()
     protected val navigation: NavigationViewModel by sharedViewModel()
     protected val locationRepository: LocationsRepository by inject()
 

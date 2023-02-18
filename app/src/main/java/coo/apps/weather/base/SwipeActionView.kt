@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.FrameLayout
 import androidx.annotation.IntDef
 import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.core.view.ViewCompat
 import coo.apps.weather.R
 import kotlin.math.abs
@@ -330,7 +331,7 @@ class SwipeActionsView @JvmOverloads constructor(
 
         var revealMode = REVEAL_NONE
 
-        constructor(@NonNull c: Context, attrs: AttributeSet) : super(c, attrs) {
+        constructor(@NonNull c: Context, attrs: AttributeSet?) : super(c, attrs) {
             val a = c.obtainStyledAttributes(attrs, R.styleable.SwipeActionsView_Layout)
             revealMode =
                 a.getInt(R.styleable.SwipeActionsView_Layout_swReveal, Companion.REVEAL_NONE)
@@ -408,8 +409,7 @@ class SwipeActionsView @JvmOverloads constructor(
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
         val translation = animation.animatedValue as Float
-        applyTranslationInner(translation)
-    }
+        applyTranslationInner(translation)    }
 
     override fun onAnimationStart(animation: Animator) = Unit
 
