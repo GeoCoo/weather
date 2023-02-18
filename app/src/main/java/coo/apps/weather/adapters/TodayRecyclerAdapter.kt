@@ -43,6 +43,7 @@ class TodayRecyclerAdapter(private val list: List<DayTable>) :
                     item.temp + this@DailyViewHolder.itemView.context.getString(R.string.celcius_symbol)
                 this.icon.setImageResource(getSmallIcons(item.icon))
                 this.windDirection.text = item.wind + item.dirname
+                this.windIndicator.rotation = item.dir?.toFloat()!!
             }
         }
     }
