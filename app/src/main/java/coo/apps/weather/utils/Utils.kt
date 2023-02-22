@@ -3,6 +3,8 @@ package coo.apps.weather.utils
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import java.text.SimpleDateFormat
 
 fun getPlaceNameFromLocation(context: Context, lat: Double?, long: Double?): Address? {
@@ -17,3 +19,10 @@ fun convertDate(date: String?): String {
     return SimpleDateFormat("EEE d").format(finalDate!!)
 }
 
+
+fun createLocation(lat: Double, lon: Double): Location {
+    val location = Location(LocationManager.GPS_PROVIDER)
+    location.latitude = lat
+    location.longitude = lon
+    return location
+}

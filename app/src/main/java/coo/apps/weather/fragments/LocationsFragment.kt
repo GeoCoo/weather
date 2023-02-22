@@ -14,6 +14,7 @@ import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentLocationsBinding
 import coo.apps.weather.locationsDb.LocationEntity
 import coo.apps.weather.models.DbAction
+import coo.apps.weather.models.NavigationDest
 
 
 class LocationsFragment : BaseFragment() {
@@ -77,10 +78,11 @@ class LocationsFragment : BaseFragment() {
 
     private fun addNewLocation() {
         binding.addNew.setOnClickListener {
-            dataBaseViewModel.observeSingleLocation(viewLifecycleOwner) {
-                dataBaseViewModel.postDbAction(Pair(DbAction.SAVE, it))
-            }
+//            dataBaseViewModel.observeSingleLocation(viewLifecycleOwner) {
+//                dataBaseViewModel.postDbAction(Pair(DbAction.SAVE, it))
+//            }
 
+            navigation.handleNavigation(navView, NavigationDest.MAPS)
         }
     }
 }

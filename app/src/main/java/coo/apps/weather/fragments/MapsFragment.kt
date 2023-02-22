@@ -1,6 +1,5 @@
 package coo.apps.weather.fragments
 
-import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +20,7 @@ import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentMapsBinding
 import coo.apps.weather.locationsDb.LocationEntity
 import coo.apps.weather.utils.createBoundBox
+import coo.apps.weather.utils.createLocation
 import coo.apps.weather.utils.createRect
 
 
@@ -158,9 +158,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun handleNewLocation(newLocation: LatLng) {
-        val location = Location("")
-        location.latitude = newLocation.latitude
-        location.longitude = newLocation.longitude
+        val location = createLocation(newLocation.latitude, newLocation.longitude)
         mainViewModel.postCoordinates(location)
     }
 

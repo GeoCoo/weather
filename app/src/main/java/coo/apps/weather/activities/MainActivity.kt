@@ -17,7 +17,6 @@ import coo.apps.weather.databinding.ActivityMainBinding
 import coo.apps.weather.locationsDb.LocationEntity
 import coo.apps.weather.models.DbAction
 import coo.apps.weather.models.NavigationDest
-import coo.apps.weather.utils.isInBoundBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,6 +26,7 @@ class MainActivity : BaseActivity(), OnClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var navView: NavHostFragment
+    private lateinit var singleLocation: LocationEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -39,14 +39,15 @@ class MainActivity : BaseActivity(), OnClickListener {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         bottomSheetBehavior =
             BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
-        setLocations()
+        setStoredLocations()
         handleCoordinates()
         handleBottomSheet()
         setListeners()
         handleDbActions()
+        getLocationToBeStored()
     }
 
-    private fun setLocations() {
+    private fun setStoredLocations() {
         lifecycleScope.launch() {
             delay(500)
             databaseViewModel.postLocations(locationRepository.getAllLocations())
@@ -58,7 +59,7 @@ class MainActivity : BaseActivity(), OnClickListener {
 
     private fun deleteLocation(locationEntity: LocationEntity) {
         locationRepository.deleteLocation(location = locationEntity)
-        setLocations()
+        setStoredLocations()
     }
 
     private fun handleDbActions() {
@@ -83,10 +84,10 @@ class MainActivity : BaseActivity(), OnClickListener {
     private fun handleCoordinates() {
         mainViewModel.observeCoordinates(this@MainActivity) { locatioon ->
             lifecycleScope.launch {
-                if (mainViewModel.boundsMutable.value?.let { locatioon?.isInBoundBox(it) } == true) {
-                    val response = mainViewModel.makeMainRequest(locatioon)
-                    mainViewModel.postMainResponse(response)
-                }
+//                if (mainViewModel.boundsMutable.value?.let { locatioon?.isInBoundBox(it) } == true) {
+                val response = mainViewModel.makeMainRequest(locatioon)
+                mainViewModel.postMainResponse(response)
+//                }
             }
         }
     }
@@ -109,7 +110,9 @@ class MainActivity : BaseActivity(), OnClickListener {
                 navigation.handleNavigation(navView, NavigationDest.HOME)
             }
             binding.bottomSheetView.save -> {
-                navigation.handleNavigation(navView, NavigationDest.LOCATIONS)
+                databaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
+
+//                navigation.handleNavigation(navView, NavigationDest.LOCATIONS)
             }
         }
     }
@@ -117,7 +120,7 @@ class MainActivity : BaseActivity(), OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                navigation.handleNavigation(navView, NavigationDest.MAPS)
+                navigation.handleNavigation(navView, NavigationDest.HOME)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -133,7 +136,7 @@ class MainActivity : BaseActivity(), OnClickListener {
                     val input = inputEditTextField.text.toString()
                     val location = handleLocation(action, locationEntity, input)
                     databaseViewModel.handleLocationActions(action, locationRepository, location)
-                    setLocations()
+                    setStoredLocations()
                 }.setNegativeButton("Cancel", null).create()
         dialog.show()
     }
@@ -166,5 +169,10 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
+    private fun getLocationToBeStored() {
+        databaseViewModel.observeSingleLocation(this) {
+            singleLocation = it
+        }
+    }
 
 }

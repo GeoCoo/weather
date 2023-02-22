@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import coo.apps.weather.R
 import coo.apps.weather.adapters.DailyRecyclerAdapter
+import coo.apps.weather.adapters.LocationsAdapter
 import coo.apps.weather.adapters.TodayRecyclerAdapter
+import coo.apps.weather.adapters.ViewPagerAdapter
 import coo.apps.weather.base.BaseFragment
 import coo.apps.weather.databinding.FragmentHomeBinding
 import coo.apps.weather.models.NavigationDest
@@ -21,6 +24,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
@@ -31,6 +35,9 @@ class HomeFragment : BaseFragment() {
             if (it != null) handleRequestView(it)
         }
         navigateToMaps(navView)
+        navigateToSettings(navView)
+
+
     }
 
     private fun handleRequestView(response: MainResponse) {
@@ -119,13 +126,18 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun navigateToSettings(navHostFragment: NavHostFragment?){
+        binding.settingsView.setOnClickListener{
+            navigation.handleNavigation(navHostFragment,NavigationDest.SETTINGS)
+        }
+    }
+
 
     private fun setErrorView() {
         binding.apply {
             this.errorView.error.visibility = View.VISIBLE
             this.forecastView.background = resources.getDrawable(R.drawable.splash_bg)
         }
-
     }
 
     private fun setRecycler() {
