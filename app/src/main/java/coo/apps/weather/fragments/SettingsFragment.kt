@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import coo.apps.weather.R
 import coo.apps.weather.base.BaseFragment
@@ -24,6 +25,48 @@ class SettingsFragment : BaseFragment(), OnClickListener {
     override fun initLayout(view: View) {
         setUpToolbar()
         setListeners()
+        handleFahreneitChoice()
+        handleWindChoice()
+        handleLanguage()
+
+    }
+
+    private fun handleLanguage() {
+        binding.toggleLanguage.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.en -> {
+                    Toast.makeText(requireContext(), "checked", Toast.LENGTH_SHORT).show()
+
+                }
+                R.id.el -> {
+                    Toast.makeText(requireContext(), "unchecked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "unchecked", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
+    }
+
+    private fun handleWindChoice() {
+        binding.bofoSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), "checked", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "unchecked", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+    }
+
+    private fun handleFahreneitChoice() {
+        binding.fahreneitSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), "checked", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "unchecked", Toast.LENGTH_SHORT).show()
+
+            }
+        }
     }
 
 
@@ -62,10 +105,8 @@ class SettingsFragment : BaseFragment(), OnClickListener {
         when (view) {
             binding.locationsCl -> {
                 navigation.handleNavigation(navView, NavigationDest.LOCATIONS)
-
             }
         }
-
     }
 
 

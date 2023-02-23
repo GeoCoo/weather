@@ -88,7 +88,7 @@
             tools:text="@string/title_locations" />
 
         <RadioGroup
-            android:id="@+id/toggle"
+            android:id="@+id/toggleLanguage"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:background="@drawable/toggle_out_line"
@@ -100,7 +100,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
-                android:id="@+id/today"
+                android:id="@+id/en"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -113,7 +113,7 @@
                 android:textSize="15sp" />
 
             <RadioButton
-                android:id="@+id/daily"
+                android:id="@+id/el"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
