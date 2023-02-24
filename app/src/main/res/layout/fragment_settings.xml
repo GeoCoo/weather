@@ -9,6 +9,8 @@
     android:layout_marginEnd="24dp"
     tools:context=".fragments.SettingsFragment">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fahreneitCl"
         android:layout_width="match_parent"
@@ -70,72 +72,12 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/languageCl"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/boforCl">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="Choose Language"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/title_locations" />
-
-        <RadioGroup
-            android:id="@+id/toggleLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:background="@drawable/toggle_out_line"
-            android:checkedButton="@+id/daily"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RadioButton
-                android:id="@+id/en"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_widget_background"
-                android:button="@null"
-                android:fontFamily="@font/spf_pro_medium"
-                android:gravity="center"
-                android:text="EN"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <RadioButton
-                android:id="@+id/el"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_widget_background"
-                android:button="@null"
-                android:fontFamily="@font/spf_pro_medium"
-                android:gravity="center"
-                android:text="EL"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-        </RadioGroup>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/privacyPolicyCl"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/languageCl">
+        app:layout_constraintTop_toBottomOf="@id/boforCl">
 
         <TextView
             android:layout_width="wrap_content"

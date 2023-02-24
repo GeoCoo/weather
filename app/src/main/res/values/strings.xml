@@ -8,14 +8,23 @@
     <string name="title_locations">Locations</string>
     <string name="title_settings">Settings</string>
     <string name="celcius_symbol">"\u2103"</string>
+    <string name="fahreneit_symbol">"\u2109"</string>
     <string name="humidity_tag">Humidity: %1$s</string>
     <string name="rain_tag">Rain: %1$s</string>
     <string name="wind_tag">Wind: %1$s %2$s</string>
     <string name="dust_tag">Dust: %1$s</string>
+    <string name="hail_tag">Hail: %1$s</string>
     <string name="visibility_tag">Visibility: %1$s</string>
+    <string name="sunset_tag">Sunset: %1$s</string>
+    <string name="sunrise_tage">Sunrise: %1$s</string>
+
     <string name="daily">Daily</string>
     <string name="hourly">Hourly</string>
     <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
     <string name="add_new_location">Add new location</string>
+
+
+    <string name="fahreneit_choice">EnableFahreneit</string>
+    <string name="bofohrt_choice">EnableBofohrt</string>
 
 </resources>

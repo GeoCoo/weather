@@ -9,6 +9,9 @@
     android:layout_marginTop="?android:actionBarSize"
     tools:context=".fragments.LocationsFragment">
 
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"

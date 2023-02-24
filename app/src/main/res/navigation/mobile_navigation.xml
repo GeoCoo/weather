@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="coo.apps.weather.fragments.HomeFragment"
+        android:name="coo.apps.meteoray.fragments.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_maps"
-        android:name="coo.apps.weather.fragments.MapsFragment"
+        android:name="coo.apps.meteoray.fragments.MapsFragment"
         android:label="@string/title_maps"
         tools:layout="@layout/fragment_maps" >
 
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/navigation_locations"
-        android:name="coo.apps.weather.fragments.LocationsFragment"
+        android:name="coo.apps.meteoray.fragments.LocationsFragment"
         android:label="@string/title_locations"
         tools:layout="@layout/fragment_locations" >
 
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="coo.apps.weather.fragments.SettingsFragment"
+        android:name="coo.apps.meteoray.fragments.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -50,7 +50,7 @@
 
     <dialog
         android:id="@+id/navigation_actions"
-        android:name="coo.apps.weather.fragments.ActionsFragment"
+        android:name="coo.apps.meteoray.fragments.ActionsFragment"
         tools:layout="@layout/bottomsheet_dialog" >
         <action
             android:id="@+id/action_navigation_actions_to_navigation_locations"
