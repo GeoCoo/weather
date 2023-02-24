@@ -23,10 +23,6 @@
         android:name="coo.apps.meteoray.fragments.MapsFragment"
         android:label="@string/title_maps"
         tools:layout="@layout/fragment_maps" >
-
-        <action
-            android:id="@+id/action_navigation_maps_to_navigation_actions"
-            app:destination="@id/navigation_actions" />
     </fragment>
 
     <fragment
@@ -35,6 +31,20 @@
         android:label="@string/title_locations"
         tools:layout="@layout/fragment_locations" >
 
+        <action
+            android:id="@+id/action_navigation_locations_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_info"
+        android:name="coo.apps.meteoray.fragments.InfoFragment"
+        android:label="@string/title_info"
+        tools:layout="@layout/fragment_info" >
+
+        <action
+            android:id="@+id/action_navigation_info_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
     </fragment>
 
     <fragment
@@ -45,19 +55,15 @@
         <action
             android:id="@+id/action_navigation_settings_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_info"
+            app:destination="@id/navigation_info" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_locations"
+            app:destination="@id/navigation_locations" />
     </fragment>
 
 
-    <dialog
-        android:id="@+id/navigation_actions"
-        android:name="coo.apps.meteoray.fragments.ActionsFragment"
-        tools:layout="@layout/bottomsheet_dialog" >
-        <action
-            android:id="@+id/action_navigation_actions_to_navigation_locations"
-            app:destination="@id/navigation_locations" />
-        <action
-            android:id="@+id/action_navigation_actions_to_navigation_home"
-            app:destination="@id/navigation_home" />
-    </dialog>
+
 
 </navigation>

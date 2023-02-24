@@ -86,9 +86,7 @@ abstract class BaseFragment : Fragment() {
 
             }
             else -> false
-
         }
-
     }
 
 

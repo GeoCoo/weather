@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentSettingsBinding
@@ -27,6 +28,14 @@ class SettingsFragment : BaseFragment(), OnClickListener {
         setListeners()
         handleFahreneitChoice()
         handleWindChoice()
+        setInfo()
+    }
+
+    private fun setInfo() {
+        binding.versionInfo.text =
+            resources.getString(R.string.version_setting, BuildConfig.VERSION_CODE.toString())
+        binding.releaseInfo.text =
+            resources.getString(R.string.release_date_setting, BuildConfig.RELEASE_DATE)
     }
 
 
@@ -58,8 +67,7 @@ class SettingsFragment : BaseFragment(), OnClickListener {
         actionBar.apply {
             this?.show()
             this?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
-
-            this?.title = "Settings"
+            this?.title = resources.getString(R.string.title_settings)
             this?.setHomeButtonEnabled(true)
             this?.setDisplayHomeAsUpEnabled(true)
             backArrow =
@@ -71,14 +79,28 @@ class SettingsFragment : BaseFragment(), OnClickListener {
 
     private fun setListeners() {
         binding.locationsCl.setOnClickListener(this)
-        binding.privacyPolicyCl.setOnClickListener(this)
+        binding.descriptionCl.setOnClickListener(this)
+        binding.projectFundingCl.setOnClickListener(this)
         binding.disclaimerCL.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view) {
             binding.locationsCl -> {
-                navigation.handleNavigation(navView, NavigationDest.LOCATIONS)
+                navigation.handleNavigation(NavigationDest.LOCATIONS)
+            }
+            binding.descriptionCl -> {
+                navigation.handleNavigation(NavigationDest.INFO)
+                navigation.postDestinationNav(R.string.description_setting)
+            }
+            binding.projectFundingCl -> {
+                navigation.handleNavigation(NavigationDest.INFO)
+                navigation.postDestinationNav(R.string.project_funding_setting)
+            }
+            binding.disclaimerCL -> {
+                navigation.handleNavigation(NavigationDest.INFO)
+                navigation.postDestinationNav(R.string.disclaimer_setting)
+
             }
         }
     }

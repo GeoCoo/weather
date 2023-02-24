@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -47,6 +46,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         setListeners()
         handleDbActions()
         getLocationToBeStored()
+        observerNavigation()
     }
 
     private fun setStoredLocations() {
@@ -87,7 +87,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         mainViewModel.observeCoordinates(this@MainActivity) { locatioon ->
             lifecycleScope.launch {
 //                if (mainViewModel.boundsMutable.value?.let { locatioon?.isInBoundBox(it) } == true) {
-                val response = mainViewModel.makeMainRequest(locatioon,phoneLanguage)
+                val response = mainViewModel.makeMainRequest(locatioon, phoneLanguage)
                 mainViewModel.postMainResponse(response)
 //                }
             }
@@ -109,7 +109,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         when (view) {
             binding.bottomSheetView.view -> {
-                navigation.handleNavigation(navView, NavigationDest.HOME)
+                navigation.handleNavigation(NavigationDest.HOME)
             }
             binding.bottomSheetView.save -> {
                 databaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
@@ -133,13 +133,17 @@ class MainActivity : BaseActivity(), OnClickListener {
         val inputEditTextField = EditText(this)
         inputEditTextField.setText(locationEntity.locationName.toString())
         val dialog =
-            AlertDialog.Builder(this).setTitle("Title").setMessage("Message")
-                .setView(inputEditTextField).setPositiveButton("OK") { _, _ ->
+            AlertDialog.Builder(this).setTitle(resources.getString(R.string.location_alert_title))
+                .setMessage(resources.getString(R.string.location_alert_desc))
+                .setView(inputEditTextField)
+                .setPositiveButton(resources.getString(R.string.location_ok_action)) { _, _ ->
                     val input = inputEditTextField.text.toString()
                     val location = handleLocation(action, locationEntity, input)
                     databaseViewModel.handleLocationActions(action, locationRepository, location)
                     setStoredLocations()
-                }.setNegativeButton("Cancel", null).create()
+                }
+                .setNegativeButton(resources.getString(R.string.location_alert_cancel_action), null)
+                .create()
         dialog.show()
     }
 
@@ -177,4 +181,26 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
+
+    private fun observerNavigation() {
+        navigation.observeNavigation(this) { destination ->
+            when (destination) {
+                NavigationDest.HOME -> {
+                    navView.findNavController().navigate(R.id.navigation_home)
+                }
+                NavigationDest.MAPS -> {
+                    navView.findNavController().navigate(R.id.navigation_maps)
+                }
+                NavigationDest.LOCATIONS -> {
+                    navView.findNavController().navigate(R.id.navigation_locations)
+                }
+                NavigationDest.SETTINGS -> {
+                    navView.findNavController().navigate(R.id.navigation_settings)
+                }
+                NavigationDest.INFO -> {
+                    navView.findNavController().navigate(R.id.navigation_info)
+                }
+            }
+        }
+    }
 }

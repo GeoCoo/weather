@@ -1,30 +1,76 @@
 <resources>
-    <string name="app_name">Meteoray</string>
+    <string name="app_name" translatable="false">Meteoray</string>
 
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_maps">Maps</string>
-    <string name="title_actions">Actions</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_maps" translatable="false">Maps</string>
     <string name="title_locations">Locations</string>
+    <string name="title_info" translatable="false">Info</string>
     <string name="title_settings">Settings</string>
-    <string name="celcius_symbol">"\u2103"</string>
-    <string name="fahreneit_symbol">"\u2109"</string>
+    <string name="celcius_symbol" translatable="false">"\u2103"</string>
+    <string name="fahreneit_symbol" translatable="false">"\u2109"</string>
     <string name="humidity_tag">Humidity: %1$s</string>
     <string name="rain_tag">Rain: %1$s</string>
     <string name="wind_tag">Wind: %1$s %2$s</string>
-    <string name="dust_tag">Dust: %1$s</string>
     <string name="hail_tag">Hail: %1$s</string>
-    <string name="visibility_tag">Visibility: %1$s</string>
     <string name="sunset_tag">Sunset: %1$s</string>
     <string name="sunrise_tage">Sunrise: %1$s</string>
+    <string name="search_location">Search Location</string>
 
     <string name="daily">Daily</string>
     <string name="hourly">Hourly</string>
     <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
     <string name="add_new_location">Add new location</string>
 
+    <string name="view_btn">View</string>
+    <string name="save_btn">Save</string>
 
-    <string name="fahreneit_choice">EnableFahreneit</string>
-    <string name="bofohrt_choice">EnableBofohrt</string>
+    <string name="location_alert_title">Location Name</string>
+    <string name="location_alert_desc">Enter the name for how the location should be saved</string>
+    <string name="location_ok_action">OK</string>
+    <string name="location_alert_cancel_action">Cancel</string>
+
+
+    <!--settings-->
+    <string name="fahreneit_enable">Temperature in Fahrenheit</string>
+    <string name="beaufort_enable">Wind in Beaufort</string>
+    <string name="locations_store">Saved Locations</string>
+    <string name="description_setting">Description</string>
+    <string name="project_funding_setting">Project funding</string>
+    <string name="disclaimer_setting">Disclaimer</string>
+    <string name="version_setting">Version: %1$s</string>
+    <string name="release_date_setting">Release Date: %1$s </string>
+    <!--Shared Pref-->
+    <string name="fahreneit_choice" translatable="false">EnableFahreneit</string>
+    <string name="bofohrt_choice" translatable="false">EnableBofohrt</string>
+
+
+    <string name="disclaimer_info">
+The user assumes the entire risk related to its use of this data.
+*The company is providing this data &quot;as is&quot;, and disclaims any and all warranties, whether
+express or implied, including (without limitation) any implied warranties of merchantability
+or fitness for a particular purpose.
+*In no event will the company be liable to you or to any third party for any direct, indirect,
+incidental, consequential, special or exemplary damages or lost profit resulting from any
+use or misuse of this data.</string>
+
+    <string name="project_funding_info">
+This application was developed by Raymetrics S.A., within the framework of the Operational
+Program of the Region of Central Macedonia 2014-2020 &quot;RESEARCH INNOVATION PROJECTS&quot; with
+the project title &quot; Development of a forecasting system and geographical indicators for the
+agriculture.&quot;, PSKE CODE: KMP6- 0078047.
+    </string>
+
+    <string name="description_info">
+ Meteoray is an integrated agricultural information system based on operational weather
+forecasting with high spatial resolution (1km x1km), specifically adapted to the needs of the
+producer and to the climatic and topographical characteristics of the region, with an emphasis on
+conditions of frost and increased humidity. The system aims to aid the producers with specialized
+indicators, in making day-to-day decisions that are fundamentally affected by weather conditions
+such as crop growth/irrigation, fertilization, pest and disease control, and fieldwork capability.
+The application enables immediate information on the weather forecast and geographical
+indicators in locations of the user  &quot; s choice as well as the issuance of relevant warnings for the
+protection and optimization of production.
+    </string>
 
 </resources>

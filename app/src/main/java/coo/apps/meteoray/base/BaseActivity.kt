@@ -36,7 +36,7 @@ open class BaseActivity : AppCompatActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.supportActionBar?.show()
+        this.supportActionBar?.hide()
         phoneLanguage = getLanguage()
         lifecycleScope.launch {
             mainViewModel.getLimits()

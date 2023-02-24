@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_settings">Ρυθμίσεις</string>
+    <string name="title_locations">Αποθηκευμένεσ Τοποθεσίες</string>
+    <string name="humidity_tag">Σχ. Υγρασία: %1$s</string>
+    <string name="rain_tag">Υετός: %1$s</string>
+    <string name="wind_tag">Άνεμος: %1$s %2$s</string>
+    <string name="hail_tag">Χαλάζι: %1$s</string>
+    <string name="sunset_tag">Ανατολή: %1$s</string>
+    <string name="sunrise_tage">Δύση: %1$s</string>
+    <string name="search_location">Ααναζήτηση τοποθεσίας</string>
+
+    <string name="daily">Ημερήσια</string>
+    <string name="hourly">Ωριαία</string>
+    <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
+    <string name="add_new_location">Προσθήκη νέας τοποθεσίας</string>
+
+    <string name="view_btn">Προβολή</string>
+    <string name="save_btn">Αποθήκευση</string>
+
+    <string name="location_alert_title">Όνομα τοποθεσίας</string>
+    <string name="location_alert_desc">Εισάγεται το όνομα που θέλετε να αποθηκευτει η τοποθεσία</string>
+    <string name="location_ok_action">OK</string>
+    <string name="location_alert_cancel_action">Ακύρωση</string>
+
+    <!--settings-->
+    <string name="fahreneit_enable">Θερμοκρασία σε Fahrenheit</string>
+    <string name="beaufort_enable">Άνεμοσ σε Beaufort</string>
+    <string name="locations_store">Αποθηκευμένες Τοποθεσίες</string>
+    <string name="description_setting">Περιγραφή</string>
+    <string name="project_funding_setting">Χρηματοδότηση Έργου</string>
+    <string name="disclaimer_setting">Αποποίηση Ευθυνών</string>
+    <string name="version_setting">Εκδοση: %1$s</string>
+    <string name="release_date_setting">Η/Μ έκδοσης: %1$s </string>
+
+    <string name="disclaimer_info">
+Ο χρήστης αναλαμβάνει ολόκληρο τον κίνδυνο που σχετίζεται με τη χρήση αυτών των
+δεδομένων.
+*Η εταιρεία παρέχει αυτά τα δεδομένα &quot;ως έχουν&quot; και αποποιείται οποιεσδήποτε
+εγγυήσεις, ρητές ή σιωπηρές, συμπεριλαμβανομένων (χωρίς περιορισμό) τυχόν
+σιωπηρών εγγυήσεων εμπορευσιμότητας ή καταλληλόλητας για συγκεκριμένο σκοπό.
+*Σε καμία περίπτωση η εταιρεία δεν θα ευθύνεται απέναντί σας ή έναντι οποιουδήποτε
+τρίτου για οποιαδήποτε άμεση, έμμεση, τυχαία, αποθετική, ειδική ή κυρωτική ζημία ή
+διαφυγόν κέρδος που προκύπτει από οποιαδήποτε χρήση ή κατάχρηση αυτών των
+δεδομένων.</string>
+
+    <string name="project_funding_info">
+        Η εφαρμογή αυτή αναπτύχθηκε από την Raymetrics Α.Ε., στα πλαίσια του Επιχειρησιακού
+Προγράμματος της Περιφέρειας Κεντρικής Μακεδονίας 2014-2020 «ΕΡΕΥΝΗΤΙΚΑ ΣΧΕΔΙΑ
+ΚΑΙΝΟΤΟΜΙΑΣ» με τίτλο έργου “Ανάπτυξη ολοκληρωμένου συστήματος πρόγνωσης καιρού και
+εξειδικευμένων δεικτών για τη γεωργία”, ΚΩΔΙΚΟΣ ΠΣΚΕ: ΚΜΡ6-0078047.
+    </string>
+
+
+    <string name="description_info">
+        Το Meteoray είναι ένα ολοκληρωμένο σύστημα ενημέρωσης των αγροτών βασιζόμενο σε
+επιχειρησιακή πρόγνωση καιρού υψηλής χωρικής ανάλυσης (1km x 1km), ειδικά προσαρμοσμένη
+στις ανάγκες του παραγωγού και στα ιδιαίτερα κλιματικά και τοπογραφικά χαρακτηριστικά της
+περιοχής, με έμφαση τις συνθήκες παγετού και αυξημένης υγρασίας. Το σύστημα στοχεύει να
+παρέχει βοήθεια με εξειδικευμένους δείκτες, στην λήψη καθημερινών αποφάσεων που
+επηρεάζονται ριζικά από τις καιρικές συνθήκες όπως η ανάπτυξη καλλιεργειών/άρδευση, η
+λίπανση, ο έλεγχος παρασίτων και ασθενειών και η δυνατότητα επιτόπιας εργασίας.
+Η εφαρμογή δίνει την δυνατότητα άμεσης ενημέρωσης για την πρόγνωση καιρού και τους
+γεωργικούς δείκτες σε τοποθεσίες της επιλογής του χρήστη το καθώς την έκδοση σχετικών
+προειδοποιήσεων για την προστασία και βελτιστοποίηση της παραγωγής.
+    </string>
+
+</resources>

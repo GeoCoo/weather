@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.meteoray.R
 import coo.apps.meteoray.adapters.DailyRecyclerAdapter
 import coo.apps.meteoray.adapters.TodayRecyclerAdapter
-import coo.apps.meteoray.adapters.ViewPagerAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentHomeBinding
 import coo.apps.meteoray.models.NavigationDest
@@ -24,8 +22,6 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
-
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
@@ -34,10 +30,8 @@ class HomeFragment : BaseFragment() {
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
             if (it != null) handleRequestView(it)
         }
-        navigateToMaps(navView)
-        navigateToSettings(navView)
-
-
+        navigateToMaps()
+        navigateToSettings()
     }
 
     private fun handleRequestView(response: MainResponse) {
@@ -66,7 +60,7 @@ class HomeFragment : BaseFragment() {
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
             mainView.placeTxt.text = mainViewModel.getPlaceName()
 
-            if (getSharedPref("fahreneit") == true) {
+            if (getSharedPref("fahreneit")) {
                 mainView.temperature.text = response.current.tempfrt
                 mainView.temperatureType.text = resources.getString(R.string.fahreneit_symbol)
             } else {
@@ -78,7 +72,7 @@ class HomeFragment : BaseFragment() {
             mainView.humidity.text =
                 resources.getString(R.string.humidity_tag, response.current.relhum)
             mainView.rain.text = resources.getString(R.string.rain_tag, response.current.precip)
-            if (getSharedPref("bofor") == true) {
+            if (getSharedPref("bofor")) {
                 mainView.wind.text = resources.getString(
                     R.string.wind_tag,
                     response.current.wind10bft.toString(),
@@ -98,8 +92,6 @@ class HomeFragment : BaseFragment() {
             )
             setRadioBtn(this.mainView.toggle, response)
         }
-
-
     }
 
     private fun setRadioBtn(toggle: RadioGroup, response: MainResponse) {
@@ -108,9 +100,8 @@ class HomeFragment : BaseFragment() {
                 R.id.daily -> {
                     initDailyRecycler(response.overview)
                 }
-                R.id.today -> {
+                R.id.hourly -> {
                     initTodayRecycler(response.dayTable)
-
                 }
             }
         }
@@ -136,18 +127,18 @@ class HomeFragment : BaseFragment() {
     }
 
 
-    private fun navigateToMaps(navHostFragment: NavHostFragment?) {
+    private fun navigateToMaps() {
         binding.locationView.setOnClickListener {
-            navigation.handleNavigation(navHostFragment, NavigationDest.MAPS)
+            navigation.handleNavigation(NavigationDest.MAPS)
         }
     }
 
-    private fun navigateToSettings(navHostFragment: NavHostFragment?) {
+    private fun navigateToSettings() {
         binding.settingsView.setOnClickListener {
-            navigation.handleNavigation(navHostFragment, NavigationDest.SETTINGS)
+            navigation.handleNavigation(NavigationDest.SETTINGS)
+            navigation.postDestinationNav(R.string.title_settings)
         }
     }
-
 
     private fun setErrorView() {
         binding.apply {
@@ -162,8 +153,5 @@ class HomeFragment : BaseFragment() {
             this.mainView.recycler.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
         }
-
     }
-
-
 }
