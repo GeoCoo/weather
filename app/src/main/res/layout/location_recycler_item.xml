@@ -15,8 +15,8 @@
         <ImageView
             android:id="@+id/editBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorGreyAlpha"
+            android:layout_height="match_parent"
+            android:background="@color/deep_purple"
             android:src="@android:drawable/ic_menu_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/deleteBtn"
@@ -25,8 +25,8 @@
         <ImageView
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorGreyAlpha"
+            android:layout_height="match_parent"
+            android:background="@color/color_danger"
             android:src="@android:drawable/ic_menu_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
     android:layout_marginTop="?android:actionBarSize"
+    android:layout_marginEnd="10dp"
     tools:context=".fragments.LocationsFragment">
-
-
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +23,7 @@
         android:id="@+id/addNew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recycler">
@@ -36,19 +35,11 @@
             android:gravity="center_vertical"
             android:text="@string/add_new_location"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/arrow"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/add_new"
-            android:tint="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/locationName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/locationName" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,4 +7,6 @@
     <color name="colorGreyAlpha">#55FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="cursor_blue">#1c7ece</color>
+    <color name="color_danger">#FF0000</color>
+    <color name="deep_purple">#7A5BEF</color>
 </resources>
