@@ -12,6 +12,9 @@
     <string name="sunrise_tage">Δύση: %1$s</string>
     <string name="search_location">Ααναζήτηση τοποθεσίας</string>
 
+    <string name="location_out_of_box">Η τοποθεσίασ που επιλέξατε είναι εκτός τησ περιοχής που υποστηρίζεται.Παρακαλουμε επιλεξτε άλλη.</string>
+
+
     <string name="daily">Ημερήσια</string>
     <string name="hourly">Ωριαία</string>
     <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>

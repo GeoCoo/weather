@@ -40,7 +40,7 @@ class DailyRecyclerAdapter(private val list: List<Overview>) :
         fun bind(item: Overview, position: Int) {
             binding.apply {
                 this.dateTime.text =
-                    if (position != 0) convertDate(item.date) else this@TodayViewHolder.itemView.context.getString(
+                    if (position != 0) item.date?.convertDate() else this@TodayViewHolder.itemView.context.getString(
                         R.string.hourly
                     )
                 this.highest.text =

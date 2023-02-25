@@ -28,6 +28,10 @@ enum class NavigationDest{
     HOME,MAPS,SETTINGS,LOCATIONS,INFO
 }
 
+enum class Notification{
+    FAIL,SUCCESS
+}
+
 enum class DbAction{
     EDIT,DELETE,SAVE
 }

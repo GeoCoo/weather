@@ -1,10 +1,13 @@
 package coo.apps.meteoray.activities
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -15,9 +18,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
+import coo.apps.meteoray.databinding.NotificationToastBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
+import coo.apps.meteoray.models.Notification
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -43,10 +48,16 @@ class MainActivity : BaseActivity(), OnClickListener {
         setStoredLocations()
         handleCoordinates()
         handleBottomSheet()
-        setListeners()
+        setBottomSheetListeners()
         handleDbActions()
         getLocationToBeStored()
         observerNavigation()
+
+        mainViewModel.observeSearchNotification(this) {
+            if (it == Notification.FAIL) {
+                Toast(this).setNotificationToast(R.string.location_out_of_box, Color.RED)
+            }
+        }
     }
 
     private fun setStoredLocations() {
@@ -56,11 +67,8 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
-    private fun getSingLocation(id: Int): LocationEntity = locationRepository.getSingleLocation(id)
-
-
     private fun deleteLocation(locationEntity: LocationEntity) {
-        locationRepository.deleteLocation(location = locationEntity)
+        mainViewModel.deleteLocation(locationRepository, locationEntity)
         setStoredLocations()
     }
 
@@ -76,7 +84,8 @@ class MainActivity : BaseActivity(), OnClickListener {
                 }
 
                 DbAction.EDIT -> {
-                    val location = getSingLocation(location.uid!!)
+                    val location =
+                        mainViewModel.getSingleLocation(locationRepository, location.uid!!)
                     handleAction(DbAction.EDIT, location)
                 }
             }
@@ -100,7 +109,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
-    private fun setListeners() {
+    private fun setBottomSheetListeners() {
         binding.bottomSheetView.view.setOnClickListener(this)
         binding.bottomSheetView.save.setOnClickListener(this)
     }
@@ -113,8 +122,6 @@ class MainActivity : BaseActivity(), OnClickListener {
             }
             binding.bottomSheetView.save -> {
                 databaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
-
-//                navigation.handleNavigation(navView, NavigationDest.LOCATIONS)
             }
         }
     }
@@ -203,4 +210,22 @@ class MainActivity : BaseActivity(), OnClickListener {
             }
         }
     }
+
+    private fun Toast.setNotificationToast(message: Int, color: Int) {
+        var toastBinding: NotificationToastBinding =
+            NotificationToastBinding.inflate(layoutInflater)
+
+        // set the text of the TextView of the message
+        toastBinding.toastText.text = resources.getString(message)
+        toastBinding.toastContainer.setBackgroundColor(resources.getColor(color))
+
+        // use the application extension function
+        this.apply {
+            setGravity(Gravity.BOTTOM, 0, 40)
+            duration = Toast.LENGTH_LONG
+            view = binding.root
+            show()
+        }
+    }
+
 }

@@ -29,6 +29,7 @@ import coo.apps.meteoray.adapters.PlacesResultAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentMapsBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
+import coo.apps.meteoray.models.Notification
 import coo.apps.meteoray.utils.createBoundBox
 import coo.apps.meteoray.utils.createLocation
 import coo.apps.meteoray.utils.createRect
@@ -53,12 +54,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         clearSearch()
         handleTextWatcher()
         handleSearchPlaces()
-
-
-    }
-
-    private var latLng: (LatLng) -> Unit = {
-        selectedPlace = it
     }
 
     private fun handleSearchPlaces() {
@@ -70,7 +65,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             binding.placesRecycler.visibility = View.GONE
         }
         binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
-
         binding.placesRecycler.adapter = placeAdapter
 
     }
@@ -111,7 +105,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap?, latLng: LatLng) {
-
         if (mainViewModel.checkIfIsInBox(latLng)) {
             marker?.remove()
             handleNewLocation(latLng)
@@ -128,6 +121,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             marker = googleMap?.addMarker(MarkerOptions().position(latLng).title(positionName))
         } else {
             mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
+            mainViewModel.postSearchNotification(Notification.FAIL)
         }
 
     }
@@ -174,7 +168,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             override fun afterTextChanged(input: Editable?) {
                 if (input.toString() != "") {
                     marker?.remove()
-
                     placeAdapter!!.filter.filter(input.toString())
                     if (binding.placesRecycler.visibility == View.GONE) {
                         binding.placesRecycler.visibility = View.VISIBLE;
@@ -185,10 +178,8 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
                     }
                 }
             }
-
         })
     }
-
 
     private fun clearSearch() {
         binding.clear.setOnClickListener {
@@ -196,17 +187,15 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-
     private fun setMapSettings(googleMap: GoogleMap?) {
         googleMap?.apply {
             this.uiSettings.isZoomControlsEnabled = true
             this.uiSettings.isScrollGesturesEnabled = true
         }
-
     }
 
     private fun handleNewLocation(newLocation: LatLng) {
-        val location = createLocation(newLocation.latitude, newLocation.longitude)
+        val location = newLocation.createLocation()
         mainViewModel.postCoordinates(location)
     }
 
