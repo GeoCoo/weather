@@ -1,12 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.Weather" parent="Theme.MaterialComponents.Light">
-        <!-- Primary brand color. -->
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-
 
     <style name="Theme.Weather.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -18,13 +14,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="postSplashScreenTheme">@style/Theme.Weather</item>
-    </style>
-
     <style name="ToolbarColoredBackArrow" parent="Theme.Weather">
         <item name="android:textColorSecondary">@color/black</item>
     </style>
+
+    <style name="Theme.App.Starting.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.App.Starting.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -75,5 +75,8 @@ The application enables immediate information on the weather forecast and geogra
 indicators in locations of the user  &quot; s choice as well as the issuance of relevant warnings for the
 protection and optimization of production.
     </string>
+    <string name="title_activity_splash" translatable="false">SplashActivity</string>
+
+
 
 </resources>

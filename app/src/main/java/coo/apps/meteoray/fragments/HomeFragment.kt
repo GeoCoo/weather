@@ -25,9 +25,9 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
-        setErrorView()
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            if (it != null) handleRequestView(it)
+            if (it != null) handleRequestView(it) else setErrorView()
+
         }
         navigateToMaps()
         navigateToSettings()
@@ -143,12 +143,15 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             this.errorView.error.visibility = View.VISIBLE
             this.forecastView.background = resources.getDrawable(R.drawable.splash_bg)
+            this.errorView.gotoMaps.setOnClickListener {
+                navigation.postNavigation(NavigationDest.MAPS)
+            }
         }
     }
 
     private fun setRecycler() {
         binding.apply {
-            this.mainView.recycler.setHasFixedSize(true);
+            this.mainView.recycler.setHasFixedSize(true)
             this.mainView.recycler.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
         }

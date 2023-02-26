@@ -1,6 +1,14 @@
 package coo.apps.meteoray.activities
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -10,10 +18,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
@@ -28,20 +38,25 @@ import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity(), OnClickListener {
 
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private val permissionId = 2
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var navView: NavHostFragment
     private lateinit var singleLocation: LocationEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navView =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        getLocation()
+
+
+        navView = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         bottomSheetBehavior =
             BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
         setStoredLocations()
@@ -96,12 +111,10 @@ class MainActivity : BaseActivity(), OnClickListener {
     }
 
     private fun handleCoordinates() {
-        mainViewModel.observeCoordinates(this@MainActivity) { locatioon ->
+        mainViewModel.observeCoordinates(this@MainActivity) { location ->
             lifecycleScope.launch {
-//                if (mainViewModel.boundsMutable.value?.let { locatioon?.isInBoundBox(it) } == true) {
-                val response = mainViewModel.makeMainRequest(locatioon, phoneLanguage)
+                val response = mainViewModel.makeMainRequest(location, phoneLanguage)
                 mainViewModel.postMainResponse(response)
-//                }
             }
         }
     }
@@ -237,5 +250,75 @@ class MainActivity : BaseActivity(), OnClickListener {
             show()
         }
     }
+
+
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    val location: Location? = task.result
+                    if (location != null) {
+                        mainViewModel.postCoordinates(location)
+                    }
+                }
+
+            } else {
+                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            permissionId
+        )
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            getLocation()
+
+        }
+    }
+
 
 }

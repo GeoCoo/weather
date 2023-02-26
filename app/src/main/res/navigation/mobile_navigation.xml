@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_splash">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="coo.apps.meteoray.fragments.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_navigation_maps"
             app:destination="@id/navigation_maps" />
@@ -22,14 +22,13 @@
         android:id="@+id/navigation_maps"
         android:name="coo.apps.meteoray.fragments.MapsFragment"
         android:label="@string/title_maps"
-        tools:layout="@layout/fragment_maps" >
-    </fragment>
+        tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@+id/navigation_locations"
         android:name="coo.apps.meteoray.fragments.LocationsFragment"
         android:label="@string/title_locations"
-        tools:layout="@layout/fragment_locations" >
+        tools:layout="@layout/fragment_locations">
 
         <action
             android:id="@+id/action_navigation_locations_to_navigation_settings"
@@ -40,7 +39,7 @@
         android:id="@+id/navigation_info"
         android:name="coo.apps.meteoray.fragments.InfoFragment"
         android:label="@string/title_info"
-        tools:layout="@layout/fragment_info" >
+        tools:layout="@layout/fragment_info">
 
         <action
             android:id="@+id/action_navigation_info_to_navigation_settings"
@@ -51,7 +50,7 @@
         android:id="@+id/navigation_settings"
         android:name="coo.apps.meteoray.fragments.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_navigation_settings_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -64,6 +63,16 @@
     </fragment>
 
 
+    <fragment
+        android:id="@+id/navigation_splash"
+        android:name="coo.apps.meteoray.fragments.SplashFirstFragment"
+        android:label="@string/title_activity_splash"
+        tools:layout="@layout/fragment_splash_first">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_home"
+            app:destination="@id/navigation_home" />
+
+    </fragment>
 
 
 </navigation>
