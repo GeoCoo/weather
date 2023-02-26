@@ -5,7 +5,6 @@ import android.os.AsyncTask
 
 class LocationsRepository(application: Application) {
 
-
     private var db: LocationDao = AppDatabase.getInstance(application)?.locationDao()!!
 
     fun getAllLocations(): List<LocationEntity?> {

@@ -7,6 +7,8 @@
     <color name="colorGreyAlpha">#55FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="cursor_blue">#1c7ece</color>
-    <color name="color_danger">#FF0000</color>
-    <color name="deep_purple">#7A5BEF</color>
+    <color name="color_danger">#B00020</color>
+    <color name="deep_purple">#6200EE</color>
+    <color name="info_color">#333333</color>
+    <color name="light_gray">#d3d3d3</color>
 </resources>

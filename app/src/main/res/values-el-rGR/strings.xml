@@ -13,7 +13,7 @@
     <string name="search_location">Ααναζήτηση τοποθεσίας</string>
 
     <string name="location_out_of_box">Η τοποθεσίασ που επιλέξατε είναι εκτός τησ περιοχής που υποστηρίζεται.Παρακαλουμε επιλεξτε άλλη.</string>
-
+    <string name="location_toast_error_title">Λάθος</string>
 
     <string name="daily">Ημερήσια</string>
     <string name="hourly">Ωριαία</string>

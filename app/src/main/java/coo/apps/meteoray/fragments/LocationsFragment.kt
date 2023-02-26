@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.meteoray.R
 import coo.apps.meteoray.adapters.LocationsAdapter
@@ -36,8 +37,6 @@ class LocationsFragment : BaseFragment() {
         setUpToolbar()
         getAllLocations()
         addNewLocation()
-        (activity as AppCompatActivity?)!!.supportActionBar
-
     }
 
     private fun setUpToolbar() {
@@ -74,6 +73,12 @@ class LocationsFragment : BaseFragment() {
             this.recycler.setHasFixedSize(true)
             this.recycler.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+            this.recycler.addItemDecoration(
+                DividerItemDecoration(
+                    activity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             locationsAdapter = LocationsAdapter(list, dbActions)
             this.recycler.adapter = locationsAdapter
             locationsAdapter.notifyDataSetChanged()
@@ -83,7 +88,7 @@ class LocationsFragment : BaseFragment() {
 
     private fun addNewLocation() {
         binding.addNew.setOnClickListener {
-            navigation.handleNavigation(NavigationDest.MAPS)
+            navigation.postNavigation(NavigationDest.MAPS)
         }
     }
 

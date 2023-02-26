@@ -45,7 +45,7 @@ class PlacesResultAdapter(
                 this.placeSubTitle.text = prediction?.getSecondaryText(null)
             }
             binding.placeElement.setOnClickListener {
-                onClick(prediction)
+                onClick.invoke(prediction)
             }
         }
     }

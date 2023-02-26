@@ -5,18 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import coo.apps.meteoray.models.NavigationDest
 
 class NavigationViewModel(application: Application) : AndroidViewModel(application) {
 
     private var destinationNavMutable: MutableLiveData<Int> = MutableLiveData()
     private var navigationDesMutable: MutableLiveData<NavigationDest?> = MutableLiveData()
-
-
-    fun handleNavigation(destination: NavigationDest) {
-        postNavigation(destination)
-    }
 
 
     fun postDestinationNav(destination: Int) {
@@ -27,8 +21,8 @@ class NavigationViewModel(application: Application) : AndroidViewModel(applicati
         destinationNavMutable.observe(lifecycleOwner, observer)
     }
 
-    private fun postNavigation(navigation: NavigationDest?) {
-        navigationDesMutable.postValue(navigation)
+    fun postNavigation(destination: NavigationDest?) {
+        navigationDesMutable.postValue(destination)
     }
 
     fun observeNavigation(lifecycleOwner: LifecycleOwner, observer: Observer<NavigationDest?>) {

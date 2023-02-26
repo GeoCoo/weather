@@ -21,8 +21,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/fahreneit_enable"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,8 +53,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/beaufort_enable"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -79,8 +85,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/locations_store"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -110,8 +119,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/description_setting"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -140,8 +152,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/project_funding_setting"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -170,8 +185,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
             android:text="@string/disclaimer_setting"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -202,7 +220,10 @@
             android:id="@+id/versionInfo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -212,13 +233,15 @@
             android:id="@+id/releaseInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/spf_pro_regular"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

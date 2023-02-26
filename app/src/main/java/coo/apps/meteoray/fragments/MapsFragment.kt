@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,6 +31,7 @@ import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentMapsBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.Notification
+import coo.apps.meteoray.utils.checkIfIsInBox
 import coo.apps.meteoray.utils.createBoundBox
 import coo.apps.meteoray.utils.createLocation
 import coo.apps.meteoray.utils.createRect
@@ -39,7 +41,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     private lateinit var bounds: LatLngBounds
     private lateinit var placeClient: PlacesClient
-    private lateinit var selectedPlace: LatLng
 
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
@@ -65,6 +66,12 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             binding.placesRecycler.visibility = View.GONE
         }
         binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.placesRecycler.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         binding.placesRecycler.adapter = placeAdapter
 
     }
@@ -98,6 +105,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             createBox(map)
             drawBounds(bounds, R.color.black, map)
             this.setOnMapLongClickListener {
+                binding.searchField.text?.clear()
                 addNewMarkerOnclick(map, it)
             }
         }
@@ -105,7 +113,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap?, latLng: LatLng) {
-        if (mainViewModel.checkIfIsInBox(latLng)) {
+        if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
             marker?.remove()
             handleNewLocation(latLng)
             val positionName = mainViewModel.getPlaceName()
@@ -126,19 +134,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     }
 
-
-//    private fun initMarker(googleMap: GoogleMap) {
-//        mainViewModel.observeCoordinates(viewLifecycleOwner) { location ->
-//            if (location != null) {
-//                val lebanon = LatLng(location.latitude, location.longitude)
-//                googleMap.addMarker(
-//                    MarkerOptions().position(lebanon)
-//                        .title("coo.apps.weather.models.weather.Marker in lebanon").draggable(true)
-//                )
-//            }
-//        }
-//    }
-
     private fun createBox(googleMap: GoogleMap?) {
         mainViewModel.observeBounds(requireActivity()) { limits ->
             bounds = limits.createBoundBox()
@@ -150,8 +145,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             googleMap.apply {
                 this?.animateCamera(cu)
             }
-
-
         }
     }
 
@@ -161,8 +154,13 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             }
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (text?.length == 0) binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
-                else binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
+                if (text?.length == 0) {
+                    binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
+                    binding.clear.visibility = View.GONE
+                } else {
+                    binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
+                    binding.clear.visibility = View.VISIBLE
+                }
             }
 
             override fun afterTextChanged(input: Editable?) {

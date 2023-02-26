@@ -72,16 +72,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPlaceName(): String? {
         val place: Address? = currentLocation?.getPlaceNameFromLocation(getApplication())
-
         return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
             ?: ""
     }
-
-    fun checkIfIsInBox(latLng: LatLng): Boolean {
-        val location = latLng.createLocation()
-        return location.isInBoundBox(boundsMutable.value!!)
-    }
-
     suspend fun getLimits() {
         boundsMutable.postValue(limitController.makeLimitRequest())
     }

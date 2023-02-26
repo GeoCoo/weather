@@ -1,12 +1,12 @@
 package coo.apps.meteoray.activities
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
@@ -18,7 +18,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
-import coo.apps.meteoray.databinding.NotificationToastBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
@@ -55,7 +54,11 @@ class MainActivity : BaseActivity(), OnClickListener {
 
         mainViewModel.observeSearchNotification(this) {
             if (it == Notification.FAIL) {
-                Toast(this).setNotificationToast(R.string.location_out_of_box, Color.RED)
+                Toast(this).setNotificationToast(
+                    R.string.location_toast_error_title,
+                    R.string.location_out_of_box,
+                    R.color.color_danger
+                )
             }
         }
     }
@@ -118,7 +121,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         when (view) {
             binding.bottomSheetView.view -> {
-                navigation.handleNavigation(NavigationDest.HOME)
+                navigation.postNavigation(NavigationDest.HOME)
             }
             binding.bottomSheetView.save -> {
                 databaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
@@ -211,19 +214,26 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
-    private fun Toast.setNotificationToast(message: Int, color: Int) {
-        var toastBinding: NotificationToastBinding =
-            NotificationToastBinding.inflate(layoutInflater)
+    private fun Toast.setNotificationToast(title: Int, message: Int, color: Int) {
+
+        val layout = this@MainActivity.layoutInflater.inflate(
+            R.layout.notification_toast,
+            this@MainActivity.findViewById(R.id.toastContainer)
+        )
 
         // set the text of the TextView of the message
-        toastBinding.toastText.text = resources.getString(message)
-        toastBinding.toastContainer.setBackgroundColor(resources.getColor(color))
+        val toastText = layout.findViewById<TextView>(R.id.toastText)
+        val toastCard = layout.findViewById<CardView>(R.id.toastCard)
+        val toastTitle = layout.findViewById<TextView>(R.id.toastTitle)
+        toastText.text = resources.getString(message)
+        toastCard.setCardBackgroundColor(resources.getColor(color))
+        toastTitle.text = resources.getString(title)
 
         // use the application extension function
         this.apply {
             setGravity(Gravity.BOTTOM, 0, 40)
             duration = Toast.LENGTH_LONG
-            view = binding.root
+            view = layout
             show()
         }
     }

@@ -17,7 +17,8 @@
     <string name="sunrise_tage">Sunrise: %1$s</string>
     <string name="search_location">Search Location</string>
 
-    <string name="location_out_of_box">The location you have chose is out of the supported area.Please try an other one</string>
+    <string name="location_out_of_box">The location you have chose is out of the supported area</string>
+    <string name="location_toast_error_title">Error</string>
 
     <string name="daily">Daily</string>
     <string name="hourly">Hourly</string>

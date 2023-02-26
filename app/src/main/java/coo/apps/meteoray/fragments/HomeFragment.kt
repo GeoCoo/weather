@@ -14,7 +14,6 @@ import coo.apps.meteoray.databinding.FragmentHomeBinding
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.main.*
 
-
 class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -129,13 +128,13 @@ class HomeFragment : BaseFragment() {
 
     private fun navigateToMaps() {
         binding.locationView.setOnClickListener {
-            navigation.handleNavigation(NavigationDest.MAPS)
+            navigation.postNavigation(NavigationDest.MAPS)
         }
     }
 
     private fun navigateToSettings() {
         binding.settingsView.setOnClickListener {
-            navigation.handleNavigation(NavigationDest.SETTINGS)
+            navigation.postNavigation(NavigationDest.SETTINGS)
             navigation.postDestinationNav(R.string.title_settings)
         }
     }

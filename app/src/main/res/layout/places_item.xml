@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -10,35 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true">
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/locIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location"
+                app:layout_constraintEnd_toStartOf="@id/placeTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/placeTitle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:layout_marginStart="10dp"
+                tools:text="sasdasdasdasdasd"
+                android:fontFamily="@font/spf_pro_bold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/locIcon"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/placeSubTitle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="10dp"
-                android:textStyle="italic" />
+                tools:text="sasdasdasdasdasd"
+
+                android:fontFamily="@font/spf_pro_regular"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/placeTitle"
+                app:layout_constraintTop_toBottomOf="@id/placeTitle" />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/quantum_grey"/>
 </LinearLayout>

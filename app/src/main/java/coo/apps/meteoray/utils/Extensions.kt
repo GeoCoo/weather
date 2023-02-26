@@ -6,9 +6,13 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
 import coo.apps.meteoray.models.Limits
 
-fun Location.isInBoundBox(limits: Limits): Boolean {
-    return limits.createBoundBox().contains(LatLng(this.latitude, this.longitude))
+fun Location.isInBoundBox(limits: Limits?): Boolean? {
+    return limits?.createBoundBox()?.contains(LatLng(this.latitude, this.longitude))
+}
 
+fun LatLng.checkIfIsInBox(limits: Limits?): Boolean? {
+    val location = this.createLocation()
+    return location.isInBoundBox(limits)
 }
 
 fun Limits.createBoundBox(): LatLngBounds {

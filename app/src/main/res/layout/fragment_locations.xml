@@ -9,12 +9,12 @@
     android:layout_marginEnd="10dp"
     tools:context=".fragments.LocationsFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,13 +28,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recycler">
 
+
         <TextView
             android:id="@+id/locationName"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/spf_pro_bold"
             android:gravity="center_vertical"
             android:text="@string/add_new_location"
-            android:textColor="@color/black"
+            android:textColor="@color/cursor_blue"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

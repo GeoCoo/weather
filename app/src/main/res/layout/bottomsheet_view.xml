@@ -22,8 +22,10 @@
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/spf_pro_regular"
             android:text="@string/view_btn"
-            android:textColor="@color/azure"
+            android:textColor="@color/cursor_blue"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,8 +33,10 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/spf_pro_regular"
             android:text="@string/save_btn"
-            android:textColor="@color/azure"
+            android:textColor="@color/cursor_blue"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

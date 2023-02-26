@@ -10,8 +10,11 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/spf_pro_regular"
+        android:textColor="@color/info_color"
+        android:textSize="18sp" />
 
 </FrameLayout>
