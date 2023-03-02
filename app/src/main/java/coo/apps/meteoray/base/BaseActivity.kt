@@ -28,7 +28,7 @@ open class BaseActivity : AppCompatActivity() {
         this.supportActionBar?.hide()
         phoneLanguage = getLanguage()
         lifecycleScope.launch {
-            mainViewModel.getLimits()
+            mainViewModel.postLimits()
         }
     }
 

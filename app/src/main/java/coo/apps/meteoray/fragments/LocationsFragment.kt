@@ -17,6 +17,7 @@ import coo.apps.meteoray.databinding.FragmentLocationsBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
+import coo.apps.meteoray.utils.createLocation
 
 
 class LocationsFragment : BaseFragment() {
@@ -29,6 +30,11 @@ class LocationsFragment : BaseFragment() {
 
     private var dbActions: (Pair<DbAction, LocationEntity>) -> Unit = { item ->
         dataBaseViewModel.postDbAction(item)
+    }
+
+    private var onClickLocation: (LocationEntity) -> Unit = { location ->
+        mainViewModel.postCoordinates(location.createLocation())
+        navigation.postNavigation(NavigationDest.HOME)
     }
 
     override fun getLayoutRes() = R.layout.fragment_locations
@@ -79,7 +85,7 @@ class LocationsFragment : BaseFragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            locationsAdapter = LocationsAdapter(list, dbActions)
+            locationsAdapter = LocationsAdapter(list, dbActions, onClickLocation)
             this.recycler.adapter = locationsAdapter
             locationsAdapter.notifyDataSetChanged()
 

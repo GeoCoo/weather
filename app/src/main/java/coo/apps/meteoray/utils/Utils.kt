@@ -6,6 +6,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import com.google.android.gms.maps.model.LatLng
+import coo.apps.meteoray.locationsDb.LocationEntity
 import java.text.SimpleDateFormat
 
 fun Location.getPlaceNameFromLocation(context: Context): Address? {
@@ -25,5 +26,13 @@ fun LatLng.createLocation(): Location {
     val location = Location(LocationManager.GPS_PROVIDER)
     location.latitude = this.latitude
     location.longitude = this.longitude
+    return location
+}
+
+
+fun LocationEntity.createLocation(): Location {
+    val location = Location(LocationManager.GPS_PROVIDER)
+    location.latitude = this.locationLat
+    location.longitude = this.locationLon
     return location
 }

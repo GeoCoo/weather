@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
+        android:id="@+id/locationView"
         app:swReveal="end">
 
         <androidx.constraintlayout.widget.ConstraintLayout

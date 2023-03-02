@@ -28,7 +28,7 @@ class SwipeActionsView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr),
     GestureDetector.OnGestureListener,
     Animator.AnimatorListener,
-    ValueAnimator.AnimatorUpdateListener {
+    ValueAnimator.AnimatorUpdateListener{
 
     @IntDef(STATE_CLOSED, STATE_OPEN_START, STATE_OPEN_END)
     @Retention(AnnotationRetention.SOURCE)
@@ -162,7 +162,6 @@ class SwipeActionsView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.let { gestureDetector.onTouchEvent(it) } == true) return true
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 touchX = event.x

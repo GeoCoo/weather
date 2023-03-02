@@ -75,7 +75,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
             ?: ""
     }
-    suspend fun getLimits() {
+    suspend fun postLimits() {
         boundsMutable.postValue(limitController.makeLimitRequest())
     }
 

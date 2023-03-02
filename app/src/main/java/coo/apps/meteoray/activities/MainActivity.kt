@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Gravity
@@ -19,6 +20,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -29,6 +31,7 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
+import coo.apps.meteoray.managers.ConnectionManager
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
@@ -39,6 +42,7 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseActivity(), OnClickListener {
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private lateinit var connectionManager: ConnectionManager
     private val permissionId = 2
 
     private lateinit var binding: ActivityMainBinding
@@ -47,6 +51,7 @@ class MainActivity : BaseActivity(), OnClickListener {
     private lateinit var singleLocation: LocationEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -56,9 +61,11 @@ class MainActivity : BaseActivity(), OnClickListener {
         getLocation()
 
 
-        navView = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        navView =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         bottomSheetBehavior =
             BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
+        isOnline(this)
         setStoredLocations()
         handleCoordinates()
         handleBottomSheet()
@@ -320,5 +327,25 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
+
+
+    fun isOnline(context: Context) {
+        val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        if (activeNetwork != null) {
+            // connected to the internet
+            when (activeNetwork.type) {
+                ConnectivityManager.TYPE_WIFI -> {}
+                ConnectivityManager.TYPE_MOBILE -> {}
+                else -> {}
+            }
+        } else {
+            Toast(this).setNotificationToast(
+                R.string.location_toast_error_title,
+                R.string.connection_error,
+                R.color.color_danger
+            )
+        }
+    }
 
 }

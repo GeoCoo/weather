@@ -74,6 +74,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         )
         binding.placesRecycler.adapter = placeAdapter
 
+
     }
 
     override fun onCreateView(

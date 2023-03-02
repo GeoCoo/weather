@@ -2,6 +2,7 @@ package coo.apps.meteoray.adapters
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coo.apps.meteoray.databinding.LocationRecyclerItemBinding
@@ -11,7 +12,8 @@ import coo.apps.meteoray.models.DbAction
 
 class LocationsAdapter(
     private val list: List<LocationEntity?>,
-    val dbAction: (Pair<DbAction, LocationEntity>) -> Unit
+    val dbAction: (Pair<DbAction, LocationEntity>) -> Unit,
+    var onClickLocation: (LocationEntity) -> Unit
 ) :
     RecyclerView.Adapter<LocationsAdapter.LocationsViewHolder>() {
 
@@ -49,7 +51,12 @@ class LocationsAdapter(
                 this.deleteBtn.setOnClickListener {
                     dbAction.invoke(Pair(DbAction.DELETE, item))
                 }
+                this.locationItem.setOnClickListener {
+                    onClickLocation.invoke(item)
+                }
             }
         }
     }
+
+
 }

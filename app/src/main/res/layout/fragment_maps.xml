@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/searchLocation"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -50,7 +50,7 @@
                 android:src="@drawable/ic_icnclose" />
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -66,11 +66,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/placesRecycler"
         android:layout_width="0dp"
-        android:windowSoftInputMode="adjustResize"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:background="@color/colorWhite"
         android:layout_marginEnd="30dp"
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
