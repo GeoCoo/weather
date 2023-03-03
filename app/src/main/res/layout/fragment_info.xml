@@ -12,7 +12,7 @@
         android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="?android:actionBarSize"
         android:fontFamily="@font/spf_pro_regular"
         android:textColor="@color/info_color"
         android:textSize="18sp" />

@@ -29,6 +29,8 @@
     <string name="location_alert_desc">Εισάγεται το όνομα που θέλετε να αποθηκευτει η τοποθεσία</string>
     <string name="location_ok_action">OK</string>
     <string name="location_alert_cancel_action">Ακύρωση</string>
+    <string name="attention_alert_dialog">Προσοχή</string>
+    <string name="attention_alet_dialog_text">Η υπηρεσία τοποθεσίασ ειναι απερνεγοποιημένη.Ενεργοποιηστε την απο τθσ ρυθμίσεισ</string>
 
     <!--settings-->
     <string name="fahreneit_enable">Θερμοκρασία σε Fahrenheit</string>

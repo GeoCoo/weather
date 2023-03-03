@@ -10,12 +10,10 @@ import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
@@ -31,7 +29,6 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
-import coo.apps.meteoray.managers.ConnectionManager
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
@@ -42,7 +39,6 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseActivity(), OnClickListener {
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    private lateinit var connectionManager: ConnectionManager
     private val permissionId = 2
 
     private lateinit var binding: ActivityMainBinding
@@ -67,7 +63,6 @@ class MainActivity : BaseActivity(), OnClickListener {
             BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
         isOnline(this)
         setStoredLocations()
-        handleCoordinates()
         handleBottomSheet()
         setBottomSheetListeners()
         handleDbActions()
@@ -79,52 +74,19 @@ class MainActivity : BaseActivity(), OnClickListener {
                 Toast(this).setNotificationToast(
                     R.string.location_toast_error_title,
                     R.string.location_out_of_box,
-                    R.color.color_danger
+                    R.color.color_danger, this
                 )
             }
         }
+
     }
 
-    private fun setStoredLocations() {
-        lifecycleScope.launch() {
-            delay(500)
-            databaseViewModel.postLocations(locationRepository.getAllLocations())
-        }
-    }
 
-    private fun deleteLocation(locationEntity: LocationEntity) {
-        mainViewModel.deleteLocation(locationRepository, locationEntity)
-        setStoredLocations()
-    }
 
-    private fun handleDbActions() {
-        databaseViewModel.observeDbAction(this@MainActivity) { pair ->
-            val (action, location) = pair
-            when (action) {
-                DbAction.SAVE -> {
-                    handleAction(DbAction.SAVE, location)
-                }
-                DbAction.DELETE -> {
-                    deleteLocation(location)
-                }
 
-                DbAction.EDIT -> {
-                    val location =
-                        mainViewModel.getSingleLocation(locationRepository, location.uid!!)
-                    handleAction(DbAction.EDIT, location)
-                }
-            }
-        }
-    }
 
-    private fun handleCoordinates() {
-        mainViewModel.observeCoordinates(this@MainActivity) { location ->
-            lifecycleScope.launch {
-                val response = mainViewModel.makeMainRequest(location, phoneLanguage)
-                mainViewModel.postMainResponse(response)
-            }
-        }
-    }
+
+
 
     private fun handleBottomSheet() {
         mainViewModel.observeBottomSheetState(this) { bottomSheetState ->
@@ -159,23 +121,7 @@ class MainActivity : BaseActivity(), OnClickListener {
         }
     }
 
-    private fun handleAction(action: DbAction, locationEntity: LocationEntity) {
-        val inputEditTextField = EditText(this)
-        inputEditTextField.setText(locationEntity.locationName.toString())
-        val dialog =
-            AlertDialog.Builder(this).setTitle(resources.getString(R.string.location_alert_title))
-                .setMessage(resources.getString(R.string.location_alert_desc))
-                .setView(inputEditTextField)
-                .setPositiveButton(resources.getString(R.string.location_ok_action)) { _, _ ->
-                    val input = inputEditTextField.text.toString()
-                    val location = handleLocation(action, locationEntity, input)
-                    databaseViewModel.handleLocationActions(action, locationRepository, location)
-                    setStoredLocations()
-                }
-                .setNegativeButton(resources.getString(R.string.location_alert_cancel_action), null)
-                .create()
-        dialog.show()
-    }
+
 
 
     private fun handleLocation(
@@ -230,31 +176,8 @@ class MainActivity : BaseActivity(), OnClickListener {
                 NavigationDest.INFO -> {
                     navView.findNavController().navigate(R.id.navigation_info)
                 }
+                null -> {}
             }
-        }
-    }
-
-    private fun Toast.setNotificationToast(title: Int, message: Int, color: Int) {
-
-        val layout = this@MainActivity.layoutInflater.inflate(
-            R.layout.notification_toast,
-            this@MainActivity.findViewById(R.id.toastContainer)
-        )
-
-        // set the text of the TextView of the message
-        val toastText = layout.findViewById<TextView>(R.id.toastText)
-        val toastCard = layout.findViewById<CardView>(R.id.toastCard)
-        val toastTitle = layout.findViewById<TextView>(R.id.toastTitle)
-        toastText.text = resources.getString(message)
-        toastCard.setCardBackgroundColor(resources.getColor(color))
-        toastTitle.text = resources.getString(title)
-
-        // use the application extension function
-        this.apply {
-            setGravity(Gravity.BOTTOM, 0, 40)
-            duration = Toast.LENGTH_LONG
-            view = layout
-            show()
         }
     }
 
@@ -271,13 +194,25 @@ class MainActivity : BaseActivity(), OnClickListener {
                 }
 
             } else {
-                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+                setLocationNotificationDialog()
+//
             }
         } else {
             requestPermissions()
         }
+    }
+
+    private fun setLocationNotificationDialog() {
+        val dialog =
+            AlertDialog.Builder(this).setTitle(resources.getString(R.string.attention_alert_dialog))
+                .setMessage(resources.getString(R.string.attention_alet_dialog_text))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(R.string.location_ok_action)) { _, _ ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                }
+                .create()
+        dialog.show()
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -328,8 +263,7 @@ class MainActivity : BaseActivity(), OnClickListener {
     }
 
 
-
-    fun isOnline(context: Context) {
+    private fun isOnline(context: Context) {
         val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         if (activeNetwork != null) {
@@ -343,9 +277,60 @@ class MainActivity : BaseActivity(), OnClickListener {
             Toast(this).setNotificationToast(
                 R.string.location_toast_error_title,
                 R.string.connection_error,
-                R.color.color_danger
+                R.color.color_danger,
+                this
             )
         }
+    }
+
+    private fun handleDbActions() {
+        databaseViewModel.observeDbAction(this) { pair ->
+            val (action, location) = pair
+            when (action) {
+                DbAction.SAVE -> {
+                    handleAction(DbAction.SAVE, location)
+                }
+                DbAction.DELETE -> {
+                    deleteLocation(location)
+                }
+
+                DbAction.EDIT -> {
+                    val storedLocation =
+                        mainViewModel.getSingleLocation(locationRepository, location.uid!!)
+                    handleAction(DbAction.EDIT, storedLocation)
+                }
+            }
+        }
+    }
+
+    private fun deleteLocation(locationEntity: LocationEntity) {
+        mainViewModel.deleteLocation(locationRepository, locationEntity)
+        setStoredLocations()
+    }
+
+    private fun setStoredLocations() {
+        lifecycleScope.launch() {
+            delay(500)
+            databaseViewModel.postLocations(locationRepository.getAllLocations())
+        }
+    }
+
+    private fun handleAction(action: DbAction, locationEntity: LocationEntity) {
+        val inputEditTextField = EditText(this)
+        inputEditTextField.setText(locationEntity.locationName.toString())
+        val dialog =
+            AlertDialog.Builder(this).setTitle(resources.getString(R.string.location_alert_title))
+                .setMessage(resources.getString(R.string.location_alert_desc))
+                .setView(inputEditTextField)
+                .setPositiveButton(resources.getString(R.string.location_ok_action)) { _, _ ->
+                    val input = inputEditTextField.text.toString()
+                    val location = handleLocation(action, locationEntity, input)
+                    databaseViewModel.handleLocationActions(action, locationRepository, location)
+                    setStoredLocations()
+                }
+                .setNegativeButton(resources.getString(R.string.location_alert_cancel_action), null)
+                .create()
+        dialog.show()
     }
 
 }

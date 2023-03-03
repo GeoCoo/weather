@@ -1,5 +1,6 @@
 package coo.apps.meteoray.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -45,18 +46,19 @@ class LocationsFragment : BaseFragment() {
         addNewLocation()
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setUpToolbar() {
-        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
         actionBar.apply {
-            this?.show()
-            this?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
-            this?.title = resources.getString(R.string.title_locations)
-            this?.setHomeButtonEnabled(true)
-            this?.setDisplayHomeAsUpEnabled(true)
+            this.show()
+            this.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
+            this.title = resources.getString(R.string.title_locations)
+            this.setHomeButtonEnabled(true)
+            this.setDisplayHomeAsUpEnabled(true)
+            this.setShowHideAnimationEnabled(false)
             backArrow =
                 resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
             backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
-            this?.setHomeAsUpIndicator(backArrow)
+            this.setHomeAsUpIndicator(backArrow)
 
         }
     }

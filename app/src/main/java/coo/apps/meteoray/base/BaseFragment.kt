@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
@@ -21,6 +22,7 @@ abstract class BaseFragment : Fragment() {
     protected val mainViewModel: MainViewModel by sharedViewModel()
     protected val dataBaseViewModel: DatabaseViewModel by sharedViewModel()
     protected val navigation: NavigationViewModel by sharedViewModel()
+    protected lateinit var actionBar: ActionBar
 
     var navView: NavHostFragment? = null
 
@@ -40,6 +42,11 @@ abstract class BaseFragment : Fragment() {
         navView =
             activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
+        (activity as AppCompatActivity?)!!.supportActionBar.let {
+            if (it != null) {
+                actionBar = it
+            }
+        }
         initLayout(view)
     }
 

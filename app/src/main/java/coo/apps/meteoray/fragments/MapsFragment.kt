@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
@@ -66,15 +67,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             binding.placesRecycler.visibility = View.GONE
         }
         binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.placesRecycler.addItemDecoration(
-            DividerItemDecoration(
-                activity,
-                DividerItemDecoration.VERTICAL
-            )
-        )
         binding.placesRecycler.adapter = placeAdapter
-
-
     }
 
     override fun onCreateView(
@@ -98,7 +91,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         _binding = null
     }
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
             map = this
@@ -111,7 +103,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             }
         }
     }
-
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap?, latLng: LatLng) {
         if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
@@ -203,7 +194,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         googleMap?.addPolygon(polygonOptions)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -220,7 +210,5 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
                     val statusCode = exception.statusCode
                 }
             }
-
     }
-
 }

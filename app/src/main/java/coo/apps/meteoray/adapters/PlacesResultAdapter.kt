@@ -41,8 +41,8 @@ class PlacesResultAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(prediction: AutocompletePrediction) {
             binding.apply {
-                this.placeTitle.text = prediction?.getPrimaryText(null)
-                this.placeSubTitle.text = prediction?.getSecondaryText(null)
+                this.placeTitle.text = prediction.getPrimaryText(null)
+                this.placeSubTitle.text = prediction.getSecondaryText(null)
             }
             binding.placeElement.setOnClickListener {
                 onClick.invoke(prediction)
@@ -69,7 +69,7 @@ class PlacesResultAdapter(
         }
     }
 
-    private fun getPredictions(constraint: CharSequence): ArrayList<AutocompletePrediction>? {
+    private fun getPredictions(constraint: CharSequence): ArrayList<AutocompletePrediction> {
         val result: ArrayList<AutocompletePrediction> = arrayListOf()
         val token = AutocompleteSessionToken.newInstance()
         val request =

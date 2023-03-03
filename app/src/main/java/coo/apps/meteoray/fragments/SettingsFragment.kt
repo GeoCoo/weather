@@ -1,5 +1,6 @@
 package coo.apps.meteoray.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -8,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginTop
 import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseFragment
@@ -62,18 +65,20 @@ class SettingsFragment : BaseFragment(), OnClickListener {
         return binding.root
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setUpToolbar() {
-        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
         actionBar.apply {
-            this?.show()
-            this?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
-            this?.title = resources.getString(R.string.title_settings)
-            this?.setHomeButtonEnabled(true)
-            this?.setDisplayHomeAsUpEnabled(true)
+            this.show()
+            this.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorWhite)))
+            this.title = resources.getString(R.string.title_settings)
+            this.setHomeButtonEnabled(true)
+            this.setDisplayHomeAsUpEnabled(true)
+            this.setShowHideAnimationEnabled(false)
             backArrow =
                 resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
             backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
-            this?.setHomeAsUpIndicator(backArrow)
+            this.setHomeAsUpIndicator(backArrow)
+
         }
     }
 

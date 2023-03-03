@@ -13,5 +13,5 @@ pluginManagement {
     }
 
 }
-rootProject.name = "weather"
+rootProject.name = "meteoray"
 include ':app'
