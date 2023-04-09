@@ -9,9 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginTop
 import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseFragment
@@ -74,8 +71,7 @@ class SettingsFragment : BaseFragment(), OnClickListener {
             this.setHomeButtonEnabled(true)
             this.setDisplayHomeAsUpEnabled(true)
             this.setShowHideAnimationEnabled(false)
-            backArrow =
-                resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+            backArrow = resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
             backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
             this.setHomeAsUpIndicator(backArrow)
 

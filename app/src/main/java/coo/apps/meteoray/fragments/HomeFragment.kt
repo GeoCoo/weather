@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.meteoray.R
 import coo.apps.meteoray.adapters.DailyRecyclerAdapter
@@ -13,6 +14,7 @@ import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentHomeBinding
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.main.*
+import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
 
@@ -54,10 +56,12 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse) {
         binding.apply {
-            forecastView.background = resources.getDrawable(getBg(response?.current?.bgclass!!))
+            forecastView.background = resources.getDrawable(getBg(response.current.bgclass!!))
             val weatherIcon = response.current.icon.let { getIcon(it) }
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
-            mainView.placeTxt.text = mainViewModel.getPlaceName()
+            lifecycleScope.launch {
+                mainView.placeTxt.text = mainViewModel.getPlaceName()
+            }
 
             if (getSharedPref("fahreneit")) {
                 mainView.temperature.text = response.current.tempfrt
@@ -153,7 +157,7 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             this.mainView.recycler.setHasFixedSize(true)
             this.mainView.recycler.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 }

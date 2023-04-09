@@ -26,8 +26,7 @@ import java.util.*
 
 open class BaseActivity : AppCompatActivity() {
 
-    private lateinit var phoneLanguage: String
-
+    protected lateinit var phoneLanguage: String
     protected val locationRepository: LocationsRepository by inject()
     protected val mainViewModel: MainViewModel by viewModel()
     protected val databaseViewModel: DatabaseViewModel by viewModel()
@@ -42,7 +41,6 @@ open class BaseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             mainViewModel.postLimits()
         }
-        handleCoordinates()
     }
 
 
@@ -50,14 +48,6 @@ open class BaseActivity : AppCompatActivity() {
         return Locale.getDefault().language
     }
 
-    private fun handleCoordinates() {
-        mainViewModel.observeCoordinates(this) { location ->
-            lifecycleScope.launch {
-                val response = mainViewModel.makeMainRequest(location, phoneLanguage)
-                mainViewModel.postMainResponse(response)
-            }
-        }
-    }
 
     fun Toast.setNotificationToast(
         title: Int,

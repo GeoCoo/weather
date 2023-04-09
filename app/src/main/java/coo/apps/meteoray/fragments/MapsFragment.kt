@@ -6,8 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,10 +19,9 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.net.FetchPlaceResponse
-import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.api.net.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
@@ -32,23 +30,21 @@ import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentMapsBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.Notification
-import coo.apps.meteoray.utils.checkIfIsInBox
-import coo.apps.meteoray.utils.createBoundBox
-import coo.apps.meteoray.utils.createLocation
-import coo.apps.meteoray.utils.createRect
+import coo.apps.meteoray.utils.*
+import kotlinx.coroutines.launch
 
 
 open class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     private lateinit var bounds: LatLngBounds
+    private lateinit var positionName: String
     private lateinit var placeClient: PlacesClient
 
+    private var placeAdapter: PlacesResultAdapter? = null
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
-
     private var map: GoogleMap? = null
     private var marker: Marker? = null
-    private var placeAdapter: PlacesResultAdapter? = null
 
     override fun getLayoutRes(): Int = R.layout.fragment_maps
 
@@ -58,22 +54,9 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         handleSearchPlaces()
     }
 
-    private fun handleSearchPlaces() {
-        Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
-        placeClient = Places.createClient(requireContext())
-        placeAdapter = PlacesResultAdapter(placeClient) { prediction ->
-            binding.searchField.setText(prediction.getPrimaryText(null).toString())
-            getPlaceLatLong(prediction)
-            binding.placesRecycler.visibility = View.GONE
-        }
-        binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.placesRecycler.adapter = placeAdapter
-    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
         return binding.root
@@ -83,7 +66,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-
     }
 
     override fun onDestroyView() {
@@ -96,10 +78,13 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             map = this
             setMapSettings(map)
             createBox(map)
-            drawBounds(bounds, R.color.black, map)
+            drawBounds(bounds, R.color.color_danger, map)
             this.setOnMapLongClickListener {
                 binding.searchField.text?.clear()
                 addNewMarkerOnclick(map, it)
+            }
+            this.setOnMapClickListener {
+                mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
             }
         }
     }
@@ -108,7 +93,9 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
             marker?.remove()
             handleNewLocation(latLng)
-            val positionName = mainViewModel.getPlaceName()
+            lifecycleScope.launch {
+                positionName = mainViewModel.getPlaceName()
+            }
             dataBaseViewModel.postSingleLocation(
                 LocationEntity(
                     locationName = positionName,
@@ -131,7 +118,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             bounds = limits.createBoundBox()
             val width = resources.displayMetrics.widthPixels
             val height = resources.displayMetrics.heightPixels
-            val padding = (width * 0.12).toInt() // offset from edges of the map 30% of screen
+            val padding = (width * 0.12).toInt()
 
             val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
             googleMap.apply {
@@ -140,39 +127,57 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
+    private fun handleSearchPlaces() {
+        binding.placesRecycler.setHasFixedSize(true)
+        Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
+        placeClient = Places.createClient(requireContext())
+        placeAdapter = PlacesResultAdapter { prediction ->
+            binding.searchField.setText(prediction.getPrimaryText(null).toString())
+            getPlaceLatLong(prediction)
+            binding.placesRecycler.visibility = View.GONE
+            activity?.dismissKeyboard()
+        }
+        binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
+        (binding.placesRecycler.layoutManager as LinearLayoutManager).stackFromEnd
+        binding.placesRecycler.adapter = placeAdapter
+    }
+
     private fun handleTextWatcher() {
         binding.searchField.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (text?.length == 0) {
-                    binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
-                    binding.clear.visibility = View.GONE
-                } else {
-                    binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
-                    binding.clear.visibility = View.VISIBLE
-                }
+                filter(text.toString())
+                handleRecyclerView(text?.length)
             }
 
-            override fun afterTextChanged(input: Editable?) {
-                if (input.toString() != "") {
-                    marker?.remove()
-                    placeAdapter!!.filter.filter(input.toString())
-                    if (binding.placesRecycler.visibility == View.GONE) {
-                        binding.placesRecycler.visibility = View.VISIBLE;
-                    }
-                } else {
-                    if (binding.placesRecycler.visibility == View.VISIBLE) {
-                        binding.placesRecycler.visibility = View.GONE;
-                    }
-                }
+            override fun afterTextChanged(text: Editable?) {
+
             }
         })
     }
 
+    private fun handleRecyclerView(length: Int?) {
+        if (length == 0) {
+            binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
+            binding.clear.visibility = View.GONE
+            if (binding.placesRecycler.visibility == View.VISIBLE) {
+                binding.placesRecycler.visibility = View.GONE;
+            }
+        } else {
+            marker?.remove()
+            binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_location))
+            binding.clear.visibility = View.VISIBLE
+
+            if (binding.placesRecycler.visibility == View.GONE) {
+                binding.placesRecycler.visibility = View.VISIBLE;
+            }
+        }
+    }
+
     private fun clearSearch() {
         binding.clear.setOnClickListener {
+            binding.placesRecycler.recycledViewPool.clear()
             binding.searchField.text?.clear()
         }
     }
@@ -181,6 +186,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         googleMap?.apply {
             this.uiSettings.isZoomControlsEnabled = true
             this.uiSettings.isScrollGesturesEnabled = true
+            this.uiSettings.isMyLocationButtonEnabled = true
         }
     }
 
@@ -202,13 +208,44 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private fun getPlaceLatLong(place: AutocompletePrediction) {
         val placeFields = listOf(Place.Field.LAT_LNG)
         val request = FetchPlaceRequest.newInstance(place.placeId, placeFields)
-        placeClient.fetchPlace(request)
-            .addOnSuccessListener { response: FetchPlaceResponse ->
-                addNewMarkerOnclick(map, response.place.latLng as LatLng)
-            }.addOnFailureListener { exception: Exception ->
-                if (exception is ApiException) {
-                    val statusCode = exception.statusCode
-                }
+        placeClient.fetchPlace(request).addOnSuccessListener { response: FetchPlaceResponse ->
+            addNewMarkerOnclick(map, response.place.latLng as LatLng)
+            response.place.latLng?.let { zoomCameraToSelection(it, 12F) }
+        }.addOnFailureListener { exception: Exception ->
+            if (exception is ApiException) {
+                val statusCode = exception.statusCode
+            }
+        }
+    }
+
+    private fun zoomCameraToSelection(latLng: LatLng, zoom: Float) {
+        if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        latLng.latitude, latLng.longitude
+                    ), zoom
+                )
+            )
+        }
+    }
+
+
+    private fun filter(text: String) {
+        val result: ArrayList<AutocompletePrediction> = arrayListOf()
+        val token = AutocompleteSessionToken.newInstance()
+        val request =
+            FindAutocompletePredictionsRequest.builder().setSessionToken(token).setQuery(text)
+                .build()
+
+        placeClient.findAutocompletePredictions(request)
+            .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
+                result.addAll(response.autocompletePredictions)
+                placeAdapter?.filterList(result)
+            }.addOnFailureListener {
+                return@addOnFailureListener
             }
     }
+
+
 }

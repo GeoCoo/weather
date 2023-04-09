@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import coo.apps.meteoray.R
@@ -80,7 +79,7 @@ class LocationsFragment : BaseFragment() {
         binding.apply {
             this.recycler.setHasFixedSize(true)
             this.recycler.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             this.recycler.addItemDecoration(
                 DividerItemDecoration(
                     activity,

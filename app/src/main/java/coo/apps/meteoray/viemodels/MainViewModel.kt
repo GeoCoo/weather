@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.google.android.gms.maps.model.LatLng
+import coo.apps.meteoray.R
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.locationsDb.LocationsRepository
 import coo.apps.meteoray.models.Limits
@@ -15,9 +15,7 @@ import coo.apps.meteoray.models.Notification
 import coo.apps.meteoray.models.main.MainResponse
 import coo.apps.meteoray.network.controller.LimitController
 import coo.apps.meteoray.network.controller.MainController
-import coo.apps.meteoray.utils.createLocation
 import coo.apps.meteoray.utils.getPlaceNameFromLocation
-import coo.apps.meteoray.utils.isInBoundBox
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,7 +24,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
     private var bottomSheetStateMutable: MutableLiveData<Int> = MutableLiveData()
-
     private var mapSearchMutable: MutableLiveData<Notification> = MutableLiveData()
 
     private var currentLocation: Location? = null
@@ -70,11 +67,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         responseMutable.observe(viewLifecycleOwner, observer)
     }
 
-    fun getPlaceName(): String? {
+    suspend fun getPlaceName(): String {
         val place: Address? = currentLocation?.getPlaceNameFromLocation(getApplication())
-        return if (place?.locality == null) place?.countryName else "${place.locality}, ${place.countryName}"
-            ?: ""
+        return if (place?.featureName == getApplication<Application>().resources.getString(R.string.places_address)) {
+            "${place.locality ?: place.subLocality ?: ""},${place.postalCode},${place.countryName} "
+        } else {
+            "${place?.getAddressLine(0)} "
+        }
     }
+
     suspend fun postLimits() {
         boundsMutable.postValue(limitController.makeLimitRequest())
     }

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentInfoBinding

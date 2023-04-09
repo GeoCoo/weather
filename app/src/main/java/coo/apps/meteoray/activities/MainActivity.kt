@@ -55,20 +55,29 @@ class MainActivity : BaseActivity(), OnClickListener {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
-
-
         navView =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         bottomSheetBehavior =
             BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
-        isOnline(this)
-        setStoredLocations()
-        handleBottomSheet()
-        setBottomSheetListeners()
-        handleDbActions()
-        getLocationToBeStored()
-        observerNavigation()
+        mainInit(this)
 
+    }
+
+    private fun mainInit(context: Context) {
+        if (isOnline(context)) {
+            setStoredLocations()
+            handleBottomSheet()
+            setBottomSheetListeners()
+            handleDbActions()
+            getLocationToBeStored()
+            observerNavigation()
+            handleCoordinates()
+            handleOutOfBoundSearch()
+        } else
+            showNetError()
+    }
+
+    private fun handleOutOfBoundSearch() {
         mainViewModel.observeSearchNotification(this) {
             if (it == Notification.FAIL) {
                 Toast(this).setNotificationToast(
@@ -78,19 +87,13 @@ class MainActivity : BaseActivity(), OnClickListener {
                 )
             }
         }
-
     }
-
-
-
-
-
-
-
 
     private fun handleBottomSheet() {
         mainViewModel.observeBottomSheetState(this) { bottomSheetState ->
-            bottomSheetBehavior.state = bottomSheetState
+            if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED else
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
 
@@ -120,9 +123,6 @@ class MainActivity : BaseActivity(), OnClickListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
-
 
     private fun handleLocation(
         action: DbAction,
@@ -195,7 +195,6 @@ class MainActivity : BaseActivity(), OnClickListener {
 
             } else {
                 setLocationNotificationDialog()
-//
             }
         } else {
             requestPermissions()
@@ -263,24 +262,10 @@ class MainActivity : BaseActivity(), OnClickListener {
     }
 
 
-    private fun isOnline(context: Context) {
+    private fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
-        if (activeNetwork != null) {
-            // connected to the internet
-            when (activeNetwork.type) {
-                ConnectivityManager.TYPE_WIFI -> {}
-                ConnectivityManager.TYPE_MOBILE -> {}
-                else -> {}
-            }
-        } else {
-            Toast(this).setNotificationToast(
-                R.string.location_toast_error_title,
-                R.string.connection_error,
-                R.color.color_danger,
-                this
-            )
-        }
+        return activeNetwork != null
     }
 
     private fun handleDbActions() {
@@ -333,4 +318,22 @@ class MainActivity : BaseActivity(), OnClickListener {
         dialog.show()
     }
 
+    private fun handleCoordinates() {
+        mainViewModel.observeCoordinates(this) { location ->
+            lifecycleScope.launch {
+                val response = mainViewModel.makeMainRequest(location, phoneLanguage)
+                mainViewModel.postMainResponse(response)
+            }
+        }
+    }
+
+
+    private fun showNetError() {
+        Toast(this).setNotificationToast(
+            R.string.location_toast_error_title,
+            R.string.connection_error,
+            R.color.color_danger,
+            this
+        )
+    }
 }
