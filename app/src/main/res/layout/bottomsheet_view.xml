@@ -5,27 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="0dp"
-    app:cardCornerRadius="8dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_margin="24dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="65dp">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
 
         <TextView
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spf_pro_regular"
+            android:padding="25dp"
             android:text="@string/view_btn"
             android:textColor="@color/cursor_blue"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,9 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spf_pro_regular"
+            android:padding="25dp"
             android:text="@string/save_btn"
             android:textColor="@color/cursor_blue"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

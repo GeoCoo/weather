@@ -3,8 +3,12 @@ package coo.apps.meteoray.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.Fade
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,23 +26,25 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.*
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
 import coo.apps.meteoray.adapters.PlacesResultAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentMapsBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
+import coo.apps.meteoray.models.DbAction
+import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
 import coo.apps.meteoray.utils.*
 import kotlinx.coroutines.launch
 
 
-open class MapsFragment : BaseFragment(), OnMapReadyCallback {
+open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
 
     private lateinit var bounds: LatLngBounds
     private lateinit var positionName: String
     private lateinit var placeClient: PlacesClient
+    private lateinit var singleLocation: LocationEntity
 
     private var placeAdapter: PlacesResultAdapter? = null
     private var _binding: FragmentMapsBinding? = null
@@ -52,6 +58,9 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
         clearSearch()
         handleTextWatcher()
         handleSearchPlaces()
+
+        setBottomSheetListeners()
+        toggleActionView(false)
     }
 
 
@@ -84,7 +93,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
                 addNewMarkerOnclick(map, it)
             }
             this.setOnMapClickListener {
-                mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
+                toggleActionView(false)
             }
         }
     }
@@ -96,18 +105,17 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             lifecycleScope.launch {
                 positionName = mainViewModel.getPlaceName()
             }
-            dataBaseViewModel.postSingleLocation(
-                LocationEntity(
-                    locationName = positionName,
-                    locationLat = latLng.latitude,
-                    locationLon = latLng.longitude,
-                    uid = 0
-                )
+            singleLocation = LocationEntity(
+                locationName = positionName,
+                locationLat = latLng.latitude,
+                locationLon = latLng.longitude,
+                uid = 0
             )
-            mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+            dataBaseViewModel.postSingleLocation(singleLocation)
+            toggleActionView(true)
             marker = googleMap?.addMarker(MarkerOptions().position(latLng).title(positionName))
         } else {
-            mainViewModel.postBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
+            toggleActionView(false)
             mainViewModel.postSearchNotification(Notification.FAIL)
         }
 
@@ -162,7 +170,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             binding.searchIcon.setImageDrawable(context?.getDrawable(R.drawable.ic_search))
             binding.clear.visibility = View.GONE
             if (binding.placesRecycler.visibility == View.VISIBLE) {
-                binding.placesRecycler.visibility = View.GONE;
+                binding.placesRecycler.visibility = View.GONE
             }
         } else {
             marker?.remove()
@@ -170,7 +178,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             binding.clear.visibility = View.VISIBLE
 
             if (binding.placesRecycler.visibility == View.GONE) {
-                binding.placesRecycler.visibility = View.VISIBLE;
+                binding.placesRecycler.visibility = View.VISIBLE
             }
         }
     }
@@ -247,5 +255,29 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback {
             }
     }
 
+    private fun setBottomSheetListeners() {
+        binding.view.setOnClickListener(this)
+        binding.save.setOnClickListener(this)
+    }
 
+    override fun onClick(view: View?) {
+        when (view) {
+            binding.view -> {
+                navigation.postNavigation(NavigationDest.HOME)
+            }
+            binding.save -> {
+                dataBaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
+            }
+        }
+        toggleActionView(false)
+
+    }
+
+    private fun toggleActionView(show: Boolean) {
+        val transition: Transition = Fade()
+        transition.duration = 600
+        transition.addTarget(binding.actionsView)
+        TransitionManager.beginDelayedTransition(binding.anchor, transition)
+        binding.actionsView.visibility = if (show) View.VISIBLE else View.GONE
+    }
 }

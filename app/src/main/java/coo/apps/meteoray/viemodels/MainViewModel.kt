@@ -23,7 +23,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var locationCoordinatesLiveData: MutableLiveData<Location?> = MutableLiveData()
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
-    private var bottomSheetStateMutable: MutableLiveData<Int> = MutableLiveData()
     private var mapSearchMutable: MutableLiveData<Notification> = MutableLiveData()
 
     private var currentLocation: Location? = null
@@ -37,15 +36,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun postSearchNotification(notification: Notification) {
         mapSearchMutable.postValue(notification)
     }
-
-    fun observeBottomSheetState(owner: LifecycleOwner, observer: Observer<Int>) {
-        bottomSheetStateMutable.observe(owner, observer)
-    }
-
-    fun postBottomSheetState(state: Int) {
-        bottomSheetStateMutable.postValue(state)
-    }
-
 
     fun observeCoordinates(owner: LifecycleOwner, observer: Observer<Location?>) {
         locationCoordinatesLiveData.observe(owner, observer)

@@ -11,12 +11,9 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
-import android.view.View
-import android.view.View.OnClickListener
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +21,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
@@ -36,13 +32,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class MainActivity : BaseActivity(), OnClickListener {
+class MainActivity : BaseActivity() {
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+
     private lateinit var navView: NavHostFragment
     private lateinit var singleLocation: LocationEntity
 
@@ -57,24 +53,20 @@ class MainActivity : BaseActivity(), OnClickListener {
         getLocation()
         navView =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        bottomSheetBehavior =
-            BottomSheetBehavior.from<CardView>(binding.bottomSheetView.actionsView)
-        mainInit(this)
+
+        if (!isOnline(this)) showNetError()
+        mainInit()
 
     }
 
-    private fun mainInit(context: Context) {
-        if (isOnline(context)) {
-            setStoredLocations()
-            handleBottomSheet()
-            setBottomSheetListeners()
-            handleDbActions()
-            getLocationToBeStored()
-            observerNavigation()
-            handleCoordinates()
-            handleOutOfBoundSearch()
-        } else
-            showNetError()
+    private fun mainInit() {
+        setStoredLocations()
+        getLocationToBeStored()
+        handleDbActions()
+        observerNavigation()
+        handleCoordinates()
+        handleOutOfBoundSearch()
+
     }
 
     private fun handleOutOfBoundSearch() {
@@ -85,31 +77,6 @@ class MainActivity : BaseActivity(), OnClickListener {
                     R.string.location_out_of_box,
                     R.color.color_danger, this
                 )
-            }
-        }
-    }
-
-    private fun handleBottomSheet() {
-        mainViewModel.observeBottomSheetState(this) { bottomSheetState ->
-            if (bottomSheetState == BottomSheetBehavior.STATE_COLLAPSED)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED else
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-    }
-
-    private fun setBottomSheetListeners() {
-        binding.bottomSheetView.view.setOnClickListener(this)
-        binding.bottomSheetView.save.setOnClickListener(this)
-    }
-
-    override fun onClick(view: View?) {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        when (view) {
-            binding.bottomSheetView.view -> {
-                navigation.postNavigation(NavigationDest.HOME)
-            }
-            binding.bottomSheetView.save -> {
-                databaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
             }
         }
     }
@@ -294,7 +261,7 @@ class MainActivity : BaseActivity(), OnClickListener {
     }
 
     private fun setStoredLocations() {
-        lifecycleScope.launch() {
+        lifecycleScope.launch {
             delay(500)
             databaseViewModel.postLocations(locationRepository.getAllLocations())
         }
