@@ -1,4 +1,4 @@
-package coo.apps.meteoray.base
+package coo.apps.meteoray.utils
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -332,7 +332,7 @@ class SwipeActionsView @JvmOverloads constructor(
         constructor(@NonNull c: Context, attrs: AttributeSet?) : super(c, attrs) {
             val a = c.obtainStyledAttributes(attrs, R.styleable.SwipeActionsView_Layout)
             revealMode =
-                a.getInt(R.styleable.SwipeActionsView_Layout_swReveal, Companion.REVEAL_NONE)
+                a.getInt(R.styleable.SwipeActionsView_Layout_swReveal, REVEAL_NONE)
             when (revealMode) {
                 REVEAL_START -> gravity = Gravity.START
                 REVEAL_END -> gravity = Gravity.END

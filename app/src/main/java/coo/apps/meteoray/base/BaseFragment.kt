@@ -22,6 +22,7 @@ abstract class BaseFragment : Fragment() {
     protected val mainViewModel: MainViewModel by sharedViewModel()
     protected val dataBaseViewModel: DatabaseViewModel by sharedViewModel()
     protected val navigation: NavigationViewModel by sharedViewModel()
+    protected val locationRepository: LocationsRepository by inject()
     protected lateinit var actionBar: ActionBar
 
     var navView: NavHostFragment? = null

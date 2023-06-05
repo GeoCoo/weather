@@ -24,10 +24,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
     private var mapSearchMutable: MutableLiveData<Notification> = MutableLiveData()
+     val locationsMutable: MutableLiveData<List<LocationEntity?>> = MutableLiveData()
+    private val viewPagerPositionMutable: MutableLiveData<Int> = MutableLiveData()
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
+
 
     fun observeSearchNotification(owner: LifecycleOwner, observer: Observer<Notification>) {
         mapSearchMutable.observe(owner, observer)
@@ -74,10 +77,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         boundsMutable.observe(lifecycleOwner, observer)
     }
 
-
     fun getSingleLocation(locationRepository: LocationsRepository, id: Int) =
         locationRepository.getSingleLocation(id)
 
     fun deleteLocation(locationRepository: LocationsRepository, locationEntity: LocationEntity) =
         locationRepository.deleteLocation(locationEntity)
+
+
+    fun postPagerPosition(position: Int) {
+        viewPagerPositionMutable.postValue(position)
+    }
+
+    fun observePagerPosition(viewLifecycleOwner: LifecycleOwner, observer: Observer<Int>) {
+        viewPagerPositionMutable.observe(viewLifecycleOwner, observer)
+    }
 }

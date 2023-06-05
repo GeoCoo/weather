@@ -28,6 +28,7 @@ import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
+import coo.apps.meteoray.utils.createLocation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,8 +56,32 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
 
         if (!isOnline(this)) showNetError()
+        setHomeDestination()
         mainInit()
+        mainViewModel.observePagerPosition(this) { position ->
+            val location = locationRepository.getAllLocations()[position]
 
+            lifecycleScope.launch {
+                val response =
+                    mainViewModel.makeMainRequest(location?.createLocation(), phoneLanguage)
+                mainViewModel.postMainResponse(response)
+            }
+
+
+        }
+
+
+    }
+
+    private fun setHomeDestination() {
+        val destination =
+            if (locationRepository.getAllLocations()
+                    .isEmpty()
+            ) R.id.navigation_home else R.id.navigation_home_savedLocations
+        val graphInflate = navView.navController.navInflater
+        val navGraph = graphInflate.inflate(R.navigation.mobile_navigation)
+        navGraph.setStartDestination(destination)
+        navView.navController.graph = navGraph
     }
 
     private fun mainInit() {
@@ -293,7 +318,6 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun showNetError() {
         Toast(this).setNotificationToast(

@@ -11,4 +11,7 @@
     <color name="deep_purple">#6200EE</color>
     <color name="info_color">#333333</color>
     <color name="light_gray">#d3d3d3</color>
+    <color name="grey_selected">#808080</color>
+    <color name="grey_unselected">#a7a7a7</color>
+
 </resources>
