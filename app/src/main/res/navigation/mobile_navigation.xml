@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home_savedLocations"
         android:name="coo.apps.meteoray.fragments.HomeFragmentSavedLocations"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home_saved_locations">
+        tools:layout="@layout/location_item_page">
         <action
             android:id="@+id/action_navigation_home_to_navigation_maps"
             app:destination="@id/navigation_maps" />
