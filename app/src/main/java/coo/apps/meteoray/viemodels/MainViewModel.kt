@@ -24,7 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var boundsMutable: MutableLiveData<Limits> = MutableLiveData()
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
     private var mapSearchMutable: MutableLiveData<Notification> = MutableLiveData()
-    private val viewPagerPositionMutable: MutableLiveData<Int> = MutableLiveData()
+    private val viewPagerPositionMutable: MutableLiveData<Int> = MutableLiveData(0)
 
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }

@@ -42,7 +42,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun handleLocations(locations: List<LocationEntity?>) {
-        mainViewModel.postPagerPosition(pagePosition)
         binding.indicator.visibility = View.VISIBLE
         binding.errorView.error.visibility = View.GONE
 
@@ -52,52 +51,53 @@ class HomeFragment : BaseFragment() {
 
         mainViewModel.observePagerPosition(viewLifecycleOwner) { position ->
             binding.indicator.getTabAt(position)?.setIcon(R.drawable.dot_selected)
-        }
 
-        binding.forecastView.setOnTouchListener(object : OnSwipeTouchListener() {
-            override fun onSwipeLeft() {
-                if (pagePosition in 0 until locations.size - 1) {
-                    pagePosition += 1
-                    mainViewModel.postPagerPosition(pagePosition)
-                    binding.indicator.getTabAt(pagePosition - 1)
-                        ?.setIcon(R.drawable.dot_unselected)
 
+            binding.forecastView.setOnTouchListener(object : OnSwipeTouchListener() {
+                override fun onSwipeLeft() {
+                    if (pagePosition in 0 until locations.size - 1) {
+                        pagePosition += 1
+                        mainViewModel.postPagerPosition(pagePosition)
+                        binding.indicator.getTabAt(pagePosition - 1)
+                            ?.setIcon(R.drawable.dot_unselected)
+
+                    }
+                }
+
+                override fun onSwipeRight() {
+                    if (pagePosition in 1 until locations.size) {
+                        pagePosition -= 1
+                        mainViewModel.postPagerPosition(pagePosition)
+                        binding.indicator.getTabAt(pagePosition + 1)
+                            ?.setIcon(R.drawable.dot_unselected)
+
+                    }
                 }
             }
 
-            override fun onSwipeRight() {
-                if (pagePosition in 1 until locations.size) {
-                    pagePosition -= 1
-                    mainViewModel.postPagerPosition(pagePosition)
-                    binding.indicator.getTabAt(pagePosition + 1)
-                        ?.setIcon(R.drawable.dot_unselected)
+            )
 
-                }
+            mainViewModel.observeMainResponse(viewLifecycleOwner) {
+                if (it != null) handleRequestView(it, position)
             }
-        }
-
-        )
-        mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            if (it != null) handleRequestView(it)
-
         }
     }
 
     private fun handleNoLocations() {
         binding.indicator.visibility = View.GONE
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            if (it != null) handleRequestView(it) else setErrorView()
+            if (it != null) handleRequestView(it, null) else setErrorView()
 
         }
     }
 
-    private fun handleRequestView(response: MainResponse) {
+    private fun handleRequestView(response: MainResponse, position: Int?) {
         binding.apply {
             this.mainView.main.visibility = View.VISIBLE
             this.errorView.error.visibility = View.GONE
         }
         setRecycler()
-        setUpCurrent(response)
+        setUpCurrent(response, position)
         binding.mainView.toggle.check(R.id.hourly)
         initTodayRecycler(response.dayTable)
     }
@@ -111,15 +111,14 @@ class HomeFragment : BaseFragment() {
     }
 
 
-    private fun setUpCurrent(response: MainResponse) {
+    private fun setUpCurrent(response: MainResponse, position: Int?) {
         binding.apply {
             forecastView.background = resources.getDrawable(getBg(response.current.bgclass))
             val weatherIcon = response.current.icon.let { getIcon(it) }
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
             lifecycleScope.launch {
-                mainView.placeTxt.text = if (locationRepository.getAllLocations()
-                        .isEmpty()
-                ) mainViewModel.getPlaceName() else locationRepository.getAllLocations()[pagePosition]?.locationName
+                mainView.placeTxt.text = if (position == null)
+                    mainViewModel.getPlaceName() else locationRepository.getAllLocations()[position]?.locationName
             }
 
             if (getSharedPref("fahreneit")) {

@@ -32,8 +32,9 @@ class LocationsFragment : BaseFragment() {
         dataBaseViewModel.postDbAction(item)
     }
 
-    private var onClickLocation: (LocationEntity) -> Unit = { location ->
-        mainViewModel.postCoordinates(location.createLocation())
+    private var onClickLocation: (Pair<LocationEntity,Int>) -> Unit = { location ->
+        mainViewModel.postCoordinates(location.first.createLocation())
+        mainViewModel.postPagerPosition(location.second)
         navigation.postNavigation(NavigationDest.HOME)
     }
 

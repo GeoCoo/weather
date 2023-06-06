@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
@@ -84,3 +85,5 @@ fun Activity.openKeyboard(ediText: EditText) {
         this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.showSoftInput(ediText, InputMethodManager.SHOW_IMPLICIT)
 }
+
+fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }

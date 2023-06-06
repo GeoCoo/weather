@@ -11,7 +11,7 @@ import coo.apps.meteoray.models.DbAction
 class LocationsAdapter(
     private val list: List<LocationEntity?>,
     val dbAction: (Pair<DbAction, LocationEntity>) -> Unit,
-    var onClickLocation: (LocationEntity) -> Unit
+    var onClickLocation: (Pair<LocationEntity, Int>) -> Unit
 ) :
     RecyclerView.Adapter<LocationsAdapter.LocationsViewHolder>() {
 
@@ -50,7 +50,7 @@ class LocationsAdapter(
                     dbAction.invoke(Pair(DbAction.DELETE, item))
                 }
                 this.locationItem.setOnClickListener {
-                    onClickLocation.invoke(item)
+                    onClickLocation.invoke(Pair(item, position))
                 }
             }
         }
