@@ -252,6 +252,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
         val token = AutocompleteSessionToken.newInstance()
         val request =
             FindAutocompletePredictionsRequest.builder().setSessionToken(token).setQuery(text)
+                .setCountry("GR")
                 .build()
 
         placeClient.findAutocompletePredictions(request)
