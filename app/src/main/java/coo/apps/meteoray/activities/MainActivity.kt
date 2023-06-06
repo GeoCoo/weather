@@ -56,38 +56,29 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
 
         if (!isOnline(this)) showNetError()
-        setHomeDestination()
         mainInit()
-        mainViewModel.observePagerPosition(this) { position ->
-            val location = locationRepository.getAllLocations()[position]
-
-            lifecycleScope.launch {
-                val response =
-                    mainViewModel.makeMainRequest(location?.createLocation(), phoneLanguage)
-                mainViewModel.postMainResponse(response)
-            }
-
-
-        }
-
+        handlePager()
 
     }
 
-    private fun setHomeDestination() {
-        val destination =
-            if (locationRepository.getAllLocations()
-                    .isEmpty()
-            ) R.id.navigation_home else R.id.navigation_home_savedLocations
-        val graphInflate = navView.navController.navInflater
-        val navGraph = graphInflate.inflate(R.navigation.mobile_navigation)
-        navGraph.setStartDestination(destination)
-        navView.navController.graph = navGraph
+    private fun handlePager() {
+        mainViewModel.observePagerPosition(this) { position ->
+            if (locationRepository.getAllLocations().isNotEmpty()) {
+                val location = locationRepository.getAllLocations()[position]
+                lifecycleScope.launch {
+                    val response =
+                        mainViewModel.makeMainRequest(location?.createLocation(), phoneLanguage)
+                    mainViewModel.postMainResponse(response)
+                }
+            }
+        }
     }
 
     private fun mainInit() {
         setStoredLocations()
         getLocationToBeStored()
         handleDbActions()
+        getLocation()
         observerNavigation()
         handleCoordinates()
         handleOutOfBoundSearch()
@@ -253,7 +244,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
     private fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
@@ -269,6 +259,7 @@ class MainActivity : BaseActivity() {
                 }
                 DbAction.DELETE -> {
                     deleteLocation(location)
+                    if (locationRepository.getAllLocations().isEmpty()) getLocation()
                 }
 
                 DbAction.EDIT -> {

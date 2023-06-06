@@ -6,20 +6,6 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/navigation_home_savedLocations"
-        android:name="coo.apps.meteoray.fragments.HomeFragmentSavedLocations"
-        android:label="@string/title_home"
-        tools:layout="@layout/location_item_page">
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_maps"
-            app:destination="@id/navigation_maps" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_settings"
-            app:destination="@id/navigation_settings" />
-    </fragment>
-
-
-    <fragment
         android:id="@+id/navigation_home"
         android:name="coo.apps.meteoray.fragments.HomeFragment"
         android:label="@string/title_home"

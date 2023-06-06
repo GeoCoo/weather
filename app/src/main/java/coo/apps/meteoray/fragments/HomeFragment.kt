@@ -12,8 +12,14 @@ import coo.apps.meteoray.adapters.DailyRecyclerAdapter
 import coo.apps.meteoray.adapters.TodayRecyclerAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentHomeBinding
+import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.NavigationDest
-import coo.apps.meteoray.models.main.*
+import coo.apps.meteoray.models.main.DayTable
+import coo.apps.meteoray.models.main.MainResponse
+import coo.apps.meteoray.models.main.Overview
+import coo.apps.meteoray.models.main.getBg
+import coo.apps.meteoray.models.main.getIcon
+import coo.apps.meteoray.utils.OnSwipeTouchListener
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
@@ -23,16 +29,66 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
+    var pagePosition: Int = 0
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
+        val locations = locationRepository.getAllLocations()
+        if (locations.isEmpty()) handleNoLocations() else handleLocations(locations)
+
+        navigateToMaps()
+        navigateToSettings()
+    }
+
+    private fun handleLocations(locations: List<LocationEntity?>) {
+        mainViewModel.postPagerPosition(pagePosition)
+        binding.indicator.visibility = View.VISIBLE
+        binding.errorView.error.visibility = View.GONE
+
+        repeat(locations.size) {
+            binding.indicator.addTab(binding.indicator.newTab().setIcon(R.drawable.dot_unselected))
+        }
+
+        mainViewModel.observePagerPosition(viewLifecycleOwner) { position ->
+            binding.indicator.getTabAt(position)?.setIcon(R.drawable.dot_selected)
+        }
+
+        binding.forecastView.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeLeft() {
+                if (pagePosition in 0 until locations.size - 1) {
+                    pagePosition += 1
+                    mainViewModel.postPagerPosition(pagePosition)
+                    binding.indicator.getTabAt(pagePosition - 1)
+                        ?.setIcon(R.drawable.dot_unselected)
+
+                }
+            }
+
+            override fun onSwipeRight() {
+                if (pagePosition in 1 until locations.size) {
+                    pagePosition -= 1
+                    mainViewModel.postPagerPosition(pagePosition)
+                    binding.indicator.getTabAt(pagePosition + 1)
+                        ?.setIcon(R.drawable.dot_unselected)
+
+                }
+            }
+        }
+
+        )
+        mainViewModel.observeMainResponse(viewLifecycleOwner) {
+            if (it != null) handleRequestView(it)
+
+        }
+    }
+
+    private fun handleNoLocations() {
+        binding.indicator.visibility = View.GONE
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
             if (it != null) handleRequestView(it) else setErrorView()
 
         }
-        navigateToMaps()
-        navigateToSettings()
     }
 
     private fun handleRequestView(response: MainResponse) {
@@ -60,7 +116,9 @@ class HomeFragment : BaseFragment() {
             val weatherIcon = response.current.icon.let { getIcon(it) }
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
             lifecycleScope.launch {
-                mainView.placeTxt.text = mainViewModel.getPlaceName()
+                mainView.placeTxt.text = if (locationRepository.getAllLocations()
+                        .isEmpty()
+                ) mainViewModel.getPlaceName() else locationRepository.getAllLocations()[pagePosition]?.locationName
             }
 
             if (getSharedPref("fahreneit")) {
