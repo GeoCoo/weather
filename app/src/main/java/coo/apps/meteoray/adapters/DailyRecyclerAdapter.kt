@@ -39,9 +39,13 @@ class DailyRecyclerAdapter(private val list: List<Overview>) :
         fun bind(item: Overview, position: Int) {
             binding.apply {
                 this.dateTime.text =
-                    if (position != 0) item.date?.convertDate() else this@TodayViewHolder.itemView.context.getString(R.string.hourly)
-                this.highest.text = item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
-                this.lowest.text = item.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                    if (position != 0) item.date?.convertDate() else this@TodayViewHolder.itemView.context.getString(
+                        R.string.hourly
+                    )
+                this.highest.text =
+                    item.tempmax + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                this.lowest.text =
+                    item.tempmin + this@TodayViewHolder.itemView.context.getString(R.string.celcius_symbol)
                 this.icon.setImageResource(getSmallIcons(item.icon))
                 this.windDirection.text = item.windspeed.toString() + item.winddirname
                 this.windIndicator.rotation = item.winddir?.toFloat()!!

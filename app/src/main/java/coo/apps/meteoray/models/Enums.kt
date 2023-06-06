@@ -24,14 +24,14 @@ enum class Icon(var type: String) {
     sunny("sunny")
 }
 
-enum class NavigationDest{
-    HOME,MAPS,SETTINGS,LOCATIONS,INFO
+enum class NavigationDest {
+    HOME, MAPS, SETTINGS, LOCATIONS, INFO
 }
 
-enum class Notification{
-    FAIL,SUCCESS
+enum class Notification {
+    FAIL, SUCCESS
 }
 
-enum class DbAction{
-    EDIT,DELETE,SAVE
+enum class DbAction {
+    EDIT, DELETE, SAVE
 }

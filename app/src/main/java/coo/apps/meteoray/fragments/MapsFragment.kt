@@ -25,7 +25,11 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.*
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 import coo.apps.meteoray.BuildConfig
 import coo.apps.meteoray.R
 import coo.apps.meteoray.adapters.PlacesResultAdapter
@@ -35,7 +39,11 @@ import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
-import coo.apps.meteoray.utils.*
+import coo.apps.meteoray.utils.checkIfIsInBox
+import coo.apps.meteoray.utils.createBoundBox
+import coo.apps.meteoray.utils.createLocation
+import coo.apps.meteoray.utils.createRect
+import coo.apps.meteoray.utils.dismissKeyboard
 import kotlinx.coroutines.launch
 
 
@@ -265,6 +273,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
             binding.view -> {
                 navigation.postNavigation(NavigationDest.HOME)
             }
+
             binding.save -> {
                 dataBaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
             }

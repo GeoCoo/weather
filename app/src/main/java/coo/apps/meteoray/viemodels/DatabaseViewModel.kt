@@ -13,7 +13,8 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
 
     private val locationListsMutable: MutableLiveData<List<LocationEntity?>> = MutableLiveData()
     private val locationMutable: MutableLiveData<LocationEntity> = MutableLiveData()
-    private val dbActionsMutable: MutableLiveData<Pair<DbAction, LocationEntity>> = MutableLiveData()
+    private val dbActionsMutable: MutableLiveData<Pair<DbAction, LocationEntity>> =
+        MutableLiveData()
 
     fun postDbAction(item: Pair<DbAction, LocationEntity>) {
         dbActionsMutable.postValue(item)
@@ -44,11 +45,16 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
     }
 
 
-    fun handleLocationActions(action: DbAction, locationRepository: LocationsRepository, location: LocationEntity?) {
+    fun handleLocationActions(
+        action: DbAction,
+        locationRepository: LocationsRepository,
+        location: LocationEntity?
+    ) {
         when (action) {
             DbAction.SAVE -> {
                 locationRepository.insertNewLocation(location)
             }
+
             DbAction.EDIT -> {
                 locationRepository.updateLocation(location)
             }

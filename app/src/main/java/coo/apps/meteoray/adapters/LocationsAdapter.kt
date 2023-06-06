@@ -1,8 +1,6 @@
 package coo.apps.meteoray.adapters
 
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coo.apps.meteoray.databinding.LocationRecyclerItemBinding

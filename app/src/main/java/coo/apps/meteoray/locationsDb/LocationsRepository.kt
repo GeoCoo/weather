@@ -11,7 +11,7 @@ class LocationsRepository(application: Application) {
         return db.getAll()
     }
 
-    fun getSingleLocation(id:Int):LocationEntity{
+    fun getSingleLocation(id: Int): LocationEntity {
         return db.getSingleLocation(id)
     }
 

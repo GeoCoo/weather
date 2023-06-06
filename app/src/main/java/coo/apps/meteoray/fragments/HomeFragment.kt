@@ -161,6 +161,7 @@ class HomeFragment : BaseFragment() {
                 R.id.daily -> {
                     initDailyRecycler(response.overview)
                 }
+
                 R.id.hourly -> {
                     initTodayRecycler(response.dayTable)
                 }

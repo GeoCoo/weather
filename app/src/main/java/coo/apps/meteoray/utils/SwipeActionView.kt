@@ -28,7 +28,7 @@ class SwipeActionsView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr),
     GestureDetector.OnGestureListener,
     Animator.AnimatorListener,
-    ValueAnimator.AnimatorUpdateListener{
+    ValueAnimator.AnimatorUpdateListener {
 
     @IntDef(STATE_CLOSED, STATE_OPEN_START, STATE_OPEN_END)
     @Retention(AnnotationRetention.SOURCE)
@@ -167,6 +167,7 @@ class SwipeActionsView @JvmOverloads constructor(
                 touchX = event.x
                 return true
             }
+
             MotionEvent.ACTION_MOVE -> {
                 moveX = event.x - touchX
                 if (abs(moveX) > ViewConfiguration.get(context).scaledTouchSlop) {
@@ -183,6 +184,7 @@ class SwipeActionsView @JvmOverloads constructor(
                 }
                 return true
             }
+
             MotionEvent.ACTION_UP,
             MotionEvent.ACTION_CANCEL -> {
                 stopTracking()
@@ -201,9 +203,11 @@ class SwipeActionsView @JvmOverloads constructor(
                 dragDist = 0F
                 dragTouchX = ev.x
             }
+
             MotionEvent.ACTION_MOVE -> {
                 dragDist = abs(ev.x - dragTouchX)
             }
+
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 dragDist = 0F
             }
@@ -295,11 +299,13 @@ class SwipeActionsView @JvmOverloads constructor(
                     duration = ((abs(startValue) / endMoveDistance.toFloat()) * duration).toInt()
                 }
             }
+
             STATE_OPEN_END -> {
                 startValue = mainView?.translationX ?: 0F
                 endValue = -endMoveDistance.toFloat()
                 duration = (abs(startValue) / endMoveDistance * duration).toInt()
             }
+
             STATE_OPEN_START -> {
                 startValue = mainView?.translationX ?: 0F
                 endValue = startMoveDistance.toFloat()
@@ -407,7 +413,8 @@ class SwipeActionsView @JvmOverloads constructor(
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
         val translation = animation.animatedValue as Float
-        applyTranslationInner(translation)    }
+        applyTranslationInner(translation)
+    }
 
     override fun onAnimationStart(animation: Animator) = Unit
 

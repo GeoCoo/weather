@@ -61,9 +61,11 @@ class InfoFragment : BaseFragment() {
             R.string.disclaimer_setting -> {
                 binding.info.text = resources.getString(R.string.disclaimer_info)
             }
+
             R.string.project_funding_setting -> {
                 binding.info.text = resources.getString(R.string.project_funding_info)
             }
+
             R.string.description_setting -> {
                 binding.info.text = resources.getString(R.string.description_info)
             }

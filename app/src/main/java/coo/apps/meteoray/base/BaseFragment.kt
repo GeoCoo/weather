@@ -87,10 +87,12 @@ abstract class BaseFragment : Fragment() {
             "fahreneit" -> {
                 sharedPref.getBoolean(getString(R.string.fahreneit_choice), false)
             }
+
             "bofor" -> {
                 sharedPref.getBoolean(getString(R.string.bofohrt_choice), false)
 
             }
+
             else -> false
         }
     }

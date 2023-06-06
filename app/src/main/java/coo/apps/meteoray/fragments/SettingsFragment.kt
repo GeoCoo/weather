@@ -90,14 +90,17 @@ class SettingsFragment : BaseFragment(), OnClickListener {
             binding.locationsCl -> {
                 navigation.postNavigation(NavigationDest.LOCATIONS)
             }
+
             binding.descriptionCl -> {
                 navigation.postNavigation(NavigationDest.INFO)
                 navigation.postDestinationNav(R.string.description_setting)
             }
+
             binding.projectFundingCl -> {
                 navigation.postNavigation(NavigationDest.INFO)
                 navigation.postDestinationNav(R.string.project_funding_setting)
             }
+
             binding.disclaimerCL -> {
                 navigation.postNavigation(NavigationDest.INFO)
                 navigation.postDestinationNav(R.string.disclaimer_setting)

@@ -3,26 +3,21 @@ package coo.apps.meteoray.base
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import coo.apps.meteoray.R
 import coo.apps.meteoray.activities.MainActivity
-import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.locationsDb.LocationsRepository
-import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.viemodels.DatabaseViewModel
 import coo.apps.meteoray.viemodels.MainViewModel
 import coo.apps.meteoray.viemodels.NavigationViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import java.util.Locale
 
 open class BaseActivity : AppCompatActivity() {
 

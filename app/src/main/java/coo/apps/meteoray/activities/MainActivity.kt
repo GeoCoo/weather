@@ -103,6 +103,7 @@ class MainActivity : BaseActivity() {
                 navView.findNavController().popBackStack()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -121,6 +122,7 @@ class MainActivity : BaseActivity() {
                     locationLat = locationEntity.locationLat
                 )
             }
+
             DbAction.SAVE -> {
                 LocationEntity(
                     locationName = editTextInput,
@@ -128,6 +130,7 @@ class MainActivity : BaseActivity() {
                     locationLat = locationEntity.locationLat
                 )
             }
+
             else -> {
                 null
             }
@@ -147,18 +150,23 @@ class MainActivity : BaseActivity() {
                 NavigationDest.HOME -> {
                     navView.findNavController().navigate(R.id.navigation_home)
                 }
+
                 NavigationDest.MAPS -> {
                     navView.findNavController().navigate(R.id.navigation_maps)
                 }
+
                 NavigationDest.LOCATIONS -> {
                     navView.findNavController().navigate(R.id.navigation_locations)
                 }
+
                 NavigationDest.SETTINGS -> {
                     navView.findNavController().navigate(R.id.navigation_settings)
                 }
+
                 NavigationDest.INFO -> {
                     navView.findNavController().navigate(R.id.navigation_info)
                 }
+
                 null -> {}
             }
         }
@@ -257,6 +265,7 @@ class MainActivity : BaseActivity() {
                 DbAction.SAVE -> {
                     handleAction(DbAction.SAVE, location)
                 }
+
                 DbAction.DELETE -> {
                     deleteLocation(location)
                     if (locationRepository.getAllLocations().isEmpty()) getLocation()
