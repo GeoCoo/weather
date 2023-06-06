@@ -98,7 +98,8 @@ class HomeFragment : BaseFragment() {
         }
         setRecycler()
         setUpCurrent(response)
-        initDailyRecycler(response.overview)
+        binding.mainView.toggle.check(R.id.hourly)
+        initTodayRecycler(response.dayTable)
     }
 
 
@@ -112,7 +113,7 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpCurrent(response: MainResponse) {
         binding.apply {
-            forecastView.background = resources.getDrawable(getBg(response.current.bgclass!!))
+            forecastView.background = resources.getDrawable(getBg(response.current.bgclass))
             val weatherIcon = response.current.icon.let { getIcon(it) }
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
             lifecycleScope.launch {
