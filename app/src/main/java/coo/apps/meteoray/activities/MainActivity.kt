@@ -11,6 +11,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +21,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
@@ -177,7 +182,14 @@ class MainActivity : BaseActivity() {
     private fun getLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                mFusedLocationClient.getCurrentLocation(
+                    LocationRequest.PRIORITY_HIGH_ACCURACY,
+                    object : CancellationToken() {
+                        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken =
+                            CancellationTokenSource().token
+
+                        override fun isCancellationRequested(): Boolean = false
+                    }).addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
                         mainViewModel.postCoordinates(location)
@@ -312,6 +324,7 @@ class MainActivity : BaseActivity() {
 
     private fun handleCoordinates() {
         mainViewModel.observeCoordinates(this) { location ->
+            binding.progressBar.visibility = if (location == null) View.VISIBLE else View.GONE
             lifecycleScope.launch {
                 val response = mainViewModel.makeMainRequest(location, phoneLanguage)
                 mainViewModel.postMainResponse(response)

@@ -7,8 +7,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
@@ -42,7 +40,7 @@ fun LatLngBounds.createRect(color: Int): PolygonOptions {
 }
 
 
-suspend fun Location.getPlaceNameFromLocation(context: Context): Address? {
+fun Location.getPlaceNameFromLocation(context: Context): Address? {
     val geocoder = Geocoder(context)
     val addresses = geocoder.getFromLocation(this.latitude, this.longitude, 1)
     return addresses?.get(0)
@@ -79,11 +77,3 @@ fun Activity.dismissKeyboard() {
     )
 }
 
-
-fun Activity.openKeyboard(ediText: EditText) {
-    val imm: InputMethodManager? =
-        this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-    imm?.showSoftInput(ediText, InputMethodManager.SHOW_IMPLICIT)
-}
-
-fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }
