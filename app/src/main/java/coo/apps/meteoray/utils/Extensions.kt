@@ -24,10 +24,12 @@ fun LatLng.checkIfIsInBox(limits: Limits?): Boolean? {
     return location.isInBoundBox(limits)
 }
 
-fun Limits.createBoundBox(): LatLngBounds {
+fun Limits?.createBoundBox(): LatLngBounds {
     val builder = LatLngBounds.builder()
-    builder.include(LatLng(this.latmin, this.lonmin))
-    builder.include(LatLng(this.latmax, this.lonmax))
+    if (this != null) {
+        builder.include(LatLng(this.latmin, this.lonmin))
+        builder.include(LatLng(this.latmax, this.lonmax))
+    }
     return builder.build()
 }
 

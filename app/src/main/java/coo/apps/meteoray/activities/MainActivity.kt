@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
@@ -30,6 +29,8 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
+import coo.apps.meteoray.managers.NetworkStatus
+import coo.apps.meteoray.managers.NetworkStatusHelper
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
@@ -48,6 +49,7 @@ class MainActivity : BaseActivity() {
     private lateinit var navView: NavHostFragment
     private lateinit var singleLocation: LocationEntity
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -55,15 +57,31 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getLocation()
+        mainViewModel.observeNetworkStatus(this@MainActivity) {
+            when (it) {
+                NetworkStatus.Available -> {
+                    setFusionProvider()
+                    getLocation()
+                    setNaview()
+                    mainInit()
+                    handlePager()
+                }
+
+                NetworkStatus.Unavailable -> {
+//                    showNetError()
+                }
+            }
+        }
+
+    }
+
+    private fun setNaview() {
         navView =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+    }
 
-        if (!isOnline(this)) showNetError()
-        mainInit()
-        handlePager()
-
+    private fun setFusionProvider() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     private fun handlePager() {
@@ -96,7 +114,9 @@ class MainActivity : BaseActivity() {
                 Toast(this).setNotificationToast(
                     R.string.location_toast_error_title,
                     R.string.location_out_of_box,
-                    R.color.color_danger, this
+                    R.color.color_danger,
+                    this,
+                    Toast.LENGTH_SHORT
                 )
             }
         }
@@ -264,12 +284,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun isOnline(context: Context): Boolean {
-        val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        return activeNetwork != null
-    }
-
     private fun handleDbActions() {
         databaseViewModel.observeDbAction(this) { pair ->
             val (action, location) = pair
@@ -337,7 +351,8 @@ class MainActivity : BaseActivity() {
             R.string.location_toast_error_title,
             R.string.connection_error,
             R.color.color_danger,
-            this
+            this,
+            Toast.LENGTH_SHORT
         )
     }
 }

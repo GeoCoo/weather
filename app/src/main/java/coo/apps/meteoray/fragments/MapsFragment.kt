@@ -10,11 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -43,11 +44,10 @@ import coo.apps.meteoray.utils.checkIfIsInBox
 import coo.apps.meteoray.utils.createBoundBox
 import coo.apps.meteoray.utils.createLocation
 import coo.apps.meteoray.utils.createRect
-import coo.apps.meteoray.utils.dismissKeyboard
 import kotlinx.coroutines.launch
 
 
-open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
+open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallback, OnClickListener {
 
     private lateinit var bounds: LatLngBounds
     private lateinit var positionName: String
@@ -93,38 +93,46 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
             map = this
+            binding.progressBar2.visibility = View.VISIBLE
             setMapSettings(map)
             createBox(map)
             drawBounds(bounds, R.color.color_danger, map)
-            this.setOnMapLongClickListener {
+            map?.setOnMapLongClickListener {
                 binding.searchField.text?.clear()
                 addNewMarkerOnclick(map, it)
             }
-            this.setOnMapClickListener {
+            map?.setOnMapClickListener {
                 toggleActionView(false)
             }
+
+            this.setOnMapLoadedCallback(this@MapsFragment)
         }
     }
 
     private fun addNewMarkerOnclick(googleMap: GoogleMap?, latLng: LatLng) {
-        if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
-            marker?.remove()
-            handleNewLocation(latLng)
-            lifecycleScope.launch {
-                positionName = mainViewModel.getPlaceName()
+        mainViewModel.apply {
+            this.observeBounds(viewLifecycleOwner) { bounds ->
+                if (latLng.checkIfIsInBox(bounds) == true) {
+                    marker?.remove()
+                    handleNewLocation(latLng)
+                    viewModelScope.launch {
+                        positionName = this@apply.getPlaceName()
+                    }
+                    singleLocation = LocationEntity(
+                        locationName = positionName,
+                        locationLat = latLng.latitude,
+                        locationLon = latLng.longitude,
+                        uid = 0
+                    )
+                    dataBaseViewModel.postSingleLocation(singleLocation)
+                    toggleActionView(true)
+                    marker =
+                        googleMap?.addMarker(MarkerOptions().position(latLng).title(positionName))
+                } else {
+                    toggleActionView(false)
+                    this.postSearchNotification(Notification.FAIL)
+                }
             }
-            singleLocation = LocationEntity(
-                locationName = positionName,
-                locationLat = latLng.latitude,
-                locationLon = latLng.longitude,
-                uid = 0
-            )
-            dataBaseViewModel.postSingleLocation(singleLocation)
-            toggleActionView(true)
-            marker = googleMap?.addMarker(MarkerOptions().position(latLng).title(positionName))
-        } else {
-            toggleActionView(false)
-            mainViewModel.postSearchNotification(Notification.FAIL)
         }
 
     }
@@ -151,7 +159,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
             binding.searchField.setText(prediction.getPrimaryText(null).toString())
             getPlaceLatLong(prediction)
             binding.placesRecycler.visibility = View.GONE
-            activity?.dismissKeyboard()
         }
         binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
         (binding.placesRecycler.layoutManager as LinearLayoutManager).stackFromEnd
@@ -235,14 +242,16 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
     }
 
     private fun zoomCameraToSelection(latLng: LatLng, zoom: Float) {
-        if (latLng.checkIfIsInBox(mainViewModel.boundsMutable.value) == true) {
-            map?.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        latLng.latitude, latLng.longitude
-                    ), zoom
+        mainViewModel.observeBounds(viewLifecycleOwner) { bounds ->
+            if (latLng.checkIfIsInBox(bounds) == true) {
+                map?.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            latLng.latitude, latLng.longitude
+                        ), zoom
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -289,5 +298,9 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnClickListener {
         transition.addTarget(binding.actionsView)
         TransitionManager.beginDelayedTransition(binding.anchor, transition)
         binding.actionsView.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onMapLoaded() {
+        binding.progressBar2.visibility = View.GONE
     }
 }

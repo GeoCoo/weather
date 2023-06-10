@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import coo.apps.meteoray.R
 import coo.apps.meteoray.activities.MainActivity
 import coo.apps.meteoray.locationsDb.LocationsRepository
+import coo.apps.meteoray.managers.NetworkStatusHelper
 import coo.apps.meteoray.viemodels.DatabaseViewModel
 import coo.apps.meteoray.viemodels.MainViewModel
 import coo.apps.meteoray.viemodels.NavigationViewModel
@@ -27,7 +28,6 @@ open class BaseActivity : AppCompatActivity() {
     protected val databaseViewModel: DatabaseViewModel by viewModel()
     protected val navigation: NavigationViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.supportActionBar?.hide()
@@ -36,19 +36,21 @@ open class BaseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             mainViewModel.postLimits()
         }
+        NetworkStatusHelper(this@BaseActivity).observe(this) {
+            mainViewModel.postNetworkStatus(it)
+        }
     }
-
 
     private fun getLanguage(): String {
         return Locale.getDefault().language
     }
 
-
     fun Toast.setNotificationToast(
         title: Int,
         message: Int,
         color: Int,
-        activity: AppCompatActivity
+        activity: AppCompatActivity,
+        durationToast: Int
     ) {
         if (activity is MainActivity) {
             val layout = activity.layoutInflater.inflate(
@@ -65,7 +67,7 @@ open class BaseActivity : AppCompatActivity() {
 
             this.apply {
                 setGravity(Gravity.BOTTOM, 0, 40)
-                duration = Toast.LENGTH_LONG
+                duration = durationToast
                 view = layout
                 show()
             }
