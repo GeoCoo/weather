@@ -1,5 +1,6 @@
 package coo.apps.meteoray.utils
 
+import android.app.Activity
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
@@ -8,7 +9,6 @@ import android.location.LocationManager
 import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -80,7 +80,7 @@ fun LocationEntity.createLocation(): Location {
 }
 
 fun Toast.setNotificationToast(
-    title: Int, message: Int, color: Int, activity: AppCompatActivity, durationToast: Int
+    title: Int, message: Int, color: Int, activity: Activity, durationToast: Int
 ) {
     if (activity is MainActivity) {
         val layout = activity.layoutInflater.inflate(

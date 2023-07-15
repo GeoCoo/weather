@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
@@ -44,6 +46,7 @@ import coo.apps.meteoray.utils.checkIfIsInBox
 import coo.apps.meteoray.utils.createBoundBox
 import coo.apps.meteoray.utils.createLocation
 import coo.apps.meteoray.utils.createRect
+import coo.apps.meteoray.utils.setNotificationToast
 import kotlinx.coroutines.launch
 
 
@@ -69,6 +72,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
 
         setBottomSheetListeners()
         toggleActionView(false)
+
     }
 
 
@@ -92,18 +96,28 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
 
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
+            checkConnection.observe(viewLifecycleOwner) { isConnected ->
+                if (isConnected == false) {
+                    noNetToast()
+                    map?.setOnMapClickListener { noNetToast() }
+                    map?.setOnMapLongClickListener { noNetToast() }
+                } else {
+
+                    map?.setOnMapLongClickListener {
+                        binding.searchField.text?.clear()
+                        addNewMarkerOnclick(map, it)
+                    }
+                    map?.setOnMapClickListener {
+                        toggleActionView(false)
+                    }
+                }
+
+            }
             map = this
-//            binding.progressBar2.visibility = View.VISIBLE
             setMapSettings(map)
             createBox(map)
             drawBounds(bounds, R.color.color_danger, map)
-            map?.setOnMapLongClickListener {
-                binding.searchField.text?.clear()
-                addNewMarkerOnclick(map, it)
-            }
-            map?.setOnMapClickListener {
-                toggleActionView(false)
-            }
+
 
             this.setOnMapLoadedCallback(this@MapsFragment)
         }
@@ -300,7 +314,17 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
         binding.actionsView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    override fun onMapLoaded() {
-//        binding.progressBar2.visibility = View.GONE
+    private fun noNetToast() {
+        Toast(requireContext()).setNotificationToast(
+            R.string.location_toast_error_title,
+            R.string.location_out_of_box,
+            R.color.color_danger,
+            activity as FragmentActivity,
+            Toast.LENGTH_SHORT
+        )
     }
+
+    override fun onMapLoaded() {
+    }
+
 }

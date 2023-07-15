@@ -13,7 +13,6 @@ import coo.apps.meteoray.adapters.TodayRecyclerAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentHomeBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
-import coo.apps.meteoray.managers.ConnectionLiveData
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.main.DayTable
 import coo.apps.meteoray.models.main.MainResponse
@@ -31,7 +30,6 @@ class HomeFragment : BaseFragment() {
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
     var pagePosition: Int = 0
-    private val checkConnection by lazy { ConnectionLiveData(requireActivity().application) }
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
@@ -258,7 +256,6 @@ class HomeFragment : BaseFragment() {
             this.progressBar.visibility = View.GONE
             this.mainView.main.visibility = View.GONE
             this.indicator.visibility = View.GONE
-
         }
     }
 

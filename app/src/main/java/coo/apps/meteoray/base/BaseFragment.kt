@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import coo.apps.meteoray.R
 import coo.apps.meteoray.locationsDb.LocationsRepository
+import coo.apps.meteoray.managers.ConnectionLiveData
 import coo.apps.meteoray.viemodels.DatabaseViewModel
 import coo.apps.meteoray.viemodels.MainViewModel
 import coo.apps.meteoray.viemodels.NavigationViewModel
@@ -24,6 +25,7 @@ abstract class BaseFragment : Fragment() {
     protected val navigation: NavigationViewModel by sharedViewModel()
     protected val locationRepository: LocationsRepository by inject()
     protected lateinit var actionBar: ActionBar
+    protected val checkConnection by lazy { ConnectionLiveData(requireActivity().application) }
 
     var navView: NavHostFragment? = null
 
@@ -49,18 +51,6 @@ abstract class BaseFragment : Fragment() {
             }
         }
         initLayout(view)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
 
