@@ -19,7 +19,7 @@
 
     <string name="location_out_of_box">The location you have chose is out of the supported area</string>
     <string name="location_toast_error_title">Error</string>
-    <string name="connection_error">The internet connection is lost.</string>
+    <string name="connection_error">There is no internet connection at the moment, please connect to the internet or try again later.</string>
 
     <string name="daily">Daily</string>
     <string name="hourly">Hourly</string>

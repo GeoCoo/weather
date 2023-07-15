@@ -1,15 +1,20 @@
 package coo.apps.meteoray.utils
 
-import android.app.Activity
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.view.inputmethod.InputMethodManager
+import android.view.Gravity
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
+import coo.apps.meteoray.R
+import coo.apps.meteoray.activities.MainActivity
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.Limits
 import java.text.SimpleDateFormat
@@ -25,10 +30,14 @@ fun LatLng.checkIfIsInBox(limits: Limits?): Boolean? {
 }
 
 fun Limits?.createBoundBox(): LatLngBounds {
+    val limits = this
     val builder = LatLngBounds.builder()
-    if (this != null) {
-        builder.include(LatLng(this.latmin, this.lonmin))
-        builder.include(LatLng(this.latmax, this.lonmax))
+    if (limits != null) {
+        builder.include(LatLng(limits.latmin, limits.lonmin))
+        builder.include(LatLng(limits.latmax, limits.lonmax))
+    } else {
+        builder.include(LatLng(39.55, 21.65))
+        builder.include(LatLng(41.15, 21.65))
     }
     return builder.build()
 }
@@ -42,9 +51,9 @@ fun LatLngBounds.createRect(color: Int): PolygonOptions {
 }
 
 
-fun Location.getPlaceNameFromLocation(context: Context): Address? {
+fun Location?.getPlaceNameFromLocation(context: Context): Address? {
     val geocoder = Geocoder(context)
-    val addresses = geocoder.getFromLocation(this.latitude, this.longitude, 1)
+    val addresses = this?.latitude?.let { geocoder.getFromLocation(it, this.longitude, 1) }
     return addresses?.get(0)
 }
 
@@ -70,12 +79,26 @@ fun LocationEntity.createLocation(): Location {
     return location
 }
 
-fun Activity.dismissKeyboard() {
-    val imm: InputMethodManager =
-        this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    if (null != this.currentFocus) imm.hideSoftInputFromWindow(
-        this.currentFocus!!
-            .applicationWindowToken, 0
-    )
-}
+fun Toast.setNotificationToast(
+    title: Int, message: Int, color: Int, activity: AppCompatActivity, durationToast: Int
+) {
+    if (activity is MainActivity) {
+        val layout = activity.layoutInflater.inflate(
+            R.layout.notification_toast, activity.findViewById(R.id.toastContainer)
+        )
 
+        val toastText = layout.findViewById<TextView>(R.id.toastText)
+        val toastCard = layout.findViewById<CardView>(R.id.toastCard)
+        val toastTitle = layout.findViewById<TextView>(R.id.toastTitle)
+        toastText.text = activity.resources.getString(message)
+        toastCard.setCardBackgroundColor(activity.resources.getColor(color))
+        toastTitle.text = activity.resources.getString(title)
+
+        this.apply {
+            setGravity(Gravity.BOTTOM, 0, 40)
+            duration = durationToast
+            view = layout
+            show()
+        }
+    }
+}

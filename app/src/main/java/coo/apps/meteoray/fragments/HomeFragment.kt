@@ -13,6 +13,7 @@ import coo.apps.meteoray.adapters.TodayRecyclerAdapter
 import coo.apps.meteoray.base.BaseFragment
 import coo.apps.meteoray.databinding.FragmentHomeBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
+import coo.apps.meteoray.managers.ConnectionLiveData
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.main.DayTable
 import coo.apps.meteoray.models.main.MainResponse
@@ -30,24 +31,51 @@ class HomeFragment : BaseFragment() {
     private lateinit var dailyAdapter: DailyRecyclerAdapter
     private lateinit var todayAdapter: TodayRecyclerAdapter
     var pagePosition: Int = 0
+    private val checkConnection by lazy { ConnectionLiveData(requireActivity().application) }
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initLayout(view: View) {
         val locations = locationRepository.getAllLocations()
-        if (locations.isEmpty()) handleNoLocations() else handleLocations(locations)
-
-        navigateToMaps()
         navigateToSettings()
+        checkConnection.observe(this) { isConnected ->
+            showLocations(isConnected, locations)
+            if (isConnected == true) {
+                navigateToMaps()
+            } else {
+                setNoNetView()
+            }
+
+        }
+
+        if (locations.isNotEmpty()) {
+            repeat(locations.size) {
+                binding.indicator.addTab(
+                    binding.indicator.newTab().setIcon(R.drawable.dot_unselected)
+                )
+            }
+
+        }
+
+    }
+
+    private fun showLocations(isConnected: Boolean?, locations: List<LocationEntity?>) {
+        if (isConnected == true && locations.isEmpty()) {
+            handleNoLocations()
+        } else if (isConnected == true && locations.isNotEmpty()) handleLocations(locations)
+        else if (isConnected == false || isConnected == null) {
+            setNoNetView()
+        }
     }
 
     private fun handleLocations(locations: List<LocationEntity?>) {
         binding.indicator.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.errorView.error.visibility = View.GONE
+        binding.mainView.main.visibility = View.VISIBLE
         binding.errorView.error.visibility = View.GONE
 
-        repeat(locations.size) {
-            binding.indicator.addTab(binding.indicator.newTab().setIcon(R.drawable.dot_unselected))
-        }
+
 
         mainViewModel.observePagerPosition(viewLifecycleOwner) { position ->
             binding.indicator.getTabAt(position)?.setIcon(R.drawable.dot_selected)
@@ -74,7 +102,6 @@ class HomeFragment : BaseFragment() {
                     }
                 }
             }
-
             )
 
             mainViewModel.observeMainResponse(viewLifecycleOwner) {
@@ -85,8 +112,11 @@ class HomeFragment : BaseFragment() {
 
     private fun handleNoLocations() {
         binding.indicator.visibility = View.GONE
+
         mainViewModel.observeMainResponse(viewLifecycleOwner) {
-            if (it != null) handleRequestView(it, null) else setErrorView()
+            if (it != null) {
+                handleRequestView(it, null)
+            } else setErrorView()
 
         }
     }
@@ -95,8 +125,11 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             this.mainView.main.visibility = View.VISIBLE
             this.errorView.error.visibility = View.GONE
+            this.progressBar.visibility = View.GONE
+
         }
         setRecycler()
+        setUpCurrent(response, position)
         setUpCurrent(response, position)
         binding.mainView.toggle.check(R.id.hourly)
         initTodayRecycler(response.dayTable)
@@ -204,11 +237,28 @@ class HomeFragment : BaseFragment() {
 
     private fun setErrorView() {
         binding.apply {
+            this.progressBar.visibility = View.GONE
             this.errorView.error.visibility = View.VISIBLE
+            this.errorView.text.text = resources.getString(R.string.errorMsg)
             this.forecastView.background = resources.getDrawable(R.drawable.splash_bg)
+            this.errorView.gotoMaps.visibility = View.VISIBLE
+            this.mainView.main.visibility = View.GONE
             this.errorView.gotoMaps.setOnClickListener {
                 navigation.postNavigation(NavigationDest.MAPS)
             }
+        }
+    }
+
+    private fun setNoNetView() {
+        binding.apply {
+            this.errorView.error.visibility = View.VISIBLE
+            this.errorView.text.text = resources.getString(R.string.connection_error)
+            this.errorView.gotoMaps.visibility = View.GONE
+            this.forecastView.visibility = View.VISIBLE
+            this.progressBar.visibility = View.GONE
+            this.mainView.main.visibility = View.GONE
+            this.indicator.visibility = View.GONE
+
         }
     }
 

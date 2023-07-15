@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -29,12 +28,11 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.base.BaseActivity
 import coo.apps.meteoray.databinding.ActivityMainBinding
 import coo.apps.meteoray.locationsDb.LocationEntity
-import coo.apps.meteoray.managers.NetworkStatus
-import coo.apps.meteoray.managers.NetworkStatusHelper
 import coo.apps.meteoray.models.DbAction
 import coo.apps.meteoray.models.NavigationDest
 import coo.apps.meteoray.models.Notification
 import coo.apps.meteoray.utils.createLocation
+import coo.apps.meteoray.utils.setNotificationToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -53,27 +51,21 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        mainViewModel.observeNetworkStatus(this@MainActivity) {
-            when (it) {
-                NetworkStatus.Available -> {
-                    setFusionProvider()
-                    getLocation()
-                    setNaview()
-                    mainInit()
-                    handlePager()
-                }
-
-                NetworkStatus.Unavailable -> {
-//                    showNetError()
-                }
+        checkConnection.observe(this) { isConnected ->
+            if (isConnected == true) {
+                getLocation()
             }
         }
+        setFusionProvider()
+        mainInit()
+        setNaview()
+        handlePager()
+
 
     }
+
 
     private fun setNaview() {
         navView =
@@ -101,7 +93,6 @@ class MainActivity : BaseActivity() {
         setStoredLocations()
         getLocationToBeStored()
         handleDbActions()
-        getLocation()
         observerNavigation()
         handleCoordinates()
         handleOutOfBoundSearch()
@@ -203,7 +194,7 @@ class MainActivity : BaseActivity() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.getCurrentLocation(
-                    LocationRequest.PRIORITY_HIGH_ACCURACY,
+                    LocationRequest.PRIORITY_LOW_POWER,
                     object : CancellationToken() {
                         override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken =
                             CancellationTokenSource().token
@@ -338,21 +329,10 @@ class MainActivity : BaseActivity() {
 
     private fun handleCoordinates() {
         mainViewModel.observeCoordinates(this) { location ->
-            binding.progressBar.visibility = if (location == null) View.VISIBLE else View.GONE
             lifecycleScope.launch {
                 val response = mainViewModel.makeMainRequest(location, phoneLanguage)
                 mainViewModel.postMainResponse(response)
             }
         }
-    }
-
-    private fun showNetError() {
-        Toast(this).setNotificationToast(
-            R.string.location_toast_error_title,
-            R.string.connection_error,
-            R.color.color_danger,
-            this,
-            Toast.LENGTH_SHORT
-        )
     }
 }

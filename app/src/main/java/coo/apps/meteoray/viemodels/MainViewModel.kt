@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import coo.apps.meteoray.R
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.locationsDb.LocationsRepository
-import coo.apps.meteoray.managers.NetworkStatus
 import coo.apps.meteoray.models.Limits
 import coo.apps.meteoray.models.Notification
 import coo.apps.meteoray.models.main.MainResponse
@@ -26,12 +25,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var responseMutable: MutableLiveData<MainResponse?> = MutableLiveData()
     private var mapSearchMutable: MutableLiveData<Notification> = MutableLiveData()
     private val viewPagerPositionMutable: MutableLiveData<Int> = MutableLiveData(0)
-    private val netWorkStatusMutable: MutableLiveData<NetworkStatus> =
-        MutableLiveData(NetworkStatus.Available)
-
     private var currentLocation: Location? = null
     private val mainController: MainController by lazy { MainController() }
     private val limitController: LimitController by lazy { LimitController() }
+    private val networkStatusMutable: MutableLiveData<Boolean> = MutableLiveData()
 
 
     fun observeSearchNotification(owner: LifecycleOwner, observer: Observer<Notification>) {
@@ -62,7 +59,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         responseMutable.observe(viewLifecycleOwner, observer)
     }
 
-    suspend fun getPlaceName(): String {
+    fun getPlaceName(): String {
         val place: Address? = currentLocation?.getPlaceNameFromLocation(getApplication())
         return if (place?.featureName == getApplication<Application>().resources.getString(R.string.places_address)) {
             "${place.locality ?: place.subLocality ?: ""},${place.postalCode},${place.countryName} "
@@ -94,14 +91,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewPagerPositionMutable.observe(viewLifecycleOwner, observer)
     }
 
-    fun postNetworkStatus(status: NetworkStatus) {
-        netWorkStatusMutable.postValue(status)
+    fun postNetAccess(isConnected: Boolean) {
+        networkStatusMutable.postValue(isConnected)
     }
 
-    fun observeNetworkStatus(
-        viewLifecycleOwner: LifecycleOwner,
-        observer: Observer<NetworkStatus>
-    ) {
-        netWorkStatusMutable.observe(viewLifecycleOwner, observer)
+    fun observeNetAccess(viewLifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) {
+        networkStatusMutable.observe(viewLifecycleOwner, observer)
     }
 }

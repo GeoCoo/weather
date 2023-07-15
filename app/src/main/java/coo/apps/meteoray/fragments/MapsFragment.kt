@@ -93,7 +93,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.apply {
             map = this
-            binding.progressBar2.visibility = View.VISIBLE
+//            binding.progressBar2.visibility = View.VISIBLE
             setMapSettings(map)
             createBox(map)
             drawBounds(bounds, R.color.color_danger, map)
@@ -301,6 +301,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
     }
 
     override fun onMapLoaded() {
-        binding.progressBar2.visibility = View.GONE
+//        binding.progressBar2.visibility = View.GONE
     }
 }

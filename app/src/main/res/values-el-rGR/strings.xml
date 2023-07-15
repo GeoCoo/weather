@@ -14,7 +14,7 @@
 
     <string name="location_out_of_box">Η τοποθεσίασ που επιλέξατε είναι εκτός τησ περιοχής που υποστηρίζεται.Παρακαλουμε επιλεξτε άλλη.</string>
     <string name="location_toast_error_title">Λάθος</string>
-    <string name="connection_error">Η συνδεση στο διαδικτυο χάθηκε.</string>
+    <string name="connection_error">Η συνδεση στο διαδικτυο δεν ειναι εφικτή,παρακαλώ συνδεθείτε ή προσπαθήστε αργοτερα .</string>
 
 
     <string name="daily">Ημερήσια</string>

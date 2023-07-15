@@ -1,17 +1,11 @@
 package coo.apps.meteoray.base
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.WindowManager
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
-import coo.apps.meteoray.R
-import coo.apps.meteoray.activities.MainActivity
 import coo.apps.meteoray.locationsDb.LocationsRepository
-import coo.apps.meteoray.managers.NetworkStatusHelper
+import coo.apps.meteoray.managers.ConnectionLiveData
 import coo.apps.meteoray.viemodels.DatabaseViewModel
 import coo.apps.meteoray.viemodels.MainViewModel
 import coo.apps.meteoray.viemodels.NavigationViewModel
@@ -27,50 +21,21 @@ open class BaseActivity : AppCompatActivity() {
     protected val mainViewModel: MainViewModel by viewModel()
     protected val databaseViewModel: DatabaseViewModel by viewModel()
     protected val navigation: NavigationViewModel by viewModel()
+    protected val checkConnection by lazy { ConnectionLiveData(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.supportActionBar?.hide()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         phoneLanguage = getLanguage()
-        lifecycleScope.launch {
-            mainViewModel.postLimits()
-        }
-        NetworkStatusHelper(this@BaseActivity).observe(this) {
-            mainViewModel.postNetworkStatus(it)
-        }
-    }
-
-    private fun getLanguage(): String {
-        return Locale.getDefault().language
-    }
-
-    fun Toast.setNotificationToast(
-        title: Int,
-        message: Int,
-        color: Int,
-        activity: AppCompatActivity,
-        durationToast: Int
-    ) {
-        if (activity is MainActivity) {
-            val layout = activity.layoutInflater.inflate(
-                R.layout.notification_toast,
-                activity.findViewById(R.id.toastContainer)
-            )
-
-            val toastText = layout.findViewById<TextView>(R.id.toastText)
-            val toastCard = layout.findViewById<CardView>(R.id.toastCard)
-            val toastTitle = layout.findViewById<TextView>(R.id.toastTitle)
-            toastText.text = resources.getString(message)
-            toastCard.setCardBackgroundColor(resources.getColor(color))
-            toastTitle.text = resources.getString(title)
-
-            this.apply {
-                setGravity(Gravity.BOTTOM, 0, 40)
-                duration = durationToast
-                view = layout
-                show()
+        checkConnection.observe(this@BaseActivity) { isConected ->
+            lifecycleScope.launch {
+                if (isConected == true) mainViewModel.postLimits()
             }
         }
     }
 }
+
+    private fun getLanguage(): String {
+        return Locale.getDefault().language
+    }
