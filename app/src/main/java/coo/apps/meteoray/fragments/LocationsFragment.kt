@@ -35,7 +35,7 @@ class LocationsFragment : BaseFragment() {
     private var onClickLocation: (Pair<LocationEntity,Int>) -> Unit = { location ->
         mainViewModel.postCoordinates(location.first.createLocation())
         mainViewModel.postPagerPosition(location.second)
-        navigation.postNavigation(NavigationDest.HOME)
+        navigation.postNavigation(Pair(NavigationDest.HOME, null))
     }
 
     override fun getLayoutRes() = R.layout.fragment_locations
@@ -96,7 +96,7 @@ class LocationsFragment : BaseFragment() {
 
     private fun addNewLocation() {
         binding.addNew.setOnClickListener {
-            navigation.postNavigation(NavigationDest.MAPS)
+            navigation.postNavigation(Pair(NavigationDest.MAPS, null))
         }
     }
 

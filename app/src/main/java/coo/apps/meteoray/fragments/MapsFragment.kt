@@ -295,7 +295,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
     override fun onClick(view: View?) {
         when (view) {
             binding.view -> {
-                navigation.postNavigation(NavigationDest.HOME)
+                navigation.postNavigation(Pair(NavigationDest.HOME, singleLocation))
             }
 
             binding.save -> {

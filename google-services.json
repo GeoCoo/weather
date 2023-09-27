@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197353281328",
+    "project_id": "meteoray-19d31",
+    "storage_bucket": "meteoray-19d31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197353281328:android:eb19c74aaac64101aa1af5",
+        "android_client_info": {
+          "package_name": "com.coo.meteoray"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197353281328-m847iae6nqnm6ueejnoj7tfuk8klsu6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxr1GyekL4twqGxMeCGyTAHrWrSF2Zicc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197353281328-m847iae6nqnm6ueejnoj7tfuk8klsu6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

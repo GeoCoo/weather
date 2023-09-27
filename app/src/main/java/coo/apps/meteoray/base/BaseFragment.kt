@@ -17,9 +17,11 @@ import coo.apps.meteoray.viemodels.MainViewModel
 import coo.apps.meteoray.viemodels.NavigationViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.Locale
 
 abstract class BaseFragment : Fragment() {
 
+    protected lateinit var phoneLanguage: String
     protected val mainViewModel: MainViewModel by sharedViewModel()
     protected val dataBaseViewModel: DatabaseViewModel by sharedViewModel()
     protected val navigation: NavigationViewModel by sharedViewModel()
@@ -51,6 +53,7 @@ abstract class BaseFragment : Fragment() {
             }
         }
         initLayout(view)
+        phoneLanguage = getLanguage()
     }
 
 
@@ -87,5 +90,7 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-
+    private fun getLanguage(): String {
+        return Locale.getDefault().language
+    }
 }

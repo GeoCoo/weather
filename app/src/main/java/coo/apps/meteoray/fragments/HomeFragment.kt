@@ -36,7 +36,7 @@ class HomeFragment : BaseFragment() {
     override fun initLayout(view: View) {
         val locations = locationRepository.getAllLocations()
         navigateToSettings()
-        checkConnection.observe(this) { isConnected ->
+        checkConnection.observe(viewLifecycleOwner) { isConnected ->
             showLocations(isConnected, locations)
             if (isConnected == true) {
                 navigateToMaps()
@@ -58,11 +58,29 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showLocations(isConnected: Boolean?, locations: List<LocationEntity?>) {
-        if (isConnected == true && locations.isEmpty()) {
-            handleNoLocations()
-        } else if (isConnected == true && locations.isNotEmpty()) handleLocations(locations)
-        else if (isConnected == false || isConnected == null) {
-            setNoNetView()
+        navigation.observeNavigation(lifecycleOwner = viewLifecycleOwner) { item ->
+            if (item?.second != null) {
+                handleNoLocations()
+
+            }
+
+        }
+        when {
+            isConnected == true && locations.isEmpty() -> {
+                handleNoLocations()
+            }
+
+            isConnected == true && locations.isNotEmpty() -> {
+                handleLocations(locations)
+            }
+
+            isConnected == false && locations.isNotEmpty() -> {
+                setNoNetView()
+            }
+
+            isConnected == false || isConnected == null -> {
+                setNoNetView()
+            }
         }
     }
 
@@ -73,11 +91,8 @@ class HomeFragment : BaseFragment() {
         binding.mainView.main.visibility = View.VISIBLE
         binding.errorView.error.visibility = View.GONE
 
-
-
         mainViewModel.observePagerPosition(viewLifecycleOwner) { position ->
             binding.indicator.getTabAt(position)?.setIcon(R.drawable.dot_selected)
-
 
             binding.forecastView.setOnTouchListener(object : OnSwipeTouchListener() {
                 override fun onSwipeLeft() {
@@ -128,7 +143,6 @@ class HomeFragment : BaseFragment() {
         }
         setRecycler()
         setUpCurrent(response, position)
-        setUpCurrent(response, position)
         binding.mainView.toggle.check(R.id.hourly)
         initTodayRecycler(response.dayTable)
     }
@@ -148,6 +162,14 @@ class HomeFragment : BaseFragment() {
             val weatherIcon = response.current.icon.let { getIcon(it) }
             weatherIcon.let { mainView.wearherSymbol.setImageResource(it) }
             lifecycleScope.launch {
+                navigation.observeNavigation(viewLifecycleOwner) { item ->
+                    if (item?.second != null) {
+                        mainView.placeTxt.text = mainViewModel.getPlaceName()
+                        binding.indicator.visibility = View.GONE
+                        binding.forecastView.setOnTouchListener(null)
+
+                    }
+                }
                 mainView.placeTxt.text = if (position == null)
                     mainViewModel.getPlaceName() else locationRepository.getAllLocations()[position]?.locationName
             }
@@ -222,13 +244,13 @@ class HomeFragment : BaseFragment() {
 
     private fun navigateToMaps() {
         binding.locationView.setOnClickListener {
-            navigation.postNavigation(NavigationDest.MAPS)
+            navigation.postNavigation(Pair(NavigationDest.MAPS, null))
         }
     }
 
     private fun navigateToSettings() {
         binding.settingsView.setOnClickListener {
-            navigation.postNavigation(NavigationDest.SETTINGS)
+            navigation.postNavigation(Pair(NavigationDest.SETTINGS, null))
             navigation.postDestinationNav(R.string.title_settings)
         }
     }
@@ -242,7 +264,7 @@ class HomeFragment : BaseFragment() {
             this.errorView.gotoMaps.visibility = View.VISIBLE
             this.mainView.main.visibility = View.GONE
             this.errorView.gotoMaps.setOnClickListener {
-                navigation.postNavigation(NavigationDest.MAPS)
+                navigation.postNavigation(Pair(NavigationDest.MAPS, null))
             }
         }
     }

@@ -20,6 +20,11 @@ class ConnectionLiveData(private val connectivityManager: ConnectivityManager) :
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
 
+        override fun onUnavailable() {
+            super.onUnavailable()
+            postValue(false)
+
+        }
 
         override fun onAvailable(network: Network) {
             super.onAvailable(network)

@@ -5,12 +5,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.NavigationDest
 
 class NavigationViewModel(application: Application) : AndroidViewModel(application) {
 
     private var destinationNavMutable: MutableLiveData<Int> = MutableLiveData()
-    private var navigationDesMutable: MutableLiveData<NavigationDest?> = MutableLiveData()
+    private var navigationDesMutable: MutableLiveData<Pair<NavigationDest?, LocationEntity?>?> =
+        MutableLiveData()
 
 
     fun postDestinationNav(destination: Int) {
@@ -21,11 +23,14 @@ class NavigationViewModel(application: Application) : AndroidViewModel(applicati
         destinationNavMutable.observe(lifecycleOwner, observer)
     }
 
-    fun postNavigation(destination: NavigationDest?) {
-        navigationDesMutable.postValue(destination)
+    fun postNavigation(item: Pair<NavigationDest?, LocationEntity?>) {
+        navigationDesMutable.postValue(item)
     }
 
-    fun observeNavigation(lifecycleOwner: LifecycleOwner, observer: Observer<NavigationDest?>) {
+    fun observeNavigation(
+        lifecycleOwner: LifecycleOwner,
+        observer: Observer<Pair<NavigationDest?, LocationEntity?>?>
+    ) {
         navigationDesMutable.observe(lifecycleOwner, observer)
     }
 }

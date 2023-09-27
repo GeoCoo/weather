@@ -88,21 +88,21 @@ class SettingsFragment : BaseFragment(), OnClickListener {
     override fun onClick(view: View?) {
         when (view) {
             binding.locationsCl -> {
-                navigation.postNavigation(NavigationDest.LOCATIONS)
+                navigation.postNavigation(Pair(NavigationDest.LOCATIONS, null))
             }
 
             binding.descriptionCl -> {
-                navigation.postNavigation(NavigationDest.INFO)
+                navigation.postNavigation(Pair(NavigationDest.INFO, null))
                 navigation.postDestinationNav(R.string.description_setting)
             }
 
             binding.projectFundingCl -> {
-                navigation.postNavigation(NavigationDest.INFO)
+                navigation.postNavigation(Pair(NavigationDest.INFO, null))
                 navigation.postDestinationNav(R.string.project_funding_setting)
             }
 
             binding.disclaimerCL -> {
-                navigation.postNavigation(NavigationDest.INFO)
+                navigation.postNavigation(Pair(NavigationDest.INFO, null))
                 navigation.postDestinationNav(R.string.disclaimer_setting)
 
             }

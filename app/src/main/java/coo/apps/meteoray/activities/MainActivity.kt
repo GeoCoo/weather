@@ -161,8 +161,8 @@ class MainActivity : BaseActivity() {
 
 
     private fun observerNavigation() {
-        navigation.observeNavigation(this) { destination ->
-            when (destination) {
+        navigation.observeNavigation(this) { item ->
+            when (item?.first) {
                 NavigationDest.HOME -> {
                     navView.findNavController().navigate(R.id.navigation_home)
                 }

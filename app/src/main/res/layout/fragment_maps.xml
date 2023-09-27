@@ -106,7 +106,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="24dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="24dp"
@@ -115,7 +115,7 @@
             <TextView
                 android:id="@+id/view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/spf_pro_regular"
                 android:text="@string/view_btn"
                 android:textColor="@color/cursor_blue"
@@ -126,7 +126,7 @@
             <TextView
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/spf_pro_regular"
                 android:text="@string/save_btn"
                 android:textColor="@color/cursor_blue"
