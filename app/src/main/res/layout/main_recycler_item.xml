@@ -64,10 +64,10 @@
         android:id="@+id/windInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:orientation="horizontal"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="5dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@id/dateTime"
         app:layout_constraintStart_toStartOf="@id/dateTime"
         app:layout_constraintTop_toBottomOf="@id/icon">
@@ -77,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/windDirection"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -88,13 +87,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/windIndicator"
             app:layout_constraintTop_toTopOf="parent"
-
             tools:text="5 m/s" />
+
+        <ImageView
+            android:id="@+id/heat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toStartOf="@id/frost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/windDirection"
+            app:srcCompat="@drawable/heat_risk" />
+
+        <ImageView
+            android:id="@+id/frost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/heat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/heat"
+            app:srcCompat="@drawable/frost_risk" />
+
+        <ImageView
+            android:id="@+id/wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/rain"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/heat"
+            app:srcCompat="@drawable/wind_risk" />
+
+        <ImageView
+            android:id="@+id/rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/wind"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/wind"
+            app:layout_constraintTop_toBottomOf="@id/frost"
+            app:srcCompat="@drawable/rain_risk" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <View
         android:id="@+id/divider2"

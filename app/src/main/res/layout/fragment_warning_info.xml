@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="?android:actionBarSize"
+    android:layout_marginEnd="10dp"
+    tools:context=".fragments.WarningInfoFragment">
+
+
+    <ImageView
+
+        android:id="@+id/heatIcom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/heat_risk" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5.dp"
+        android:text="@string/heat_risk"
+        app:layout_constraintBottom_toBottomOf="@id/heatIcom"
+        app:layout_constraintStart_toEndOf="@id/heatIcom"
+        app:layout_constraintTop_toTopOf="@id/heatIcom"
+        tools:text="@string/heat_risk" />
+
+    <ImageView
+        android:id="@+id/frostIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heatIcom"
+        app:srcCompat="@drawable/frost_risk" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/frost_risk"
+        app:layout_constraintBottom_toBottomOf="@id/frostIcon"
+        app:layout_constraintStart_toEndOf="@id/frostIcon"
+        app:layout_constraintTop_toTopOf="@id/frostIcon"
+        tools:text="@string/frost_risk" />
+
+    <ImageView
+        android:id="@+id/windIcom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frostIcon"
+        app:srcCompat="@drawable/frost_risk" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/wind_risk"
+        app:layout_constraintBottom_toBottomOf="@id/windIcom"
+        app:layout_constraintStart_toEndOf="@id/windIcom"
+        app:layout_constraintTop_toTopOf="@id/windIcom"
+        tools:text="@string/wind_risk" />
+
+    <ImageView
+        android:id="@+id/rainIcom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/windIcom"
+        app:srcCompat="@drawable/rain_risk" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/rain_risk"
+        app:layout_constraintBottom_toBottomOf="@id/rainIcom"
+        app:layout_constraintStart_toEndOf="@id/rainIcom"
+        app:layout_constraintTop_toTopOf="@id/rainIcom"
+        tools:text="@string/rain_risk" />
+
+    <ImageView
+        android:id="@+id/noWarnongIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rainIcom"
+        app:srcCompat="@drawable/no_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/no_warning"
+        app:layout_constraintBottom_toBottomOf="@id/noWarnongIcon"
+        app:layout_constraintStart_toEndOf="@id/noWarnongIcon"
+        app:layout_constraintTop_toTopOf="@id/noWarnongIcon"
+        tools:text="@string/no_warning" />
+
+    <ImageView
+        android:id="@+id/lightWarningIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noWarnongIcon"
+        app:srcCompat="@drawable/light_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/light_warning"
+        app:layout_constraintBottom_toBottomOf="@id/lightWarningIcon"
+        app:layout_constraintStart_toEndOf="@id/lightWarningIcon"
+        app:layout_constraintTop_toTopOf="@id/lightWarningIcon"
+        tools:text="@string/light_warning" />
+
+    <ImageView
+        android:id="@+id/mildWaringIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lightWarningIcon"
+        app:srcCompat="@drawable/mild_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/mild_warning"
+        app:layout_constraintBottom_toBottomOf="@id/mildWaringIcon"
+        app:layout_constraintStart_toEndOf="@id/mildWaringIcon"
+        app:layout_constraintTop_toTopOf="@id/mildWaringIcon"
+        tools:text="@string/mild_warning" />
+
+    <ImageView
+        android:id="@+id/heavyWarningIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mildWaringIcon"
+        app:srcCompat="@drawable/heavy_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/heavy_warning"
+        app:layout_constraintBottom_toBottomOf="@id/heavyWarningIcon"
+        app:layout_constraintStart_toEndOf="@id/heavyWarningIcon"
+        app:layout_constraintTop_toTopOf="@id/heavyWarningIcon"
+        tools:text="@string/heavy_warning" />
+
+    <ImageView
+        android:id="@+id/extermeWarningIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heavyWarningIcon"
+        app:srcCompat="@drawable/extreme_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/extreme_warning"
+        app:layout_constraintBottom_toBottomOf="@id/extermeWarningIcon"
+        app:layout_constraintStart_toEndOf="@id/extermeWarningIcon"
+        app:layout_constraintTop_toTopOf="@id/extermeWarningIcon"
+        tools:text="@string/extreme_warning" />
+
+    <ImageView
+        android:id="@+id/heailWaringIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/extermeWarningIcon"
+        app:srcCompat="@drawable/hail_warning" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/hail_warning"
+        app:layout_constraintBottom_toBottomOf="@id/heailWaringIcon"
+        app:layout_constraintStart_toEndOf="@id/heailWaringIcon"
+        app:layout_constraintTop_toTopOf="@id/heailWaringIcon"
+        tools:text="@string/hail_warning" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

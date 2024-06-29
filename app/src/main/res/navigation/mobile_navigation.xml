@@ -6,6 +6,15 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/warning_info"
+        android:name="coo.apps.meteoray.fragments.WarningInfoFragment"
+        android:label="@string/title_info"
+        tools:layout="@layout/fragment_warning_info">
+        <action
+            android:id="@+id/action_navigation_info2_to_navigation_settings2"
+            app:destination="@id/navigation_settings" />
+    </fragment>
+    <fragment
         android:id="@+id/navigation_home"
         android:name="coo.apps.meteoray.fragments.HomeFragment"
         android:label="@string/title_home"
@@ -60,6 +69,9 @@
         <action
             android:id="@+id/action_navigation_settings_to_navigation_locations"
             app:destination="@id/navigation_locations" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_info2"
+            app:destination="@id/warning_info" />
     </fragment>
 
 </navigation>

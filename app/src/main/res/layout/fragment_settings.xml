@@ -13,8 +13,8 @@
         android:id="@+id/fahreneitCl"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="?android:actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -107,6 +107,40 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/warningInfoCL"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationsCl">
+
+        <TextView
+            android:id="@+id/warningInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/spf_pro_regular"
+            android:gravity="center_vertical"
+            android:text="@string/warning_info"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/title_locations" />
+
+        <ImageView
+            android:id="@+id/warningInfoArrow"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/right_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/descriptionCl"
@@ -114,7 +148,7 @@
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationsCl">
+        app:layout_constraintTop_toBottomOf="@id/warningInfoCL">
 
         <TextView
             android:layout_width="wrap_content"

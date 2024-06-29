@@ -3,14 +3,14 @@
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_settings">Ρυθμίσεις</string>
-    <string name="title_locations">Αποθηκευμένεσ Τοποθεσίες</string>
+    <string name="title_locations">Αποθηκευμένες Τοποθεσίες</string>
     <string name="humidity_tag">Σχ. Υγρασία: %1$s</string>
     <string name="rain_tag">Υετός: %1$s</string>
     <string name="wind_tag">Άνεμος: %1$s %2$s</string>
     <string name="hail_tag">Χαλάζι: %1$s</string>
     <string name="sunset_tag">Ανατολή: %1$s</string>
     <string name="sunrise_tage">Δύση: %1$s</string>
-    <string name="search_location">Ααναζήτηση τοποθεσίας</string>
+    <string name="search_location">Αναζήτηση τοποθεσίας</string>
 
     <string name="location_out_of_box">Η τοποθεσίασ που επιλέξατε είναι εκτός τησ περιοχής που υποστηρίζεται.Παρακαλουμε επιλεξτε άλλη.</string>
     <string name="location_toast_error_title">Λάθος</string>
@@ -26,7 +26,7 @@
     <string name="save_btn">Αποθήκευση</string>
 
     <string name="location_alert_title">Όνομα τοποθεσίας</string>
-    <string name="location_alert_desc">Εισάγεται το όνομα που θέλετε να αποθηκευτει η τοποθεσία</string>
+    <string name="location_alert_desc">Εισάγεται το όνομα που θέλετε να αποθηκευτεί η τοποθεσία</string>
     <string name="location_ok_action">OK</string>
     <string name="location_alert_cancel_action">Ακύρωση</string>
     <string name="attention_alert_dialog">Προσοχή</string>
@@ -34,7 +34,7 @@
 
     <!--settings-->
     <string name="fahreneit_enable">Θερμοκρασία σε Fahrenheit</string>
-    <string name="beaufort_enable">Άνεμοσ σε Beaufort</string>
+    <string name="beaufort_enable">Άνεμος σε Beaufort</string>
     <string name="locations_store">Αποθηκευμένες Τοποθεσίες</string>
     <string name="description_setting">Περιγραφή</string>
     <string name="project_funding_setting">Χρηματοδότηση Έργου</string>
@@ -75,6 +75,20 @@
     </string>
 
     <string name="places_address">Οδός χωρίς ονομασία</string>
+
+    <string name="heat_risk">Ακραίες Θερμοκρασίες</string>
+    <string name="frost_risk">Πάγος</string>
+    <string name="wind_risk">Επικίνδυνοι Άνεμοι</string>
+    <string name="rain_risk">Βροχή / Χαλάζι</string>
+
+    <string name="warning_info">Επεξήγηση προειδοποιήσεων</string>
+
+    <string name="no_warning">Καμία προειδοποίηση</string>
+    <string name="light_warning">Ελαφρύ φαινόμενο</string>
+    <string name="mild_warning">Μέτριο φαινόμενο</string>
+    <string name="heavy_warning">Ίσχυρό φαινόμενο</string>
+    <string name="extreme_warning">Ακραίο φαινόμενο </string>
+    <string name="hail_warning">Χαλάζι </string>
 
 
 </resources>

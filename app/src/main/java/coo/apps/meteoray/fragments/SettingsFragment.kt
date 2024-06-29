@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
@@ -74,7 +75,6 @@ class SettingsFragment : BaseFragment(), OnClickListener {
             backArrow = resources.getDrawable(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
             backArrow.setColorFilter(resources.getColor(R.color.black), PorterDuff.Mode.SRC_ATOP)
             this.setHomeAsUpIndicator(backArrow)
-
         }
     }
 
@@ -83,6 +83,7 @@ class SettingsFragment : BaseFragment(), OnClickListener {
         binding.descriptionCl.setOnClickListener(this)
         binding.projectFundingCl.setOnClickListener(this)
         binding.disclaimerCL.setOnClickListener(this)
+        binding.warningInfoCL.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -104,11 +105,22 @@ class SettingsFragment : BaseFragment(), OnClickListener {
             binding.disclaimerCL -> {
                 navigation.postNavigation(Pair(NavigationDest.INFO, null))
                 navigation.postDestinationNav(R.string.disclaimer_setting)
+            }
 
+            binding.warningInfoCL -> {
+                navigation.postNavigation(Pair(NavigationDest.COLOR_INFO, null))
+                navigation.postDestinationNav(R.string.warning_info)
             }
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            navigation.postNavigation(Pair(NavigationDest.HOME, null))
+        }
+        return true
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

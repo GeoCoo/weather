@@ -25,7 +25,7 @@ enum class Icon(var type: String) {
 }
 
 enum class NavigationDest {
-    HOME, MAPS, SETTINGS, LOCATIONS, INFO
+    HOME, MAPS, SETTINGS, LOCATIONS, INFO, COLOR_INFO
 }
 
 enum class Notification {

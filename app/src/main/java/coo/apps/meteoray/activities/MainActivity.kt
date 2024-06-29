@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
     private fun handlePager() {
         mainViewModel.observePagerPosition(this) { position ->
             if (locationRepository.getAllLocations().isNotEmpty()) {
-                val location = locationRepository.getAllLocations()[position]
+                val location = locationRepository.getAllLocations().reversed()[position]
                 lifecycleScope.launch {
                     val response =
                         mainViewModel.makeMainRequest(location?.createLocation(), phoneLanguage)
@@ -182,6 +182,9 @@ class MainActivity : BaseActivity() {
                 NavigationDest.INFO -> {
                     navView.findNavController().navigate(R.id.navigation_info)
                 }
+                NavigationDest.COLOR_INFO -> {
+                    navView.findNavController().navigate(R.id.warning_info)
+                }
 
                 null -> {}
             }
@@ -237,18 +240,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        }
-        return false
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
 
@@ -305,7 +304,7 @@ class MainActivity : BaseActivity() {
     private fun setStoredLocations() {
         lifecycleScope.launch {
             delay(500)
-            databaseViewModel.postLocations(locationRepository.getAllLocations())
+            databaseViewModel.postLocations(locationRepository.getAllLocations().reversed())
         }
     }
 
@@ -321,6 +320,8 @@ class MainActivity : BaseActivity() {
                     val location = handleLocation(action, locationEntity, input)
                     databaseViewModel.handleLocationActions(action, locationRepository, location)
                     setStoredLocations()
+                    navigation.postNavigation(Pair(NavigationDest.HOME, null))
+                    navigation.postDestinationNav(R.string.title_settings)
                 }
                 .setNegativeButton(resources.getString(R.string.location_alert_cancel_action), null)
                 .create()

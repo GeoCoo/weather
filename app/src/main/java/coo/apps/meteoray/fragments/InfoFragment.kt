@@ -19,7 +19,6 @@ class InfoFragment : BaseFragment() {
 
 
     override fun getLayoutRes(): Int = R.layout.fragment_info
-
     override fun initLayout(view: View) {
         setUpToolbar()
     }
@@ -60,6 +59,7 @@ class InfoFragment : BaseFragment() {
         when (title) {
             R.string.disclaimer_setting -> {
                 binding.info.text = resources.getString(R.string.disclaimer_info)
+                binding.espa.visibility = View.GONE
             }
 
             R.string.project_funding_setting -> {
@@ -68,6 +68,7 @@ class InfoFragment : BaseFragment() {
 
             R.string.description_setting -> {
                 binding.info.text = resources.getString(R.string.description_info)
+                binding.espa.visibility = View.GONE
             }
         }
 

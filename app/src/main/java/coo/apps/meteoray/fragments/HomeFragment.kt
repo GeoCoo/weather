@@ -21,6 +21,7 @@ import coo.apps.meteoray.models.main.getBg
 import coo.apps.meteoray.models.main.getIcon
 import coo.apps.meteoray.utils.OnSwipeTouchListener
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class HomeFragment : BaseFragment() {
 
@@ -54,17 +55,14 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-
     }
 
     private fun showLocations(isConnected: Boolean?, locations: List<LocationEntity?>) {
-        navigation.observeNavigation(lifecycleOwner = viewLifecycleOwner) { item ->
-            if (item?.second != null) {
-                handleNoLocations()
-
-            }
-
-        }
+//        navigation.observeNavigation(lifecycleOwner = viewLifecycleOwner) { item ->
+//            if (item?.second != null) {
+//                handleNoLocations()
+//            }
+//        }
         when {
             isConnected == true && locations.isEmpty() -> {
                 handleNoLocations()
@@ -82,13 +80,14 @@ class HomeFragment : BaseFragment() {
                 setNoNetView()
             }
         }
+
+
     }
 
     private fun handleLocations(locations: List<LocationEntity?>) {
         binding.indicator.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
-        binding.errorView.error.visibility = View.GONE
         binding.mainView.main.visibility = View.VISIBLE
+        binding.errorView.error.visibility = View.GONE
         binding.errorView.error.visibility = View.GONE
 
         mainViewModel.observePagerPosition(viewLifecycleOwner) { position ->
@@ -118,8 +117,10 @@ class HomeFragment : BaseFragment() {
             )
 
             mainViewModel.observeMainResponse(viewLifecycleOwner) {
-                if (it != null) handleRequestView(it, position)
+                if (it != null)
+                    handleRequestView(it, position)
             }
+
         }
     }
 
@@ -132,6 +133,8 @@ class HomeFragment : BaseFragment() {
             } else setErrorView()
 
         }
+        binding.progressBar.visibility = View.GONE
+
     }
 
     private fun handleRequestView(response: MainResponse, position: Int?) {
@@ -171,7 +174,8 @@ class HomeFragment : BaseFragment() {
                     }
                 }
                 mainView.placeTxt.text = if (position == null)
-                    mainViewModel.getPlaceName() else locationRepository.getAllLocations()[position]?.locationName
+                    mainViewModel.getPlaceName() else locationRepository.getAllLocations()
+                    .reversed()[position]?.locationName
             }
 
             if (getSharedPref("fahreneit")) {
@@ -223,16 +227,26 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initTodayRecycler(list: List<DayTable>) {
-        binding.apply {
-            todayAdapter = TodayRecyclerAdapter(list)
-            this.mainView.recycler.adapter = todayAdapter
+        runBlocking {
+            binding.apply {
+
+                todayAdapter =
+                    TodayRecyclerAdapter(list, getSharedPref("bofor"), getSharedPref("fahreneit"))
+                this.mainView.recycler.adapter = todayAdapter
+
+            }
         }
+
     }
 
     private fun initDailyRecycler(list: List<Overview>) {
-        binding.apply {
-            dailyAdapter = DailyRecyclerAdapter(list)
-            this.mainView.recycler.adapter = dailyAdapter
+        runBlocking {
+            binding.apply {
+                dailyAdapter =
+                    DailyRecyclerAdapter(list, getSharedPref("bofor"), getSharedPref("fahreneit"))
+                this.mainView.recycler.adapter = dailyAdapter
+            }
+
         }
     }
 

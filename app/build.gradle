@@ -22,12 +22,11 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "RELEASE_DATE", "\"12/2/22/\""
-
+            buildConfigField "String", "RELEASE_DATE", "\"12/2/22\""
         }
 
         release {
-            buildConfigField "String", "RELEASE_DATE", "\"12/2/22/\""
+            buildConfigField "String", "RELEASE_DATE", "\"12/2/22\""
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

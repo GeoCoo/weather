@@ -1,6 +1,7 @@
 package coo.apps.meteoray.adapters
 
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,10 @@ import coo.apps.meteoray.models.main.DayTable
 import coo.apps.meteoray.models.main.getSmallIcons
 
 
-class TodayRecyclerAdapter(private val list: List<DayTable>) :
+class TodayRecyclerAdapter(
+    private val list: List<DayTable>, private val hasBofor: Boolean,
+    private val hasFahreneit: Boolean
+) :
     RecyclerView.Adapter<TodayRecyclerAdapter.DailyViewHolder>() {
 
 
@@ -40,10 +44,17 @@ class TodayRecyclerAdapter(private val list: List<DayTable>) :
             binding.apply {
                 this.dateTime.text = item.time
                 this.highest.text =
-                    item.temp + this@DailyViewHolder.itemView.context.getString(R.string.celcius_symbol)
+                    if (hasFahreneit.not()) item.temp + this@DailyViewHolder.itemView.context.getString(
+                        R.string.celcius_symbol
+                    ) else item.tempfrt + this@DailyViewHolder.itemView.context.getString(R.string.fahreneit_symbol)
                 this.icon.setImageResource(getSmallIcons(item.icon))
-                this.windDirection.text = item.wind + item.dirname
+                this.windDirection.text =
+                    if (hasBofor.not()) item.wind + item.dirname else item.windbft + item.dirname
                 this.windIndicator.rotation = item.dir?.toFloat()!!
+                this.heat.setColorFilter(Color.parseColor(item.heatRisk))
+                this.rain.setColorFilter(Color.parseColor(item.rainRisk))
+                this.frost.setColorFilter(Color.parseColor(item.frostRisk))
+                this.wind.setColorFilter(Color.parseColor(item.windRisk))
             }
         }
     }

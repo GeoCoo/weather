@@ -79,8 +79,18 @@ indicators in locations of the user  &quot; s choice as well as the issuance of 
 protection and optimization of production.
     </string>
     <string name="places_address">Odos xoris onomasia</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="heat_risk">Heat</string>
+    <string name="frost_risk">Ice</string>
+    <string name="wind_risk">Wind</string>
+    <string name="rain_risk">Rain/Hail</string>
 
+    <string name="warning_info">Warnings Explanation</string>
+
+    <string name="no_warning">No warning</string>
+    <string name="light_warning">Light phenomenon</string>
+    <string name="mild_warning">Moderate phenomenon</string>
+    <string name="heavy_warning">Strong phenomenon</string>
+    <string name="extreme_warning">Extreme phenomenon </string>
+    <string name="hail_warning">Hail </string>
 </resources>

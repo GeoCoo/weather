@@ -60,7 +60,7 @@ fun Location?.getPlaceNameFromLocation(context: Context): Address? {
 fun String.convertDate(): String {
     val formatter = SimpleDateFormat("MM/dd/yyyy")
     val finalDate = formatter.parse(this)
-    return SimpleDateFormat("EEE d").format(finalDate!!)
+    return SimpleDateFormat("EEE").format(finalDate!!)
 }
 
 

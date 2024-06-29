@@ -1,5 +1,6 @@
 package coo.apps.meteoray.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewModelScope
@@ -69,7 +71,6 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
         clearSearch()
         handleTextWatcher()
         handleSearchPlaces()
-
         setBottomSheetListeners()
         toggleActionView(false)
 
@@ -173,6 +174,10 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
             binding.searchField.setText(prediction.getPrimaryText(null).toString())
             getPlaceLatLong(prediction)
             binding.placesRecycler.visibility = View.GONE
+            val imm =
+                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+
         }
         binding.placesRecycler.layoutManager = LinearLayoutManager(requireContext())
         (binding.placesRecycler.layoutManager as LinearLayoutManager).stackFromEnd
@@ -300,6 +305,7 @@ open class MapsFragment : BaseFragment(), OnMapReadyCallback, OnMapLoadedCallbac
 
             binding.save -> {
                 dataBaseViewModel.postDbAction(Pair(DbAction.SAVE, singleLocation))
+
             }
         }
         toggleActionView(false)
