@@ -9,7 +9,6 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.databinding.MainRecyclerItemBinding
 import coo.apps.meteoray.models.main.Overview
 import coo.apps.meteoray.models.main.getSmallIcons
-import coo.apps.meteoray.utils.convertDate
 
 
 class DailyRecyclerAdapter(
@@ -44,8 +43,8 @@ class DailyRecyclerAdapter(
         fun bind(item: Overview, position: Int) {
             binding.apply {
                 this.dateTime.text =
-                    if (position != 0) item.date?.convertDate() else this@TodayViewHolder.itemView.context.getString(
-                        R.string.hourly
+                    if (position != 0) item.name else this@TodayViewHolder.itemView.context.getString(
+                        R.string.today
                     )
                 this.highest.text =
                     if (hasFahreneit.not()) item.tempmax + this@TodayViewHolder.itemView.context.getString(

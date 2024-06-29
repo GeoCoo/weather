@@ -23,6 +23,7 @@
 
     <string name="daily">Daily</string>
     <string name="hourly">Hourly</string>
+    <string name="today">Today</string>
     <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
     <string name="add_new_location">Add new location</string>
 

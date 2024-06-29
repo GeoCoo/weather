@@ -17,7 +17,6 @@ import coo.apps.meteoray.R
 import coo.apps.meteoray.activities.MainActivity
 import coo.apps.meteoray.locationsDb.LocationEntity
 import coo.apps.meteoray.models.Limits
-import java.text.SimpleDateFormat
 
 
 fun Location.isInBoundBox(limits: Limits?): Boolean? {
@@ -56,13 +55,6 @@ fun Location?.getPlaceNameFromLocation(context: Context): Address? {
     val addresses = this?.latitude?.let { geocoder.getFromLocation(it, this.longitude, 1) }
     return addresses?.get(0)
 }
-
-fun String.convertDate(): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy")
-    val finalDate = formatter.parse(this)
-    return SimpleDateFormat("EEE").format(finalDate!!)
-}
-
 
 fun LatLng.createLocation(): Location {
     val location = Location(LocationManager.GPS_PROVIDER)

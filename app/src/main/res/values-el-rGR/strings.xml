@@ -19,7 +19,8 @@
 
     <string name="daily">Ημερήσια</string>
     <string name="hourly">Ωριαία</string>
-    <string name="errorMsg">You are not in a supporting location and you have not picked a supported one yet.You can choose one on the map</string>
+    <string name="today">Σήμερα</string>
+    <string name="errorMsg">Δεν βρίσκεστε σε υποστηριζόμενη τοποθεσία και δεν έχετε επιλέξει ακόμη κάποια υποστηριζόμενη τοποθεσία. Μπορείτε να επιλέξετε μία από το χάρτη.</string>
     <string name="add_new_location">Προσθήκη νέας τοποθεσίας</string>
 
     <string name="view_btn">Προβολή</string>
