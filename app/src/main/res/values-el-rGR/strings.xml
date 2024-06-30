@@ -31,7 +31,7 @@
     <string name="location_ok_action">OK</string>
     <string name="location_alert_cancel_action">Ακύρωση</string>
     <string name="attention_alert_dialog">Προσοχή</string>
-    <string name="attention_alet_dialog_text">Η υπηρεσία τοποθεσίασ ειναι απερνεγοποιημένη.Ενεργοποιηστε την απο τθσ ρυθμίσεισ</string>
+    <string name="attention_alet_dialog_text">Η υπηρεσία τοποθεσίας είναι απενεργοποιημένη.Ενεργοποιήστε την απο τις ρυθμίσεις.</string>
 
     <!--settings-->
     <string name="fahreneit_enable">Θερμοκρασία σε Fahrenheit</string>
